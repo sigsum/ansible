@@ -1,0 +1,14 @@
+[Unit]
+Description=Sigsum log primary node
+Requires=trillian-server.service
+After=trillian-server.service
+
+[Service]
+Type=simple
+User={{ sigsum_user }}
+StandardError=journal
+ExecStart=/usr/bin/sigsum-log-start.sh primary {{ sigsum_url_prefix }} %i
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

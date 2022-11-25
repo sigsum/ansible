@@ -1,0 +1,61 @@
+---
+
+- name: Install a database engine
+  apt:
+    name: mariadb-server
+
+- name: Install shell scripts for dumping db's
+  copy:
+    dest: "/usr/bin/{{ item }}"
+    src: "{{ item }}"
+    mode: preserve
+  loop:
+    - 'mariasnap.sh'
+    - 'mariarmsnap.sh'
+
+- name: Install python3-pymysql library
+  apt:
+    name: python3-pymysql
+    state: present
+
+- name: Check if mysql root password was not set
+  shell: >
+    mysql -u root
+    -h localhost
+    -e "quit"
+  changed_when: false
+  ignore_errors: true
+  register: check_passwd_root
+
+- name: Set MariaDB root password for 127.0.0.1, localhost
+  mysql_user:
+    name: root
+    password: "{{ mysql_root_password }}"
+    host: "{{ item }}"
+    login_user: root
+    #login_password: "{{ mysql_root_password }}"
+    login_unix_socket: "/run/mysqld/mysqld.sock"
+    state: present
+  with_items:
+    - 127.0.0.1
+    - localhost
+  when: check_passwd_root.rc == 0
+  notify: Flush Priviliges
+
+- name: Create a databases
+  community.mysql.mysql_db:
+    name: '{{ item }}'
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    login_unix_socket: /run/mysqld/mysqld.sock
+    state: present
+  with_items: '{{ mysql_database }}'
+
+- name: Create database user
+  community.mysql.mysql_user:
+    name: sigsum
+    password: changeme
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    priv: 'test.*:ALL'
+    state: present

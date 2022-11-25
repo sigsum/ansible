@@ -1,0 +1,6 @@
+---
+- name: setup sigsum log server
+  hosts: sigsum
+  roles:
+    - { role: mariadb, tags: ['mariadb', 'log'] }
+    - { role: sigsum, tags: ['sigsum', 'log'] }
