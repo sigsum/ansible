@@ -1,0 +1,16 @@
+[Unit]
+Description="Trillian server"
+Requires=trillian-signer.service
+After=trillian-signer.service
+
+[Service]
+Type=simple
+User={{ sigsum_user }}
+ExecStart=/home/{{ sigsum_user }}/go/bin/trillian_log_server \
+    --rpc_endpoint=localhost:6962 \
+    --http_endpoint=localhost:6963 \
+    --mysql_uri '{{ sigsum_user }}:{{ sigsum_db_pw }}@tcp(127.0.0.1:3306)/{{ sigsum_db_name }}'
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

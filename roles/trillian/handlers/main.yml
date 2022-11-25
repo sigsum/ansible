@@ -1,0 +1,19 @@
+---
+
+- name: restart trillian
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+    - trillian-signer
+    - trillian-server
+
+- name: restart sigsum logs
+  systemd:
+    name: "sigsum-log@{{ item.logname }}"
+    state: restarted
+  with_items: "{{ trillian_sigsum_logs }}"
+
+- name: reload systemd
+  systemd:
+    daemon_reload: true

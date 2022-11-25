@@ -1,0 +1,36 @@
+---
+
+trillian_user: trillian
+trillian_db_dbname: test
+
+# For trillian_db_pw, create a '!vault' blob by running the following
+# command and put the result it in a host_vars/ file. To avoid a newline
+# in the value, press C-d twice.
+#   ansible-vault encrypt_string --vault-id host@/etc/vault/$(hostname -s)_vault_secret
+#
+# WARNING: The unencrypted value will end up in a world readable file
+# on the target system.
+#
+#trillian_db_pw:
+
+# TODO: We might want to add the ability to run multiple instances of
+# different versions on a single node. Both for trillian and
+# sigsum-log-go.
+trillian_srcdir: /usr/src/trillian
+trillian_repo: https://github.com/google/trillian
+trillian_version: v1.3.13
+
+sigsum_go_srcdir: /usr/src/sigsum-go
+sigsum_go_repo: https://git.sigsum.org/sigsum-go
+sigsum_go_version: v0.0.7
+
+trillian_fe_srcdir: /usr/src/sigsum-log-go
+trillian_fe_repo: https://git.sigsum.org/log-go
+trillian_fe_version: v0.4.0
+
+trillian_sigsum_configdir_base: '~/.config/sigsum'
+
+# Name and HTTP endpoints for log instances.
+trillian_sigsum_logs:
+  - logname: poc
+    http_endpoint: localhost:4780

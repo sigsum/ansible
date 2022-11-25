@@ -1,0 +1,19 @@
+[Unit]
+Description="Trillian signer"
+After=mariadb.service
+
+[Service]
+Type=simple
+User={{ sigsum_user }}
+ExecStart=/home/{{ sigsum_user }}/go/bin/trillian_log_signer \
+    --force_master \
+    --rpc_endpoint=localhost:6961 \
+    --http_endpoint=localhost:6964 \
+    --num_sequencers 1 \
+    --sequencer_interval {{ sigsum_trillian_sequencer_interval }} \
+    --batch_size {{ sigsum_trillian_batch_size }}  \
+    --mysql_uri '{{ sigsum_user }}:{{ sigsum_db_pw }}@tcp(127.0.0.1:3306)/{{ sigsum_db_name }}'
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
