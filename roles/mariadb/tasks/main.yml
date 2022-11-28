@@ -33,7 +33,6 @@
     password: "{{ mysql_root_password }}"
     host: "{{ item }}"
     login_user: root
-    #login_password: "{{ mysql_root_password }}"
     login_unix_socket: "/run/mysqld/mysqld.sock"
     state: present
   with_items:
