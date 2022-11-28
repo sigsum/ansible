@@ -53,9 +53,21 @@
 
 - name: Create database user
   community.mysql.mysql_user:
-    name: sigsum
-    password: changeme
+    name: '{{ item.user }}'
+    password: '{{ item.password }}'
     login_user: root
     login_password: "{{ mysql_root_password }}"
-    priv: 'test.*:ALL'
     state: present
+  with_items: '{{ mysql_users }}'
+
+- name: Add database permissions to users
+  community.mysql.mysql_user:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    login_unix_socket: /run/mysqld/mysqld.sock
+    name: '{{ item.0.user}}'
+    append_privs: yes
+    priv: '{{item.1}}'
+  with_subelements:
+    - "{{ mysql_users }}"
+    - database_privs
