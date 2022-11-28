@@ -162,7 +162,7 @@
     mode: 0755
     owner: "{{ sigsum_user }}"
     group: "{{ sigsum_user }}"
-  with_items: "{{ sigsum_primary_nodes }}"
+  with_items: "{{ sigsum_secondary_nodes }}"
   become_user: "{{ sigsum_user }}"
   become: true
   when: sigsum_role == "secondary"
@@ -172,6 +172,14 @@
   copy:
     dest: "{{ sigsum_configdir_base }}/{{ item.logname }}/external-endpoint"
     content: "{{ item.external_endpoint }}"
+  with_items: "{{ sigsum_primary_nodes }}"
+  become_user: "{{ sigsum_user }}"
+  become: true
+
+- name: Generate config for primary nodes -- internal-endpoint
+  copy:
+    dest: "{{ sigsum_configdir_base }}/{{ item.logname }}/internal-endpoint"
+    content: "{{ item.internal_endpoint }}"
   with_items: "{{ sigsum_primary_nodes }}"
   become_user: "{{ sigsum_user }}"
   become: true
