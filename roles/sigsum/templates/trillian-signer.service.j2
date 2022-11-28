@@ -5,7 +5,7 @@ After=mariadb.service
 [Service]
 Type=simple
 User={{ sigsum_user }}
-ExecStart=/home/{{ sigsum_user }}/go/bin/trillian_log_signer \
+ExecStart=/var/sigsum/{{ sigsum_user }}/go/bin/trillian_log_signer \
     --force_master \
     --rpc_endpoint=localhost:6961 \
     --http_endpoint=localhost:6964 \
