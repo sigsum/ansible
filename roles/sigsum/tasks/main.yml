@@ -95,22 +95,16 @@
   register: db_init_stamp
 
 - block:
-    # BUG: This will not succeed without --force, but that's a bit too
-    # scary -- if the stamp file disappears, we're dropping all the
-    # log data. So let's rewrite this in a more sane way.  Until then,
-    # edit /usr/src/trillian/scripts/resetdb.sh to replace
-    # TRILLIAN_PATH with /usr/src/trillian and run:
-    #   env <env below> /usr/src/trillian/scripts/resetdb.sh
-    #   touch ~{{ sigsum_user }}/.db_init.stamp
-    # Need to restore that change, or just wipe the whole directory
-    # afterwards: rm -rf /usr/src/trillian
-
-  # - name: Initiate db
-  #   command: "{{ sigsum_trillian_srcdir }}/scripts/resetdb.sh"
-  #   environment:
-  #     MYSQL_USER: "{{ sigsum_user }}"
-  #     MYSQL_DATABASE: "{{ sigsum_db_name }}"
-  #     MYSQL_PASSWORD: "FIXME"
+  - name: Initiate db
+    command: "{{ sigsum_trillian_srcdir }}/scripts/resetdb.sh --force"
+    args:
+      chdir: "{{ sigsum_trillian_srcdir }}"
+    environment:
+      MYSQL_USER: "{{ sigsum_user }}"
+      MYSQL_DATABASE: "{{ sigsum_db_name }}"
+      MYSQL_PASSWORD: "{{ sigsum_db_pw }}"
+      MYSQL_ROOT_USER: "{{ mysql_root_user }}"
+      MYSQL_ROOT_PASSWORD: "{{ mysql_root_password }}"
 
   - name: Create database init stamp file
     become: yes
