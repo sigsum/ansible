@@ -34,7 +34,9 @@ start_log() {
     local cmd=
     case $role in
 	primary)
-	    [[ -s sth-path ]]
+	    if ! [[ -s sth-path ]]; then
+		echo "$dn/sth" > sth-path
+	    fi
 	    cmd+=~/go/bin/sigsum-log-primary
 	    cmd+=" -sth-path $(cat sth-path)"
 	    [[ -s secondary ]] && cmd+=" -secondary-url=$(head -1 secondary)"
