@@ -1,5 +1,4 @@
 ---
-
 # TODO: More synergy between these values
 
 sigsum_user: sigsum
@@ -9,3 +8,9 @@ sigsum_db_name: test
 mysql_root_password: changeme
 mysql_database:
   - test
+
+mysql_users:
+  - user: sigsum
+    password: changeme
+    database_privs:
+      - 'test.*:ALL'
