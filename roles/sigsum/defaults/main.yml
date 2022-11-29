@@ -16,20 +16,21 @@ sigsum_db_name: test
 #
 sigsum_db_pw: changeme
 
-# TODO: We might want to add the ability to run multiple instances of
-# different versions on a single node. Both for trillian and
-# sigsum-log.
+# TODO: Add the ability to run multiple instances of different
+# versions on a single node. Combinations of trillian and sigsum-go
+# dependencies might be necessary too.
+
 sigsum_trillian_srcdir: /usr/src/trillian
 sigsum_trillian_repo: https://github.com/google/trillian
-sigsum_trillian_version: v1.3.13
+sigsum_trillian_version: v1.5.0
 
-sigsum_lib_srcdir: /usr/src/sigsum-go
-sigsum_lib_repo: https://git.sigsum.org/sigsum-go
-sigsum_lib_version: v0.0.9
+sigsum_lib_srcdir: /usr/src/sigsum-lib-go
+sigsum_lib_repo: https://git.glasklar.is/sigsum/core/sigsum-go
+sigsum_lib_version: v0.1.10
 
 sigsum_log_srcdir: /usr/src/sigsum-log-go
-sigsum_log_repo: https://git.sigsum.org/log-go
-sigsum_log_version: v0.5.1
+sigsum_log_repo: https://git.glasklar.is/sigsum/core/log-go
+sigsum_log_version: v0.6.1
 
 sigsum_configdir_base: '~/.config/sigsum'
 
