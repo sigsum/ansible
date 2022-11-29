@@ -10,11 +10,11 @@
     - golang
     - git
 
-- name: Create {{ sigsum_user}} user for sigsum
+- name: Create {{ sigsum_user }} user for sigsum
   user:
     name: "{{ sigsum_user }}"
     password_lock: true
-    home: "/var/sigsum/{{sigsum_user}}"
+    home: "/var/sigsum/{{ sigsum_user }}"
     system: true
 
 - name: Prepare Trillian source directory
