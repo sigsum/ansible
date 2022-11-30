@@ -25,6 +25,14 @@
     owner: "{{ sigsum_user }}"
     group: "{{ sigsum_user }}"
 
+- name: Prepare git.sigsum.org/sigsum-go source directory
+  file:
+    path: "{{ sigsum_lib_srcdir }}"
+    state: directory
+    mode: 0755
+    owner: "{{ sigsum_user }}"
+    group: "{{ sigsum_user }}"
+
 - name: Prepare git.sigsum.org/log-go source directory
   file:
     path: "{{ sigsum_log_srcdir }}"
@@ -47,6 +55,21 @@
   command: go install ./...
   args:
     chdir: "{{ sigsum_trillian_srcdir }}"
+
+- name: Clone git.sigsum.org/sigsum-go
+  become: yes
+  become_user: "{{ sigsum_user }}"
+  git:
+    repo: "{{ sigsum_lib_repo }}"
+    version: "{{ sigsum_lib_version }}"
+    dest: "{{ sigsum_lib_srcdir }}"
+
+- name: Build and install git.sigsum.org/sigsum-go
+  become: yes
+  become_user: "{{ sigsum_user }}"
+  command: go install ./...
+  args:
+    chdir: "{{ sigsum_lib_srcdir }}"
 
 - name: Clone git.sigsum.org/log-go
   become: yes

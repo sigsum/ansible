@@ -24,6 +24,10 @@ sigsum_trillian_srcdir: /usr/src/trillian
 sigsum_trillian_repo: https://github.com/google/trillian
 sigsum_trillian_version: v1.5.0
 
+sigsum_lib_srcdir: /usr/src/sigsum-lib-go
+sigsum_lib_repo: https://git.glasklar.is/sigsum/core/sigsum-go
+sigsum_lib_version: v0.1.10
+
 sigsum_log_srcdir: /usr/src/sigsum-log-go
 sigsum_log_repo: https://git.glasklar.is/sigsum/core/log-go
 sigsum_log_version: v0.6.1
