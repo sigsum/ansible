@@ -41,14 +41,15 @@
   when: check_passwd_root.rc == 0
   notify: Flush Priviliges
 
-- name: Create a databases
-  community.mysql.mysql_db:
-    name: '{{ item }}'
-    login_user: root
-    login_password: "{{ mysql_root_password }}"
-    login_unix_socket: /run/mysqld/mysqld.sock
-    state: present
-  with_items: '{{ mysql_database }}'
+# TODO: Remove. We don't want to create the database here
+# - name: Create a databases
+#   community.mysql.mysql_db:
+#     name: '{{ item }}'
+#     login_user: root
+#     login_password: "{{ mysql_root_password }}"
+#     login_unix_socket: /run/mysqld/mysqld.sock
+#     state: present
+#   with_items: '{{ mysql_database }}'
 
 - name: Create database user
   community.mysql.mysql_user:
