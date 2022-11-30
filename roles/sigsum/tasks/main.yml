@@ -86,6 +86,9 @@
   command: go install ./...
   args:
     chdir: "{{ sigsum_log_srcdir }}"
+  notify:
+    - restart sigsum primary nodes
+    - restart sigsum secondary nodes
 
 - name: Check if database is initiated
   become: yes
