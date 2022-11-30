@@ -3,6 +3,6 @@ name: ansible
 namespace: sigsum
 readme: README.md
 repository: https://git.glasklar.is/sigsum/admin/ansible 
-version: 0.0.1
+version: 0.0.2
 authors:
   - Foxboron

@@ -56,21 +56,6 @@
   args:
     chdir: "{{ sigsum_trillian_srcdir }}"
 
-- name: Clone git.sigsum.org/sigsum-go
-  become: yes
-  become_user: "{{ sigsum_user }}"
-  git:
-    repo: "{{ sigsum_lib_repo }}"
-    version: "{{ sigsum_lib_version }}"
-    dest: "{{ sigsum_lib_srcdir }}"
-
-- name: Build and install git.sigsum.org/sigsum-go
-  become: yes
-  become_user: "{{ sigsum_user }}"
-  command: go install ./...
-  args:
-    chdir: "{{ sigsum_lib_srcdir }}"
-
 - name: Clone git.sigsum.org/log-go
   become: yes
   become_user: "{{ sigsum_user }}"
