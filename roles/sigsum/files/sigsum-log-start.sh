@@ -35,6 +35,7 @@ start_log() {
     case $role in
 	primary)
 	    if ! [[ -s sth-path ]]; then
+		~/go/bin/sigsum-mktree -key sk -sth-path "$dn/sth"
 		echo "$dn/sth" > sth-path
 	    fi
 	    cmd+=~/go/bin/sigsum-log-primary
