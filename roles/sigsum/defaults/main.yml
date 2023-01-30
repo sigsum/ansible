@@ -32,7 +32,7 @@ sigsum_log_srcdir: /usr/src/sigsum-log-go
 sigsum_log_repo: https://git.glasklar.is/sigsum/core/log-go
 sigsum_log_version: v0.7.0
 
-sigsum_configdir_base: '~/.config/sigsum'
+sigsum_configdir_base: '.config/sigsum'
 
 # Name and HTTP endpoints for log instances.
 sigsum_primary_nodes:

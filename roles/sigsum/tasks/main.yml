@@ -142,7 +142,7 @@
 # TODO: merge these two
 - name: Prepare config directories for primaries
   file:
-    path: "{{ sigsum_configdir_base }}/{{ item.logname }}"
+    path: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ item.logname }}"
     state: directory
     mode: 0755
     owner: "{{ sigsum_user }}"
@@ -154,7 +154,7 @@
 
 - name: Prepare config directories for secondaries
   file:
-    path: "{{ sigsum_configdir_base }}/{{ item.logname }}"
+    path: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ item.logname }}"
     state: directory
     mode: 0755
     owner: "{{ sigsum_user }}"
@@ -167,7 +167,7 @@
 - name: Install primary configuration file
   template:
     src: "config.toml.j2"
-    dest: "{{ sigsum_configdir_base }}/{{ item.logname }}/config.toml"
+    dest: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ item.logname }}/config.toml"
   vars:
     primary: true
     external_endpoint: "{{ item.external_endpoint }}"
@@ -177,7 +177,7 @@
     url_prefix: "{{sigsum_url_prefix}}"
     tree_id: "{{sigsum_tree_id}}"
     timeout: "{{sigsum_timeout}}"
-    key: "{{ sigsum_configdir_base }}/{{ item.logname }}/sk"
+    key: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ item.logname }}/sk"
     interval: "{{sigsum_interval}}"
     log_file: "{{sigsum_log_file}}"
     log_level: "{{sigsum_log_file}}"
@@ -187,7 +187,7 @@
     allow_test_domain: "{{sigsum_allow_test_domain}}"
     secondary_url: "{{sigsum_secondary_url}}"
     secondary_pubkey: "{{sigsum_secondary_pubkey}}"
-    sth_path: "{{ sigsum_configdir_base }}/{{ item.logname }}/sth"
+    sth_path: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ item.logname }}/sth"
   become_user: "{{ sigsum_user }}"
   become: true
   with_items: "{{ sigsum_primary_nodes }}"
@@ -196,7 +196,7 @@
 - name: Install secondary configuration file
   template:
     src: "config.toml.j2"
-    dest: "{{ sigsum_configdir_base }}/{{ item.logname }}/config.toml"
+    dest: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ item.logname }}/config.toml"
   vars:
     secondary: true
     external_endpoint: "{{ item.external_endpoint }}"
@@ -206,7 +206,7 @@
     url_prefix: "{{ item.logname }}"
     tree_id: "{{sigsum_tree_id}}"
     timeout: "{{sigsum_timeout}}"
-    key: "{{ sigsum_configdir_base }}/{{ item.logname }}/sk"
+    key: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ item.logname }}/sk"
     interval: "{{sigsum_interval}}"
     log_file: "{{sigsum_log_file}}"
     log_level: "{{sigsum_log_file}}"
