@@ -164,22 +164,57 @@
   become: true
   when: sigsum_role == "secondary"
 
-# TODO: More configuration: interval, shard, verbosity, witnesses, primary, secondary, external-endpoint, internal-endpoint
-- name: Generate config for primary nodes -- external-endpoint
-  copy:
-    dest: "{{ sigsum_configdir_base }}/{{ item.logname }}/external-endpoint"
-    content: "{{ item.external_endpoint }}"
-  with_items: "{{ sigsum_primary_nodes }}"
+- name: Install primary configuration file
+  template:
+    src: "config.toml.j2"
+    dest: "{{ sigsum_configdir_base }}/{{ item.logname }}/config.toml"
+  vars:
+    primary: true
+    external_endpoint: "{{ item.external_endpoint }}"
+    internal_endpoint: "{{item.internal_endpoint}}"
+    trillian_rpc_server: "{{sigsum_trillian_rpc_server}}"
+    ephemeral_test_backend: "{{sigsum_ephemeral_test_backend}}"
+    url_prefix: "{{sigsum_url_prefix}}"
+    tree_id: "{{sigsum_tree_id}}"
+    timeout: "{{sigsum_timeout}}"
+    key: "{{ sigsum_configdir_base }}/{{ item.logname }}/sk"
+    interval: "{{sigsum_interval}}"
+    log_file: "{{sigsum_log_file}}"
+    log_level: "{{sigsum_log_file}}"
+    witnesses: "{{sigsum_witnesses}}"
+    max_range: "{{sigsum_max_range}}"
+    rate_limit_config: "{{sigsum_rate_limit_config}}"
+    allow_test_domain: "{{sigsum_allow_test_domain}}"
+    secondary_url: "{{sigsum_secondary_url}}"
+    secondary_pubkey: "{{sigsum_secondary_pubkey}}"
+    sth_path: "{{ sigsum_configdir_base }}/{{ item.logname }}/sth"
   become_user: "{{ sigsum_user }}"
   become: true
+  with_items: "{{ sigsum_primary_nodes }}"
+  when: sigsum_role == "primary"
 
-- name: Generate config for primary nodes -- internal-endpoint
-  copy:
-    dest: "{{ sigsum_configdir_base }}/{{ item.logname }}/internal-endpoint"
-    content: "{{ item.internal_endpoint }}"
-  with_items: "{{ sigsum_primary_nodes }}"
+- name: Install secondary configuration file
+  template:
+    src: "config.toml.j2"
+    dest: "{{ sigsum_configdir_base }}/{{ item.logname }}/config.toml"
+  vars:
+    secondary: true
+    external_endpoint: "{{ item.external_endpoint }}"
+    internal_endpoint: "{{item.internal_endpoint}}"
+    trillian_rpc_server: "{{sigsum_trillian_rpc_server}}"
+    ephemeral_test_backend: "{{sigsum_ephemeral_test_backend}}"
+    url_prefix: "{{ item.logname }}"
+    tree_id: "{{sigsum_tree_id}}"
+    timeout: "{{sigsum_timeout}}"
+    key: "{{ sigsum_configdir_base }}/{{ item.logname }}/sk"
+    interval: "{{sigsum_interval}}"
+    log_file: "{{sigsum_log_file}}"
+    log_level: "{{sigsum_log_file}}"
   become_user: "{{ sigsum_user }}"
   become: true
+  with_items: "{{ sigsum_secondary_nodes }}"
+  when: sigsum_role == "secondary"
+
 
 # TODO: merge these two
 - name: Enable sigsum primary service units

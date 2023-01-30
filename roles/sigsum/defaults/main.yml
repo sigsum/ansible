@@ -26,11 +26,11 @@ sigsum_trillian_version: v1.5.0
 
 sigsum_lib_srcdir: /usr/src/sigsum-lib-go
 sigsum_lib_repo: https://git.glasklar.is/sigsum/core/sigsum-go
-sigsum_lib_version: v0.1.10
+sigsum_lib_version: v0.1.18
 
 sigsum_log_srcdir: /usr/src/sigsum-log-go
 sigsum_log_repo: https://git.glasklar.is/sigsum/core/log-go
-sigsum_log_version: v0.6.1
+sigsum_log_version: v0.7.0
 
 sigsum_configdir_base: '~/.config/sigsum'
 
@@ -44,3 +44,33 @@ sigsum_secondary_nodes: []
 
 sigsum_trillian_sequencer_interval: 100ms
 sigsum_trillian_batch_size: 100
+
+
+
+
+sigsum_external_endpoint: "localhost:6965"
+sigsum_internal_endpoint: "localhost:6967"
+sigsum_trillian_rpc_server: "localhost:6962"
+sigsum_ephemeral_test_backend: false
+sigsum_url_prefix: ""
+sigsum_tree_id: 0
+sigsum_timeout: 10s
+sigsum_key: ""
+sigsum_interval: 30s
+sigsum_log_file: ""
+sigsum_log_level: "info"
+
+# Primary
+sigsum_witnesses: ""
+sigsum_max_range: 10
+sigsum_rate_limit_config: ""
+sigsum_allow_test_domain: false
+sigsum_secondary_url: ""
+sigsum_secondary_pubkey: ""
+# TODO: Path wont be used
+sigsum_sth_path: "/var/lib/sigsum-log/sth"
+
+# Secondary
+sigsum_primary_url: ""
+sigsum_primary_pubkey: ""
+sigsum_test_mode: false

@@ -26,46 +26,20 @@ init_keys() {
 
 start_log() {
     [[ $# -gt 0 ]] && { local pref="$1"; shift; }
-    [[ -s tid ]]
-    [[ -s sk ]]
-    [[ -s external-endpoint ]]
-    [[ -s internal-endpoint ]]
-
-    local cmd=
     case $role in
 	primary)
 	    if ! [[ -s sth-path ]]; then
 		~/go/bin/sigsum-mktree -key sk -sth-path "$dn/sth"
-		echo "$dn/sth" > sth-path
 	    fi
-	    cmd+=~/go/bin/sigsum-log-primary
-	    cmd+=" -sth-path $(cat sth-path)"
-	    [[ -s secondary ]] && cmd+=" -secondary-url=$(head -1 secondary)"
-	    [[ -s secondary ]] && cmd+=" -secondary-pubkey=$(tail -1 secondary)"
-	    [[ -s witnesses ]] && cmd+=" -witnesses $(cat witnesses)"
-	    [[ -s shard ]] && cmd+=" -shard-interval-start $(head -1 shard | tail -1)"
-	    [[ -s max-range ]] && cmd+=" -max-range $(cat max-range)"
+	    SIGSUM_LOGSERVER_CONFIG="$dn/config.toml" ~/go/bin/sigsum-log-primary
 	    ;;
 	secondary)
-	    [[ -s primary ]]
-	    cmd+=~/go/bin/sigsum-log-secondary
-	    cmd+=" -primary-url=$(head -1 primary)"
-	    cmd+=" -primary-pubkey=$(tail -1 primary)"
+	    SIGSUM_LOGSERVER_CONFIG="$dn/config.toml" ~/go/bin/sigsum-log-secondary
 	    ;;
 	*)
 	    echo "$0: $role: invalid role"
 	    exit 1
     esac
-
-    cmd+=" -external-endpoint $(cat external-endpoint)"
-    cmd+=" -internal-endpoint $(cat internal-endpoint)"
-    cmd+=" -trillian-rpc-server $trillian_rpc"
-    cmd+=" -tree-id $(cat tid)"
-    cmd+=" -key sk"
-    [[ -v pref ]] && cmd+=" -url-prefix $pref"
-    [[ -s interval ]] && cmd+=" -interval $(cat interval)"
-
-    $cmd
 }
 
 dn="$HOME/.config/sigsum/$logname"
