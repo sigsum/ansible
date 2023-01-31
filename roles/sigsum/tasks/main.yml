@@ -139,45 +139,30 @@
     - trillian-signer
     - trillian-server
 
-# TODO: merge these two
-- name: Prepare config directories for primaries
+- name: Prepare config directories for sigsum instance
   file:
-    path: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ item.logname }}"
+    path: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}"
     state: directory
     mode: 0755
     owner: "{{ sigsum_user }}"
     group: "{{ sigsum_user }}"
-  with_items: "{{ sigsum_primary_nodes }}"
   become_user: "{{ sigsum_user }}"
   become: true
-  when: sigsum_role == "primary"
-
-- name: Prepare config directories for secondaries
-  file:
-    path: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ item.logname }}"
-    state: directory
-    mode: 0755
-    owner: "{{ sigsum_user }}"
-    group: "{{ sigsum_user }}"
-  with_items: "{{ sigsum_secondary_nodes }}"
-  become_user: "{{ sigsum_user }}"
-  become: true
-  when: sigsum_role == "secondary"
 
 - name: Install primary configuration file
   template:
     src: "config.toml.j2"
-    dest: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ item.logname }}/config.toml"
+    dest: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/config.toml"
   vars:
     primary: true
-    external_endpoint: "{{ item.external_endpoint }}"
-    internal_endpoint: "{{item.internal_endpoint}}"
+    external_endpoint: "{{ sigsum_external_endpoint }}"
+    internal_endpoint: "{{sigsum_internal_endpoint}}"
     trillian_rpc_server: "{{sigsum_trillian_rpc_server}}"
     ephemeral_test_backend: "{{sigsum_ephemeral_test_backend}}"
     url_prefix: "{{sigsum_url_prefix}}"
     tree_id: "{{sigsum_tree_id}}"
     timeout: "{{sigsum_timeout}}"
-    key: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ item.logname }}/sk"
+    key: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/sk"
     interval: "{{sigsum_interval}}"
     log_file: "{{sigsum_log_file}}"
     log_level: "{{sigsum_log_file}}"
@@ -187,50 +172,43 @@
     allow_test_domain: "{{sigsum_allow_test_domain}}"
     secondary_url: "{{sigsum_secondary_url}}"
     secondary_pubkey: "{{sigsum_secondary_pubkey}}"
-    sth_path: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ item.logname }}/sth"
+    sth_path: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/sth"
   become_user: "{{ sigsum_user }}"
   become: true
-  with_items: "{{ sigsum_primary_nodes }}"
-  when: sigsum_role == "primary"
+  when: sigsum_primary
 
 - name: Install secondary configuration file
   template:
     src: "config.toml.j2"
-    dest: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ item.logname }}/config.toml"
+    dest: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/config.toml"
   vars:
     secondary: true
-    external_endpoint: "{{ item.external_endpoint }}"
-    internal_endpoint: "{{item.internal_endpoint}}"
+    external_endpoint: "{{ sigsum_external_endpoint }}"
+    internal_endpoint: "{{sigsum_internal_endpoint}}"
     trillian_rpc_server: "{{sigsum_trillian_rpc_server}}"
     ephemeral_test_backend: "{{sigsum_ephemeral_test_backend}}"
-    url_prefix: "{{ item.logname }}"
+    url_prefix: "{{ sigsum_url_prefix}}"
     tree_id: "{{sigsum_tree_id}}"
     timeout: "{{sigsum_timeout}}"
-    key: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ item.logname }}/sk"
+    key: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/sk"
     interval: "{{sigsum_interval}}"
     log_file: "{{sigsum_log_file}}"
     log_level: "{{sigsum_log_file}}"
   become_user: "{{ sigsum_user }}"
   become: true
-  with_items: "{{ sigsum_secondary_nodes }}"
-  when: sigsum_role == "secondary"
+  when: sigsum_secondary
 
 
-# TODO: merge these two
 - name: Enable sigsum primary service units
   systemd:
-    name: "sigsum-log-primary@{{ item.logname }}"
+    name: "sigsum-log-primary@{{ sigsum_logname }}"
     enabled: true
     state: started
-  with_items:
-    - "{{ sigsum_primary_nodes }}"
-  when: sigsum_role == "primary"
+  when: sigsum_primary
 
 - name: Enable sigsum secondary service units
   systemd:
-    name: "sigsum-log-secondary@{{ item.logname }}"
+    name: "sigsum-log-secondary@{{ sigsum_logname }}"
     enabled: true
     state: started
-  with_items:
-    - "{{ sigsum_secondary_nodes }}"
-  when: sigsum_role == "secondary"
+  when: sigsum_secondary

@@ -1,8 +1,5 @@
 ---
 
-sigsum_role: primary
-sigsum_url_prefix: test
-
 sigsum_user: sigsum
 sigsum_db_name: test
 
@@ -34,25 +31,19 @@ sigsum_log_version: v0.7.0
 
 sigsum_configdir_base: '.config/sigsum'
 
-# Name and HTTP endpoints for log instances.
-sigsum_primary_nodes:
-  - logname: test
-    external_endpoint: 127.0.0.1:14784
-    internal_endpoint: 192.168.19.1:14785
-
-sigsum_secondary_nodes: []
-
 sigsum_trillian_sequencer_interval: 100ms
 sigsum_trillian_batch_size: 100
 
+sigsum_logname: test
+sigsum_url_prefix: test
 
+sigsum_primary: true
+sigsum_secondary: false
 
-
-sigsum_external_endpoint: "localhost:6965"
-sigsum_internal_endpoint: "localhost:6967"
+sigsum_external_endpoint: "127.0.0.1:14784"
+sigsum_internal_endpoint: "192.168.19.1:14785"
 sigsum_trillian_rpc_server: "localhost:6962"
 sigsum_ephemeral_test_backend: false
-sigsum_url_prefix: ""
 sigsum_tree_id: 0
 sigsum_timeout: 10s
 sigsum_key: ""
