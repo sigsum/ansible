@@ -1,0 +1,257 @@
+---
+argument_specs:
+  main:
+    short_description: The main entry point for the myapp role.
+    description:
+      - Install required repository files on supported distributions.
+      - This entry point does not work on Windows because there is no
+        concept of repository there.
+
+    options:
+      sigsum_user:
+        type: "str"
+        required: true
+        default: sigsum
+        description: "The sigsum user account."
+
+      sigsum_db_name:
+        type: "str"
+        required: true
+        default: test
+        description: "The sigsum database name"
+
+      sigsum_db_pw:
+        type: "str"
+        required: true
+        default: changeme
+        description: "The sigsum database password"
+
+      sigsum_trillian_srcdir:
+        type: "str"
+        required: true
+        default: /usr/src/trillian
+        description: "The trillian source location"
+
+      sigsum_trillian_repo:
+        type: "str"
+        required: true
+        default: https://github.com/google/trillian
+        description: "The trillian source repository"
+
+      sigsum_trillian_version:
+        type: "str"
+        required: true
+        default: v1.5.0
+        description: "The trillian source repository version"
+
+      sigsum_lib_srcdir:
+        type: "str"
+        required: true
+        default: /usr/src/sigsum-lib-go
+        description: "The sigsum library source location"
+
+      sigsum_lib_repo:
+        type: "str"
+        required: true
+        default: https://git.glasklar.is/sigsum/core/sigsum-go
+        description: "The sigsum library source repository"
+
+      sigsum_lib_version:
+        type: "str"
+        required: true
+        default: v0.1.18
+        description: "The sigsum library repository version"
+
+      sigsum_log_srcdir:
+        type: "str"
+        required: true
+        default: /usr/src/sigsum-log-go
+        description: "The sigsum client source location"
+
+      sigsum_log_repo:
+        type: "str"
+        required: true
+        default: https://git.glasklar.is/sigsum/core/log-go
+        description: "The sigsum client source repository"
+
+      sigsum_log_version:
+        type: "str"
+        required: true
+        default: v0.7.0
+        description: "The sigsum client repository version"
+
+      sigsum_log_version:
+        type: "str"
+        required: true
+        default: v0.7.0
+        description: "The sigsum client repository version"
+
+      sigsum_logname:
+        type: "str"
+        required: true
+        default: test
+        description: "The sigsum log server name"
+
+      sigsum_url_prefix:
+        type: "str"
+        required: true
+        default: test
+        description: "a prefix that precedes /<endpoint>"
+
+      # TODO: Better description
+      sigsum_primary:
+        type: "bool"
+        required: true
+        default: true
+        description: "The sigsum primary log type"
+
+      sigsum_secondary:
+        type: "bool"
+        required: true
+        default: false
+        description: "The sigsum secondary log type"
+
+      # TODO: Improve description
+      sigsum_trillian_sequencer_interval:
+        type: "str"
+        required: true
+        default: "100ms"
+        description: "trillian sequencer interval"
+
+      sigsum_trillian_batch_size:
+        type: "str"
+        required: true
+        default: "100"
+        description: "trillian batch size"
+
+      sigsum_external_endpoint:
+        type: "str"
+        required: true
+        default: "127.0.0.1:14784"
+        description: "host:port specification of where sigsum-log-primary serves clients"
+
+      sigsum_internal_endpoint:
+        type: "str"
+        required: true
+        default: "192.168.19.1:14785"
+        description: "host:port specification of where sigsum-log-primary serves other log nodes"
+
+      sigsum_trillian_rpc_server:
+        type: "str"
+        required: true
+        default: "localhost:6962"
+        description: "host:port specification of where Trillian serves clients"
+
+      sigsum_ephemeral_test_backend:
+        type: "bool"
+        required: true
+        default: false
+        description: "if set, enables in-memory backend, with NO persistent storage"
+
+      sigsum_tree_id:
+        type: "int"
+        required: true
+        default: 0
+        description: "tree identifier in the Trillian database"
+
+      sigsum_timeout:
+        type: "str"
+        required: true
+        default: "10s"
+        description: "timeout for backend requests"
+
+      sigsum_key:
+        type: "str"
+        required: true
+        default: ""
+        description: "key file (openssh format), either unencrypted private key, or a public key (accessed via ssh-agent)"
+
+      sigsum_interval:
+        type: "str"
+        required: true
+        default: "30s"
+        description: "interval used to rotate the log's cosigned STH"
+
+      sigsum_log_file:
+        type: "path"
+        required: true
+        default: "stderr"
+        description: "file to write logs to"
+
+      sigsum_log_level:
+        type: "str"
+        required: true
+        default: "info"
+        choices:
+          - "debug"
+          - "info"
+          - "warning"
+          - "error"
+        description: "log level"
+
+          # Implementation detail
+#       sigsum_configdir_base: '.config/sigsum'
+#         type: "str"
+#         requires: true
+#         default: '.config/sigsum'
+#         description: "configdir_base"
+
+
+# # Primary
+      sigsum_witnesses:
+        type: "str"
+        required: true
+        default: ""
+        description: "comma-separated list of trusted witness public key files"
+
+      sigsum_max_range:
+        type: "int"
+        required: true
+        default: 10
+        description: "maximum number of entries that can be retrived in a single request"
+
+      sigsum_rate_limit_config:
+        type: "str"
+        required: true
+        default: ""
+        description: "enable rate limiting, based on given config file"
+
+      sigsum_allow_test_domain:
+        type: "bool"
+        required: true
+        default: false
+        description: "allow submit tokens from test.sigsum.org"
+
+      sigsum_secondary_url:
+        type: "str"
+        required: true
+        default: ""
+        description: "secondary node endpoint for fetching latest replicated tree head"
+
+      sigsum_secondary_pubkey:
+        type: "str"
+        required: true
+        default: ""
+        description: "public key file for secondary node"
+
+# # TODO: Path wont be used
+# sigsum_sth_path: "/var/lib/sigsum-log/sth"
+# "path to file where latest published STH is being stored"
+
+      sigsum_primary_url:
+        type: "str"
+        required: true
+        default: ""
+        description: "primary node endpoint for fetching leaves (for secondary nodes)"
+
+      sigsum_primary_pubkey:
+        type: "str"
+        required: true
+        default: ""
+        description: "public key file for primary node (for secondary nodes)"
+
+      sigsum_test_mode:
+        type: "bool"
+        required: true
+        default: false
+        description: "TODO"
