@@ -54,8 +54,8 @@ Synopsis
 
 .. Description
 
-- Install required repository files on supported distributions.
-- This entry point does not work on Windows because there is no concept of repository there.
+- Install and setup the sigsum transparency log service on the host.
+- The role requires a reachable mysql database for data storage, see the mariadb role.
 
 .. Requirements
 
@@ -780,7 +780,7 @@ Parameters
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-default-bold:`Default:` :ansible-option-default:`"test"`
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"sigsum"`
 
       .. raw:: html
 
@@ -822,51 +822,6 @@ Parameters
       .. rst-class:: ansible-option-line
 
       :ansible-option-default-bold:`Default:` :ansible-option-default:`10`
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-main--sigsum_primary"></div>
-
-      .. _ansible_collections.sigsum.ansible.sigsum_role__parameter-main__sigsum_primary:
-
-      .. rst-class:: ansible-option-title
-
-      **sigsum_primary**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-main--sigsum_primary" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`boolean` / :ansible-option-required:`required`
-
-
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The sigsum primary log type
-
-
-      .. rst-class:: ansible-option-line
-
-      :ansible-option-choices:`Choices:`
-
-      - :ansible-option-choices-entry:`false`
-      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
-
 
       .. raw:: html
 
@@ -998,21 +953,21 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-main--sigsum_secondary"></div>
+        <div class="ansibleOptionAnchor" id="parameter-main--sigsum_role"></div>
 
-      .. _ansible_collections.sigsum.ansible.sigsum_role__parameter-main__sigsum_secondary:
+      .. _ansible_collections.sigsum.ansible.sigsum_role__parameter-main__sigsum_role:
 
       .. rst-class:: ansible-option-title
 
-      **sigsum_secondary**
+      **sigsum_role**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-main--sigsum_secondary" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-main--sigsum_role" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`boolean` / :ansible-option-required:`required`
+      :ansible-option-type:`string` / :ansible-option-required:`required`
 
 
 
@@ -1025,15 +980,15 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The sigsum secondary log type
+      The sigsum primary log type
 
 
       .. rst-class:: ansible-option-line
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
-      - :ansible-option-choices-entry:`true`
+      - :ansible-option-choices-entry-default:`"primary"` :ansible-option-choices-default-mark:`← (default)`
+      - :ansible-option-choices-entry:`"secondary"`
 
 
       .. raw:: html
@@ -1530,7 +1485,7 @@ Parameters
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-default-bold:`Default:` :ansible-option-default:`"test"`
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"sigsum"`
 
       .. raw:: html
 
@@ -1636,6 +1591,9 @@ Collection links
 
   <p class="ansible-links">
     <a href="https://git.glasklar.is/sigsum/admin/ansible" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
+    <a href="https://git.glasklar.is/sigsum/admin/ansible" aria-role="button" target="_blank" rel="noopener external">Discussion, Q&amp;A, troubleshooting</a>
+    <a href="https://www.sigsum.org/" aria-role="button" target="_blank" rel="noopener external">Homepage</a>
+    <a href="./#communication-for-sigsum-ansible" aria-role="button" target="_blank">Communication</a>
   </p>
 
 .. Parsing errors

@@ -29,12 +29,41 @@ Roles and modules for installing sigsum
 
   <p class="ansible-links">
     <a href="https://git.glasklar.is/sigsum/admin/ansible" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
+    <a href="https://git.glasklar.is/sigsum/admin/ansible" aria-role="button" target="_blank" rel="noopener external">Discussion, Q&amp;A, troubleshooting</a>
+    <a href="https://www.sigsum.org/" aria-role="button" target="_blank" rel="noopener external">Homepage</a>
   </p>
 
 
+.. Communication
+
+.. _communication_for_sigsum.ansible:
+
+Communication
+-------------
+
+- Matrix room :literal:`#sigsum:matrix.org`: `General usage and support questions <https://matrix.to/#/#sigsum:matrix.org>`__.
+- IRC channel :literal:`#sigsum` (OFTC.net network):
+  General usage and support questions.
+- Mailing list: `Sigsum project list <https://lists.sigsum.org/mailman3/hyperkitty/list/sigsum-general@lists.sigsum.org/>`__.
 
 .. toctree::
     :maxdepth: 1
+
+Changelog
+---------
+
+.. toctree::
+    :maxdepth: 1
+
+    docsite/CHANGELOG
+
+Examples
+--------
+
+.. toctree::
+    :maxdepth: 1
+
+    docsite/example_sigsum
 
 
 Plugin Index
@@ -48,7 +77,7 @@ Role Index
 
 These are the roles in the sigsum.ansible collection:
 
-* :ref:`mariadb role <ansible_collections.sigsum.ansible.mariadb_role>` -- 
+* :ref:`mariadb role <ansible_collections.sigsum.ansible.mariadb_role>` -- The main entry point for the mariadb role.
 * :ref:`sigsum role <ansible_collections.sigsum.ansible.sigsum_role>` -- The main entry point for the myapp role.
 
 .. toctree::

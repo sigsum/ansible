@@ -6,7 +6,7 @@ sigsum_db_pw: changeme
 sigsum_db_name: test
 
 mysql_root_user: root
-mysql_root_password: changeme
+mysql_root_password: "{{sigsum_db_pw}}" 
 mysql_database:
   - test
 
