@@ -34,11 +34,10 @@ sigsum_configdir_base: '.config/sigsum'
 sigsum_trillian_sequencer_interval: 100ms
 sigsum_trillian_batch_size: 100
 
-sigsum_logname: test
-sigsum_url_prefix: test
+sigsum_logname: sigsum
+sigsum_url_prefix: sigsum
 
-sigsum_primary: true
-sigsum_secondary: false
+sigsum_role: "primary"
 
 sigsum_external_endpoint: "127.0.0.1:14784"
 sigsum_internal_endpoint: "192.168.19.1:14785"

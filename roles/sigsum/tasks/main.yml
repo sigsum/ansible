@@ -175,7 +175,7 @@
     sth_path: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/sth"
   become_user: "{{ sigsum_user }}"
   become: true
-  when: sigsum_primary
+  when: sigsum_role == "primary"
 
 - name: Install secondary configuration file
   template:
@@ -196,7 +196,7 @@
     log_level: "{{sigsum_log_file}}"
   become_user: "{{ sigsum_user }}"
   become: true
-  when: sigsum_secondary
+  when: sigsum_role == "secondary"
 
 
 - name: Enable sigsum primary service units
@@ -204,11 +204,11 @@
     name: "sigsum-log-primary@{{ sigsum_logname }}"
     enabled: true
     state: started
-  when: sigsum_primary
+  when: sigsum_role == "primary"
 
 - name: Enable sigsum secondary service units
   systemd:
     name: "sigsum-log-secondary@{{ sigsum_logname }}"
     enabled: true
     state: started
-  when: sigsum_secondary
+  when: sigsum_role == "secondary"

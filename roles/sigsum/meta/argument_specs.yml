@@ -3,9 +3,8 @@ argument_specs:
   main:
     short_description: The main entry point for the myapp role.
     description:
-      - Install required repository files on supported distributions.
-      - This entry point does not work on Windows because there is no
-        concept of repository there.
+      - Install and setup the sigsum transparency log service on the host.
+      - The role requires a reachable mysql database for data storage, see the mariadb role.
 
     options:
       sigsum_user:
@@ -80,36 +79,27 @@ argument_specs:
         default: v0.7.0
         description: "The sigsum client repository version"
 
-      sigsum_log_version:
-        type: "str"
-        required: true
-        default: v0.7.0
-        description: "The sigsum client repository version"
-
       sigsum_logname:
         type: "str"
         required: true
-        default: test
+        default: sigsum 
         description: "The sigsum log server name"
 
       sigsum_url_prefix:
         type: "str"
         required: true
-        default: test
+        default: sigsum
         description: "a prefix that precedes /<endpoint>"
 
       # TODO: Better description
-      sigsum_primary:
-        type: "bool"
+      sigsum_role:
+        type: "str"
         required: true
-        default: true
+        default: "primary"
+        choices:
+          - "primary"
+          - "secondary"
         description: "The sigsum primary log type"
-
-      sigsum_secondary:
-        type: "bool"
-        required: true
-        default: false
-        description: "The sigsum secondary log type"
 
       # TODO: Improve description
       sigsum_trillian_sequencer_interval:
