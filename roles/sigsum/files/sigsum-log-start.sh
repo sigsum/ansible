@@ -28,7 +28,7 @@ start_log() {
     [[ $# -gt 0 ]] && { local pref="$1"; shift; }
     case $role in
 	primary)
-	    if ! [[ -s sth-path ]]; then
+	    if ! [[ -s sth ]]; then
 		~/go/bin/sigsum-mktree -sth-path "$dn/sth"
 	    fi
 	    SIGSUM_LOGSERVER_CONFIG="$dn/config.toml" ~/go/bin/sigsum-log-primary
