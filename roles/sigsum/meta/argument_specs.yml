@@ -40,7 +40,7 @@ argument_specs:
       sigsum_trillian_version:
         type: "str"
         required: true
-        default: v1.5.0
+        default: v1.5.1
         description: "The trillian source repository version"
 
       sigsum_lib_srcdir:
@@ -58,7 +58,7 @@ argument_specs:
       sigsum_lib_version:
         type: "str"
         required: true
-        default: v0.1.18
+        default: v0.1.22
         description: "The sigsum library repository version"
 
       sigsum_log_srcdir:
@@ -76,7 +76,7 @@ argument_specs:
       sigsum_log_version:
         type: "str"
         required: true
-        default: v0.7.0
+        default: v0.8.0
         description: "The sigsum client repository version"
 
       sigsum_logname:
