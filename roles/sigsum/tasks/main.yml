@@ -87,8 +87,8 @@
   args:
     chdir: "{{ sigsum_log_srcdir }}"
   notify:
-    - restart sigsum primary nodes
-    - restart sigsum secondary nodes
+    - restart sigsum primary node
+    - restart sigsum secondary node
 
 # Try to create the database, if it sucsseeds, then we
 # should run the resetdb.sh script.

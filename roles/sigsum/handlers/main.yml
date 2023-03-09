@@ -8,17 +8,15 @@
     - trillian-signer
     - trillian-server
 
-- name: restart sigsum primary nodes
+- name: restart sigsum primary node
   systemd:
-    name: "sigsum-log-primary@{{ item.logname }}"
+    name: "sigsum-log-primary@{{ sigsum_logname }}"
     state: restarted
-  with_items: "{{ sigsum_primary_nodes }}"
 
-- name: restart sigsum secondary nodes
+- name: restart sigsum secondary node
   systemd:
-    name: "sigsum-log-secondary@{{ item.logname }}"
+    name: "sigsum-log-secondary@{{ sigsum_logname }}"
     state: restarted
-  with_items: "{{ sigsum_secondary_nodes }}"
 
 - name: reload systemd
   systemd:
