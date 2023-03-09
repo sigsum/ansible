@@ -1,0 +1,71 @@
+{% if external_endpoint %}
+external-endpoint = "{{external_endpoint}}"
+{% endif %}
+{% if internal_endpoint %}
+internal-endpoint = "{{internal_endpoint}}"
+{% endif %}
+{% if trillian_rpc_server %}
+trillian-rpc-server = "{{trillian_rpc_server}}"
+{% endif %}
+{% if ephemeral_test_backend %}
+ephemeral-test-backend = {{ephemeral_test_backend}}
+{% endif %}
+{% if url_prefix %}
+url-prefix = "{{url_prefix}}"
+{% endif %}
+{% if tree_id %}
+trillian-id = {{tree_id}}
+{% endif %}
+{% if timeout %}
+timeout = "{{timeout}}"
+{% endif %}
+{% if key %}
+key = "{{key}}"
+{% endif %}
+{% if interval %}
+interval = {{interval}}
+{% endif %}
+{% if log_file %}
+log-file = "{{log_file}}"
+{% endif %}
+{% if log_level %}
+log-level = "{{log_level}}"
+{% endif %}
+
+{% if primary is defined %}
+[primary]
+{% if witnesses %}
+witnesses = "{{witnesses}}"
+{% endif %}
+{% if max_range %}
+max-range = {{max_range}}
+{%endif%}
+{% if rate_limit_config %}
+rate-limit-config = "{{rate_limit_config}}"
+{%endif%}
+{% if allow_test_domain %}
+allow-test-domain = {{allow_test_domain}}
+{%endif%}
+{% if secondary_url %}
+secondary-url = "{{secondary_url}}"
+{%endif%}
+{% if secondary_pubkey %}
+secondary-pubkey = "{{secondary_pubkey}}"
+{%endif%}
+{% if sth_path %}
+sth-path = "{{sth_path}}"
+{%endif%}
+{% endif %}
+
+{% if secondary is defined %}
+[secondary]
+{% if primary_url %}
+primary-url = "{{primary_url}}"
+{% endif %}
+{% if primary_pubkey %}
+primary-pubkey = "{{primary_pubkey}}"
+{% endif %}
+{% if test_mode %}
+test-mode = {{test_mode}}
+{% endif %}
+{% endif %}
