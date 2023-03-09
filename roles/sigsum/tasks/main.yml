@@ -196,7 +196,7 @@
     log_level: "{{sigsum_log_file}}"
     primary_url: "{{sigsum_primary_url}}"
     primary_pubkey: "{{sigsum_primary_pubkey}}"
-    test-mode: "{{sigsum_test_mode}}"
+    test_mode: "{{sigsum_test_mode}}"
   become_user: "{{ sigsum_user }}"
   become: true
   when: sigsum_role == "secondary"
