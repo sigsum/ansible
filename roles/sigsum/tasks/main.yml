@@ -82,8 +82,7 @@
 - name: Build and install git.sigsum.org/log-go
   become: yes
   become_user: "{{ sigsum_user }}"
-  #command: go install -ldflags="-X main.gitCommit=$(git rev-list -1 HEAD)" ./...
-  command: go install ./...
+  shell: go install -ldflags="-X main.gitCommit=$(git describe --always)" ./...
   args:
     chdir: "{{ sigsum_log_srcdir }}"
   notify:
