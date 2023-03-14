@@ -1,0 +1,28 @@
+---
+argument_specs:
+  main:
+    short_description: The main entry point for the mariadb role.
+    description:
+      - This role setups the mariadb database, along with users and table permissions.
+
+    options:
+      mysql_root_user:
+        type: "str"
+        default: root
+        description: "The mariadb root user account"
+
+      mysql_root_password:
+        type: "str"
+        default: changeme
+        description: "The mariadb root user password"
+
+      mysql_database:
+        type: "list"
+        default: 
+          - test
+        description: "The mariadb database"
+
+      mysql_users:
+        type: "list"
+        elements: "raw"
+        description: "List of mysql_users and access"
