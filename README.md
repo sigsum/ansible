@@ -20,17 +20,43 @@ collections:
 - name: sigsum.ansible
   source: git+https://git.glasklar.is/sigsum/admin/ansible.git 
 ```
-## Included content
+
+## Usage
+
+Below is an example setting up a primary log with a mysql database.
+
+
+```yaml
+---
+# Setup primary log
+sigsum_logname: "sigsum-log"
+
+sigsum_role: "primary"
+sigsum_url_prefix: "{{ sigsum_logname }}"
+
+sigsum_user: sigsum
+sigsum_db_pw: changeme
+sigsum_db_name: "{{ sigsum_logname }}"
+
+# Setup mysql
+mysql_root_user: root
+mysql_root_password: changeme
+mysql_database:
+  - "{{ sigsum_logname }}"
+
+mysql_users:
+  - user: "{{sigsum_user}}"
+    password: "{{sigsum_db_pw}}"
+    database_privs:
+      - '{{sigsum_logname}}.*:ALL'
+```
+
 ### Modules
 Name | Description
 --- | ---
-[sigsum.ansible.sigsum](https://github.com/...)|Setup and run a sigsum log
+[sigsum.ansible.sigsum](https://git.glasklar.is/sigsum/admin/ansible/-/blob/main/docs/rst/sigsum_role.rst)|Setup and run a sigsum log
 instance.
-[sigsum.ansible.mariadb](https://github.com/...)|Setup a mariadb server for sigsum.
-
-## Release notes
-
-See the [changelog](changelog.md).
+[sigsum.ansible.mariadb](https://git.glasklar.is/sigsum/admin/ansible/-/blob/main/docs/rst/mariadb_role.rst)|Setup a mariadb server for sigsum.
 
 ## Licensing
 See [LICENSE](LICENSE).
