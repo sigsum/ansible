@@ -164,7 +164,7 @@
     key: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/sk"
     interval: "{{sigsum_interval}}"
     log_file: "{{sigsum_log_file}}"
-    log_level: "{{sigsum_log_file}}"
+    log_level: "{{sigsum_log_level}}"
     witnesses: "{{sigsum_witnesses}}"
     max_range: "{{sigsum_max_range}}"
     rate_limit_config: "{{sigsum_rate_limit_config}}"
