@@ -23,11 +23,11 @@ sigsum_trillian_version: v1.5.1
 
 sigsum_lib_srcdir: /usr/src/sigsum-lib-go
 sigsum_lib_repo: https://git.glasklar.is/sigsum/core/sigsum-go
-sigsum_lib_version: v0.1.18
+sigsum_lib_version: v0.1.22-22-ged74255
 
 sigsum_log_srcdir: /usr/src/sigsum-log-go
 sigsum_log_repo: https://git.glasklar.is/sigsum/core/log-go
-sigsum_log_version: v0.7.0
+sigsum_log_version: v0.8.0-55-g25420cb
 
 sigsum_configdir_base: '.config/sigsum'
 
