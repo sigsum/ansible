@@ -17,11 +17,7 @@ init_tree() {
 }
 
 init_keys() {
-    [[ $((8#$(stat -c %a .) & 8#22)) -eq 0 ]] # Avoid race.
-    [[ -f sk ]] || touch sk
-    chmod 600 sk
-
-    ~/go/bin/sigsum-debug key private | tee sk | ~/go/bin/sigsum-debug key public > vk
+    ~/go/bin/sigsum-key gen -o logkey
 }
 
 start_log() {
@@ -46,5 +42,5 @@ dn="$HOME/.config/sigsum/$logname"
 cd "$dn" 2>/dev/null || { mkdir -pm 0700 "$dn"; cd "$dn"; }
 
 [[ -s tid ]] || init_tree
-[[ -s sk ]] || init_keys
+[[ -s logkey ]] || init_keys
 start_log $prefix
