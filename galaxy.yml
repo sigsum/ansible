@@ -2,11 +2,12 @@ name: ansible
 namespace: sigsum
 readme: README.md
 repository: https://git.glasklar.is/sigsum/admin/ansible 
-version: 0.0.3
+version: 0.0.4
 authors:
   - Foxboron
+  - ln5
 tags:
   - sigsum
 readme: README.md
 license_file: LICENSE
-description: Roles and modules for installing sigsum
+description: Roles and modules for installing and setting up a Sigsum log
