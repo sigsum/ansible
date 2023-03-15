@@ -13,7 +13,8 @@ init_tree() {
 	    args+=" -tree_type PREORDERED_LOG"
 	    ;;
     esac
-    ~/go/bin/createtree $args > tid
+    ~/go/bin/createtree $args > tree_id
+    ~/go/bin/sigsum-mktree -mode empty -sth-path "$dn/sth"
 }
 
 init_keys() {
@@ -24,9 +25,6 @@ start_log() {
     [[ $# -gt 0 ]] && { local pref="$1"; shift; }
     case $role in
 	primary)
-	    if ! [[ -s sth ]]; then
-		~/go/bin/sigsum-mktree -sth-path "$dn/sth"
-	    fi
 	    SIGSUM_LOGSERVER_CONFIG="$dn/config.toml" ~/go/bin/sigsum-log-primary
 	    ;;
 	secondary)
@@ -41,6 +39,6 @@ start_log() {
 dn="$HOME/.config/sigsum/$logname"
 cd "$dn" 2>/dev/null || { mkdir -pm 0700 "$dn"; cd "$dn"; }
 
-[[ -s tid ]] || init_tree
+[[ -s tree_id ]] || init_tree
 [[ -s logkey ]] || init_keys
 start_log $prefix
