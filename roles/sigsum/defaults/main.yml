@@ -19,7 +19,7 @@ sigsum_db_pw: changeme
 
 sigsum_trillian_srcdir: /usr/src/trillian
 sigsum_trillian_repo: https://github.com/google/trillian
-sigsum_trillian_version: v1.5.0
+sigsum_trillian_version: v1.5.1
 
 sigsum_lib_srcdir: /usr/src/sigsum-lib-go
 sigsum_lib_repo: https://git.glasklar.is/sigsum/core/sigsum-go
