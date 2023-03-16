@@ -10,11 +10,11 @@ init_tree() {
     local args="--admin_server $trillian_rpc"
     case $role in
 	secondary)
-	    args+=" -tree_type PREORDERED_LOG"
+	    args+=" --tree_type PREORDERED_LOG"
 	    ;;
     esac
     ~/go/bin/createtree $args > tree-id
-    ~/go/bin/sigsum-mktree -mode empty -sth-path "$dn/sth"
+    ~/go/bin/sigsum-mktree --mode empty --sth-path "$dn/sth"
 }
 
 init_keys() {
