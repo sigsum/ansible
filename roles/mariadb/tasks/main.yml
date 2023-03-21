@@ -18,6 +18,11 @@
     name: python3-pymysql
     state: present
 
+- name: Start service mariadb, if not started
+  ansible.builtin.service:
+    name: mariadb
+    state: started
+
 - name: Check if mysql root password was not set
   shell: >
     mysql -u root
