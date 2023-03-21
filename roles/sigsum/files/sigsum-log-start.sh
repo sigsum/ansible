@@ -25,10 +25,10 @@ start_log() {
     [[ $# -gt 0 ]] && { local pref="$1"; shift; }
     case $role in
 	primary)
-	    SIGSUM_LOGSERVER_CONFIG="$dn/config.toml" ~/go/bin/sigsum-log-primary --tree-id $(cat tree-id)
+	    SIGSUM_LOGSERVER_CONFIG="$dn/config.toml" ~/go/bin/sigsum-log-primary
 	    ;;
 	secondary)
-	    SIGSUM_LOGSERVER_CONFIG="$dn/config.toml" ~/go/bin/sigsum-log-secondary --tree-id $(cat tree-id)
+	    SIGSUM_LOGSERVER_CONFIG="$dn/config.toml" ~/go/bin/sigsum-log-secondary
 	    ;;
 	*)
 	    echo "$0: $role: invalid role"
