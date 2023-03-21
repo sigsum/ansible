@@ -1,0 +1,18 @@
+---
+- name: Setup primary
+  hosts: sigsum-primary
+  tasks:
+    - name: Create database for primary node
+      ansible.builtin.import_role:
+        name: sigsum.ansible.mariadb
+    - name: Deploy sigsum primary node
+      ansible.builtin.import_role:
+        name: sigsum.ansible.sigsum
+
+# - name: Setup secondary
+#   hosts: sigsum-secondary
+#   tasks:
+#     - name: Role
+#       ansible.builtin.import_role:
+#         name: sigsum.ansible.test
+

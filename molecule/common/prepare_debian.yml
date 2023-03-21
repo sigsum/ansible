@@ -1,0 +1,17 @@
+---
+- name: Install requirements
+  hosts: all
+  gather_facts: no
+  pre_tasks:
+  - name: 
+    raw: 'apt update'
+    args:
+      executable: /bin/bash
+  - name: install python
+    raw: 'apt install -y python3'
+    args:
+      executable: /bin/bash
+  - name: install systemd
+    raw: 'apt install -y systemd'
+    args:
+      executable: /bin/bash

@@ -1,0 +1,46 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: sigsum-primary
+    image: docker.io/library/debian:bookworm
+    dockerfile: ../Dockerfile.debian.bookworm.j2
+    privileged: true 
+    cgroupns_mode: private
+    override_command: false
+    volume_mounts:
+       - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
+    tmpfs:
+      - /run
+      - /run/lock
+      - /tmp
+    networks:
+      - name: sigsum
+    published_ports:
+      - 14784:14784
+      - 14785:14785
+  - name: sigsum-secondary
+    image: docker.io/library/debian:bookworm
+    dockerfile: ../Dockerfile.debian.bookworm.j2
+    cgroupns_mode: private
+    override_command: false
+    privileged: true 
+    volume_mounts:
+       - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    tmpfs:
+      - /run
+      - /run/lock
+      - /tmp
+    networks:
+      - name: sigsum
+provisioner:
+  name: ansible
+  playbooks:
+    prepare: ../common/prepare_debian.yml
+  inventory:
+    links:
+      host_vars: host_vars/
+verifier:
+  name: ansible
