@@ -6,6 +6,6 @@ converge: .venv
 	. .venv/bin/activate; molecule converge
 
 destroy: .venv
-	. .venv/bin/activate; molecule converge
+	. .venv/bin/activate; molecule destroy
 
 .PHONY: converge destroy
