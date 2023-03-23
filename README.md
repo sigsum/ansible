@@ -21,6 +21,9 @@ collections:
   source: git+https://git.glasklar.is/sigsum/admin/ansible.git 
 ```
 
+In order to install a particular branch of the repo, you can append
+',BRANCHNAME' to the URL.
+
 ## Usage
 
 Below is an example setting up a primary log with a mysql database.
