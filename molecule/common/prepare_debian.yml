@@ -11,6 +11,10 @@
     raw: 'apt install -y python3'
     args:
       executable: /bin/bash
+  - name: install sudo
+    raw: 'apt install -y sudo'
+    args:
+      executable: /bin/bash
   - name: install systemd
     raw: 'apt install -y systemd'
     args:

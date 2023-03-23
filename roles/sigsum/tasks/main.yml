@@ -10,7 +10,6 @@
     pkg:
     - golang
     - git
-    - sudo
 
 - name: Create {{ sigsum_user }} user for sigsum
   user:
