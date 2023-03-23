@@ -8,7 +8,6 @@ authors:
   - ln5
 tags:
   - sigsum
-readme: README.md
 license_file: LICENSE
 description: Roles and modules for installing and setting up a Sigsum log
 dependencies:
