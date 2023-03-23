@@ -60,6 +60,16 @@ Name | Description
 [sigsum.ansible.sigsum](https://git.glasklar.is/sigsum/admin/ansible/-/blob/main/docs/rst/sigsum_role.rst)|Setup and run a sigsum log instance.
 [sigsum.ansible.mariadb](https://git.glasklar.is/sigsum/admin/ansible/-/blob/main/docs/rst/mariadb_role.rst)|Setup a mariadb server for sigsum.
 
+## Testing with molecule
+
+This collection can be tested with molecule. It requires a running docker daemon
+on the system and python.
+
+`make converge` sets up the virtualenv and install molecule, then runs the test
+suite.
+
+To destroy the containers created for the playbook, use `make destroy`.
+
 ## Licensing
 See [LICENSE](LICENSE).
 
