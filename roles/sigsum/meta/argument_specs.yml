@@ -55,17 +55,17 @@ argument_specs:
       sigsum_log_srcdir:
         type: "str"
         default: /usr/src/sigsum-log-go
-        description: "The sigsum client source location"
+        description: "The sigsum log source location"
 
       sigsum_log_repo:
         type: "str"
         default: https://git.glasklar.is/sigsum/core/log-go
-        description: "The sigsum client source repository"
+        description: "The sigsum log source repository"
 
       sigsum_log_version:
         type: "str"
         default: v0.8.0-55-g25420cb
-        description: "The sigsum client repository version"
+        description: "The sigsum log repository version"
 
       sigsum_logname:
         type: "str"
