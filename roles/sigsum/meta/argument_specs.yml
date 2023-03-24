@@ -174,13 +174,15 @@ argument_specs:
 
       sigsum_max_range:
         type: "int"
-        default: 10
+        default: 4096
         description: "maximum number of entries that can be retrived in a single request"
 
       sigsum_rate_limit_config:
         type: "str"
         default: ""
-        description: "enable rate limiting, based on given config file"
+        description:
+          - "enable rate limiting, based on given config file."
+          - "For detailed documentation see U(https://git.glasklar.is/sigsum/core/log-go/-/blob/main/doc/rate-limit.md)."
 
       sigsum_allow_test_domain:
         type: "bool"
