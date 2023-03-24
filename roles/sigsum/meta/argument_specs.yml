@@ -90,12 +90,18 @@ argument_specs:
       sigsum_trillian_sequencer_interval:
         type: "str"
         default: "100ms"
-        description: "trillian sequencer interval"
+        description:
+          - "Trillian sequencer interval."
+          - "This tunes how often trillian wakes up to sequence jobs."
+          - "It proceses the number of jobs specifid in the 'sigsum_trillian_batch_size' option."
 
       sigsum_trillian_batch_size:
-        type: "str"
-        default: "100"
-        description: "trillian batch size"
+        type: "int"
+        default: 512
+        description:
+          - "Trillian batch size."
+          - "Number of jobs the trillian server should process when it wakes up for sequencing."
+          - "The option 'sigsum_trillian_sequencer_interval' specifies how often trillian wakes up."
 
       sigsum_external_endpoint:
         type: "str"
