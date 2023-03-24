@@ -52,7 +52,7 @@ sigsum_log_level: "info"
 
 # Primary
 sigsum_witnesses: ""
-sigsum_max_range: 10
+sigsum_max_range: 4096
 sigsum_rate_limit_config: ""
 sigsum_allow_test_domain: false
 sigsum_secondary_url: ""
