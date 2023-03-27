@@ -7,20 +7,20 @@ internal-endpoint = "{{internal_endpoint}}"
 {% if trillian_rpc_server %}
 trillian-rpc-server = "{{trillian_rpc_server}}"
 {% endif %}
-{% if ephemeral_test_backend %}
-ephemeral-test-backend = {{ephemeral_test_backend}}
+{% if backend %}
+backend = "{{backend}}"
 {% endif %}
 {% if url_prefix %}
 url-prefix = "{{url_prefix}}"
 {% endif %}
-{% if tree_id %}
-tree-id = {{tree_id}}
+{% if trillian_tree_id_file %}
+trillian-tree-id-file = "{{trillian_tree_id_file}}"
 {% endif %}
 {% if timeout %}
 timeout = "{{timeout}}"
 {% endif %}
-{% if key %}
-key = "{{key}}"
+{% if key_file %}
+key-file = "{{key_file}}"
 {% endif %}
 {% if interval %}
 interval = "{{interval}}"
@@ -40,8 +40,8 @@ witnesses = "{{witnesses}}"
 {% if max_range %}
 max-range = {{max_range}}
 {%endif%}
-{% if rate_limit_config %}
-rate-limit-config = "{{rate_limit_config}}"
+{% if rate_limit_file %}
+rate-limit-file = "{{rate_limit_file}}"
 {%endif%}
 {% if allow_test_domain %}
 allow-test-domain = {{allow_test_domain}}
@@ -49,11 +49,11 @@ allow-test-domain = {{allow_test_domain}}
 {% if secondary_url %}
 secondary-url = "{{secondary_url}}"
 {%endif%}
-{% if secondary_pubkey %}
-secondary-pubkey = "{{secondary_pubkey}}"
+{% if secondary_pubkey_file %}
+secondary-pubkey-file = "{{secondary_pubkey_file}}"
 {%endif%}
-{% if sth_path %}
-sth-path = "{{sth_path}}"
+{% if sth_file %}
+sth-file = "{{sth_file}}"
 {%endif%}
 {% endif %}
 
@@ -61,11 +61,5 @@ sth-path = "{{sth_path}}"
 [secondary]
 {% if primary_url %}
 primary-url = "{{primary_url}}"
-{% endif %}
-{% if primary_pubkey %}
-primary-pubkey = "{{primary_pubkey}}"
-{% endif %}
-{% if test_mode %}
-test-mode = {{test_mode}}
 {% endif %}
 {% endif %}

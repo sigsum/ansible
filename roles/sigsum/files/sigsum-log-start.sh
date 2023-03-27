@@ -13,8 +13,9 @@ init_tree() {
 	    args+=" --tree_type PREORDERED_LOG"
 	    ;;
     esac
-    ~/go/bin/createtree $args > tree-id
-    ~/go/bin/sigsum-mktree --mode empty --sth-path "$dn/sth"
+    tree_id=$(~/go/bin/createtree $args)
+    echo "tree-id=${tree_id}" > tree-id
+    ~/go/bin/sigsum-mktree --mode empty --sth-file "$dn/sth"
 }
 
 init_keys() {

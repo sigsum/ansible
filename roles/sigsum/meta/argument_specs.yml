@@ -118,22 +118,22 @@ argument_specs:
         default: "localhost:6962"
         description: "host:port specification of where Trillian serves clients"
 
+      sigsum_backend:
+        type: "str"
+        default: "backend"
+        description: "the configured sigsum backend"
+
       sigsum_ephemeral_test_backend:
         type: "bool"
         default: false
         description: "if set, enables in-memory backend, with NO persistent storage"
-
-      sigsum_tree_id:
-        type: "int"
-        default: 0
-        description: "tree identifier in the Trillian database"
 
       sigsum_timeout:
         type: "str"
         default: "10s"
         description: "timeout for backend requests"
 
-      sigsum_key:
+      sigsum_key_file:
         type: "str"
         default: ""
         description: "key file (openssh format), either unencrypted private key, or a public key (accessed via ssh-agent)"
@@ -177,7 +177,7 @@ argument_specs:
         default: 4096
         description: "maximum number of entries that can be retrived in a single request"
 
-      sigsum_rate_limit_config:
+      sigsum_rate_limit_file:
         type: "str"
         default: ""
         description:
@@ -194,26 +194,16 @@ argument_specs:
         default: ""
         description: "secondary node endpoint for fetching latest replicated tree head"
 
-      sigsum_secondary_pubkey:
+      sigsum_secondary_pubkey_file:
         type: "str"
         default: ""
         description: "public key file for secondary node"
 
 # # TODO: Path wont be used
-# sigsum_sth_path: "/var/lib/sigsum-log/sth"
+# sigsum_sth_file: "/var/lib/sigsum-log/sth"
 # "path to file where latest published STH is being stored"
 
       sigsum_primary_url:
         type: "str"
         default: ""
         description: "primary node endpoint for fetching leaves (for secondary nodes)"
-
-      sigsum_primary_pubkey:
-        type: "str"
-        default: ""
-        description: "public key file for primary node (for secondary nodes)"
-
-      sigsum_test_mode:
-        type: "bool"
-        default: false
-        description: "TODO"
