@@ -3,6 +3,12 @@
 
 :orphan:
 
+.. role:: ansible-attribute-support-label
+.. role:: ansible-attribute-support-property
+.. role:: ansible-attribute-support-full
+.. role:: ansible-attribute-support-partial
+.. role:: ansible-attribute-support-none
+.. role:: ansible-attribute-support-na
 .. role:: ansible-option-type
 .. role:: ansible-option-elements
 .. role:: ansible-option-required
@@ -27,7 +33,7 @@ sigsum.ansible.mariadb role -- The main entry point for the mariadb role.
 .. Collection note
 
 .. note::
-    This role is part of the `sigsum.ansible collection <https://galaxy.ansible.com/sigsum/ansible>`_ (version 0.0.3).
+    This role is part of the `sigsum.ansible collection <https://galaxy.ansible.com/sigsum/ansible>`_ (version 0.0.5).
 
     To install it use: :code:`ansible-galaxy collection install sigsum.ansible`.
 
@@ -91,7 +97,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`list` / :ansible-option-elements:`elements=string` / :ansible-option-required:`required`
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
 
 
 
@@ -132,7 +138,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -173,7 +179,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -214,7 +220,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`list` / :ansible-option-elements:`elements=any` / :ansible-option-required:`required`
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=any`
 
 
 
@@ -233,6 +239,9 @@ Parameters
       .. raw:: html
 
         </div>
+
+
+.. Attributes
 
 
 .. Notes

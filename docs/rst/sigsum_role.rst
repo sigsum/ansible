@@ -3,6 +3,12 @@
 
 :orphan:
 
+.. role:: ansible-attribute-support-label
+.. role:: ansible-attribute-support-property
+.. role:: ansible-attribute-support-full
+.. role:: ansible-attribute-support-partial
+.. role:: ansible-attribute-support-none
+.. role:: ansible-attribute-support-na
 .. role:: ansible-option-type
 .. role:: ansible-option-elements
 .. role:: ansible-option-required
@@ -27,7 +33,7 @@ sigsum.ansible.sigsum role -- The main entry point for the myapp role.
 .. Collection note
 
 .. note::
-    This role is part of the `sigsum.ansible collection <https://galaxy.ansible.com/sigsum/ansible>`_ (version 0.0.3).
+    This role is part of the `sigsum.ansible collection <https://galaxy.ansible.com/sigsum/ansible>`_ (version 0.0.5).
 
     To install it use: :code:`ansible-galaxy collection install sigsum.ansible`.
 
@@ -92,7 +98,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`boolean` / :ansible-option-required:`required`
+      :ansible-option-type:`boolean`
 
 
 
@@ -123,6 +129,47 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-main--sigsum_backend"></div>
+
+      .. _ansible_collections.sigsum.ansible.sigsum_role__parameter-main__sigsum_backend:
+
+      .. rst-class:: ansible-option-title
+
+      **sigsum_backend**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-main--sigsum_backend" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      the configured sigsum backend
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"backend"`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-main--sigsum_db_name"></div>
 
       .. _ansible_collections.sigsum.ansible.sigsum_role__parameter-main__sigsum_db_name:
@@ -137,7 +184,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -178,7 +225,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -219,7 +266,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`boolean` / :ansible-option-required:`required`
+      :ansible-option-type:`boolean`
 
 
 
@@ -264,7 +311,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -305,7 +352,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -346,7 +393,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -373,21 +420,21 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-main--sigsum_key"></div>
+        <div class="ansibleOptionAnchor" id="parameter-main--sigsum_key_file"></div>
 
-      .. _ansible_collections.sigsum.ansible.sigsum_role__parameter-main__sigsum_key:
+      .. _ansible_collections.sigsum.ansible.sigsum_role__parameter-main__sigsum_key_file:
 
       .. rst-class:: ansible-option-title
 
-      **sigsum_key**
+      **sigsum_key_file**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-main--sigsum_key" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-main--sigsum_key_file" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -428,7 +475,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -469,7 +516,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -510,7 +557,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -528,7 +575,7 @@ Parameters
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-default-bold:`Default:` :ansible-option-default:`"v0.1.18"`
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"v0.1.22-22-ged74255"`
 
       .. raw:: html
 
@@ -551,7 +598,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`path` / :ansible-option-required:`required`
+      :ansible-option-type:`path`
 
 
 
@@ -592,7 +639,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -639,7 +686,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -652,7 +699,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The sigsum client source repository
+      The sigsum log source repository
 
 
       .. rst-class:: ansible-option-line
@@ -680,7 +727,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -693,7 +740,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The sigsum client source location
+      The sigsum log source location
 
 
       .. rst-class:: ansible-option-line
@@ -721,7 +768,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -734,12 +781,12 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The sigsum client repository version
+      The sigsum log repository version
 
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-default-bold:`Default:` :ansible-option-default:`"v0.7.0"`
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"v0.8.0-55-g25420cb"`
 
       .. raw:: html
 
@@ -762,7 +809,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -803,7 +850,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`integer` / :ansible-option-required:`required`
+      :ansible-option-type:`integer`
 
 
 
@@ -821,48 +868,7 @@ Parameters
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-default-bold:`Default:` :ansible-option-default:`10`
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-main--sigsum_primary_pubkey"></div>
-
-      .. _ansible_collections.sigsum.ansible.sigsum_role__parameter-main__sigsum_primary_pubkey:
-
-      .. rst-class:: ansible-option-title
-
-      **sigsum_primary_pubkey**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-main--sigsum_primary_pubkey" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string` / :ansible-option-required:`required`
-
-
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      public key file for primary node (for secondary nodes)
-
-
-      .. rst-class:: ansible-option-line
-
-      :ansible-option-default-bold:`Default:` :ansible-option-default:`""`
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`4096`
 
       .. raw:: html
 
@@ -885,7 +891,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -912,21 +918,21 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-main--sigsum_rate_limit_config"></div>
+        <div class="ansibleOptionAnchor" id="parameter-main--sigsum_rate_limit_file"></div>
 
-      .. _ansible_collections.sigsum.ansible.sigsum_role__parameter-main__sigsum_rate_limit_config:
+      .. _ansible_collections.sigsum.ansible.sigsum_role__parameter-main__sigsum_rate_limit_file:
 
       .. rst-class:: ansible-option-title
 
-      **sigsum_rate_limit_config**
+      **sigsum_rate_limit_file**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-main--sigsum_rate_limit_config" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-main--sigsum_rate_limit_file" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -939,7 +945,9 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      enable rate limiting, based on given config file
+      enable rate limiting, based on given config file.
+
+      For detailed documentation see \ https://git.glasklar.is/sigsum/core/log-go/-/blob/main/doc/rate-limit.md\ .
 
 
       .. rst-class:: ansible-option-line
@@ -967,7 +975,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -998,21 +1006,21 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-main--sigsum_secondary_pubkey"></div>
+        <div class="ansibleOptionAnchor" id="parameter-main--sigsum_secondary_pubkey_file"></div>
 
-      .. _ansible_collections.sigsum.ansible.sigsum_role__parameter-main__sigsum_secondary_pubkey:
+      .. _ansible_collections.sigsum.ansible.sigsum_role__parameter-main__sigsum_secondary_pubkey_file:
 
       .. rst-class:: ansible-option-title
 
-      **sigsum_secondary_pubkey**
+      **sigsum_secondary_pubkey_file**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-main--sigsum_secondary_pubkey" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-main--sigsum_secondary_pubkey_file" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -1053,7 +1061,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -1080,51 +1088,6 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-main--sigsum_test_mode"></div>
-
-      .. _ansible_collections.sigsum.ansible.sigsum_role__parameter-main__sigsum_test_mode:
-
-      .. rst-class:: ansible-option-title
-
-      **sigsum_test_mode**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-main--sigsum_test_mode" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`boolean` / :ansible-option-required:`required`
-
-
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      TODO
-
-
-      .. rst-class:: ansible-option-line
-
-      :ansible-option-choices:`Choices:`
-
-      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
-      - :ansible-option-choices-entry:`true`
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-main--sigsum_timeout"></div>
 
       .. _ansible_collections.sigsum.ansible.sigsum_role__parameter-main__sigsum_timeout:
@@ -1139,7 +1102,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -1166,47 +1129,6 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-main--sigsum_tree_id"></div>
-
-      .. _ansible_collections.sigsum.ansible.sigsum_role__parameter-main__sigsum_tree_id:
-
-      .. rst-class:: ansible-option-title
-
-      **sigsum_tree_id**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-main--sigsum_tree_id" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`integer` / :ansible-option-required:`required`
-
-
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      tree identifier in the Trillian database
-
-
-      .. rst-class:: ansible-option-line
-
-      :ansible-option-default-bold:`Default:` :ansible-option-default:`0`
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-main--sigsum_trillian_batch_size"></div>
 
       .. _ansible_collections.sigsum.ansible.sigsum_role__parameter-main__sigsum_trillian_batch_size:
@@ -1221,7 +1143,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`integer`
 
 
 
@@ -1234,12 +1156,16 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      trillian batch size
+      Trillian batch size.
+
+      Number of jobs the trillian server should process when it wakes up for sequencing.
+
+      The option 'sigsum\_trillian\_sequencer\_interval' specifies how often trillian wakes up.
 
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-default-bold:`Default:` :ansible-option-default:`"100"`
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`512`
 
       .. raw:: html
 
@@ -1262,7 +1188,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -1303,7 +1229,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -1344,7 +1270,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -1357,7 +1283,11 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      trillian sequencer interval
+      Trillian sequencer interval.
+
+      This tunes how often trillian wakes up to sequence jobs.
+
+      It proceses the number of jobs specifid in the 'sigsum\_trillian\_batch\_size' option.
 
 
       .. rst-class:: ansible-option-line
@@ -1385,7 +1315,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -1426,7 +1356,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -1444,7 +1374,7 @@ Parameters
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-default-bold:`Default:` :ansible-option-default:`"v1.5.0"`
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"v1.5.1"`
 
       .. raw:: html
 
@@ -1467,7 +1397,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -1508,7 +1438,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -1549,7 +1479,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
 
 
@@ -1572,6 +1502,9 @@ Parameters
       .. raw:: html
 
         </div>
+
+
+.. Attributes
 
 
 .. Notes

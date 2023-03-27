@@ -2,7 +2,12 @@
 
 - name: Install a database engine
   apt:
-    name: mariadb-server
+    name:
+      - mariadb-server
+
+- name: Print the gateway for each host when defined
+  ansible.builtin.debug:
+    msg: "{{ mysql_root_password }}"
 
 - name: Install shell scripts for dumping db's
   copy:
