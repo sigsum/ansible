@@ -55,6 +55,8 @@ Primary configuration
 Secondary configuration
 -----------------------
 
+When setting up a secondary the *sigsum_external_endpoint* needs to be exposed on the primary node. Sigsum expects this endpoint to be a TLS terminated connection with a valid TLS certificate. This is not done by this role collection and the user of this role needs to setup a reverse proxy.
+
 .. code-block:: yaml
 
     ---
@@ -63,11 +65,16 @@ Secondary configuration
     sigsum_role: "secondary"
     sigsum_url_prefix: "{{ sigsum_logname }}"
 
-    sigsum_key: "keyfile:xxxxx"
-
     sigsum_user: sigsum
     sigsum_db_pw: changeme
     sigsum_db_name: "{{ sigsum_logname }}"
+
+    sigsum_primary_url: "0.0.0.0:14784"
+
+
+.. note::
+
+   *sigsum_primary_url* needs to point at a server with a valid TLS certificate.
 
 
 mariadb configuration
