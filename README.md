@@ -57,8 +57,8 @@ mysql_users:
 ### Modules
 Name | Description
 --- | ---
-[sigsum.ansible.sigsum](https://git.glasklar.is/sigsum/admin/ansible/-/blob/main/docs/rst/sigsum_role.rst)|Setup and run a sigsum log instance.
-[sigsum.ansible.mariadb](https://git.glasklar.is/sigsum/admin/ansible/-/blob/main/docs/rst/mariadb_role.rst)|Setup a mariadb server for sigsum.
+[sigsum.ansible.sigsum](docs/rst/sigsum_role.rst)|Setup and run a sigsum log instance.
+[sigsum.ansible.mariadb](docs/rst/mariadb_role.rst)|Setup a mariadb server for sigsum.
 
 ## Testing with molecule
 
@@ -69,6 +69,9 @@ on the system and python.
 suite.
 
 To destroy the containers created for the playbook, use `make destroy`.
+
+## Changelog
+See [CHANGELOG](docs/docsite/rst/CHANGELOG.rst)
 
 ## Licensing
 See [LICENSE](LICENSE).
