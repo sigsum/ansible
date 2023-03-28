@@ -11,7 +11,6 @@ CHANGELOG
 v1.0.0
 ======
 
-
 Release Summary
 ---------------
 
