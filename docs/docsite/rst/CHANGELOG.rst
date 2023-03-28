@@ -22,12 +22,28 @@ Changes
 
 * Rename the following variables
 
-  * ``this`` to ``that``
+  * ``sigsum_key`` to ``sigsum_key_file``
+
+  * ``sigsum_secondary_pubkey`` to ``sigsum_secondary_pubkey_file``
+
+  * ``sigsum_rate_limit_config`` to ``sigsum_rate_limit_file``
 
 * New variables
 
-  * test
+  * ``sigsum_backend`` to specify the sigsum backend. Currently only takes ``trillian`` as a value.
 
 * Removed variables
 
-  * test
+  * ``sigsum_tree_id`` - internal implementation detail
+
+  * ``sigsum_ephemeral_test_backend``
+
+
+Minor Changes
+-------------
+
+* Dependency updates:
+
+  * ``log-go`` updated to ``v0.9.0``
+
+  * ``sigsum-go`` updated to ``v.0.1.23``
