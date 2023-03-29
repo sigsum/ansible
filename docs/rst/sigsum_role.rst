@@ -33,7 +33,7 @@ sigsum.ansible.sigsum role -- The main entry point for the myapp role.
 .. Collection note
 
 .. note::
-    This role is part of the `sigsum.ansible collection <https://galaxy.ansible.com/sigsum/ansible>`_ (version 0.0.5).
+    This role is part of the `sigsum.ansible collection <https://galaxy.ansible.com/sigsum/ansible>`_ (version 0.1.0).
 
     To install it use: :code:`ansible-galaxy collection install sigsum.ansible`.
 
@@ -608,7 +608,7 @@ Parameters
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-default-bold:`Default:` :ansible-option-default:`"v0.1.22-22-ged74255"`
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"v0.1.22-23"`
 
       .. raw:: html
 
@@ -819,7 +819,7 @@ Parameters
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-default-bold:`Default:` :ansible-option-default:`"v0.8.0-55-g25420cb"`
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"v0.9.0"`
 
       .. raw:: html
 

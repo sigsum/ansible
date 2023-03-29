@@ -18,8 +18,21 @@ This is the first major release of the ``sigsum.ansible`` collection. Going forw
 to `SEMVER <https://semver.org/>`_
 
 
+Breaking Changes
+----------------
+
+The ``tree-id`` file in deployed installations needs to have ``tree-id=`` prepended the value in the file. If this file is not updated the log will fail to start.
+
+This can be done by locating the installation path (usually under ``/var/sigsum``), finding the ``tree-id`` files and running the below code or similar.
+
+.. code-block:: bash
+
+  $ echo "tree-id=$(cat tree-id)" > tree-id
+
+
 Changes 
 -------
+
 
 * ``sigsum_key`` now assumes a string with a OpenSSH formated key is passed. The old variable is preserved with ``sigsum_key_file``.
 

@@ -92,7 +92,7 @@ Currently Sigsum only supports a setup with one primary and secondary log.
 
 When running the role, ansible will print the generated ssh public key for the secondary node. This is the value we need to use for *sigsum_secondary_pubkey* in our primary node configuraion.
 
-Example output:
+Example output from ansible:
 
 .. code-block:: bash
 

@@ -6,7 +6,7 @@
 Sigsum.Ansible
 ==============
 
-Collection version 0.0.5
+Collection version 0.1.0
 
 .. contents::
    :local:
