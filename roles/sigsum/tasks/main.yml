@@ -263,3 +263,19 @@
     enabled: true
     state: started
   when: sigsum_role == "secondary"
+
+- name: register status of public key
+  stat:
+    path: "{{sigsum_key_file}}.pub"
+  register: key_path
+
+- name: Print public key
+  when: "key_path.stat.exists"
+  block:
+    - name: "Read public key"
+      slurp:
+        src: "{{sigsum_key_file}}.pub"
+      register: file_data
+    - name: "Print public key of sigsum log {{sigsum_logname}}"
+      debug:
+        msg: "{{ file_data.content | b64decode}}"

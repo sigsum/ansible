@@ -35,7 +35,12 @@ secondary node.
 Primary configuration
 ---------------------
 
+To run a primary node one only needs to setup the logname and the appropriate role. There should be an accessible
+mysql database connection reachable for the instance.
+
 .. code-block:: yaml
+
+    # Example primary configuration
 
     ---
     sigsum_logname: "sigsum-log"
@@ -60,8 +65,11 @@ expects this endpoint to be a TLS terminated connection with a valid TLS certifi
 
 This is not done by this role collection and the user of this role needs to setup a reverse proxy.
 
+The secondary configuration needs to have the internal endpoint reachable for the primary log to communicate with it.
 
 .. code-block:: yaml
+
+    # Example secondary configuration 
 
     ---
     sigsum_logname: "sigsum-log"
@@ -73,12 +81,43 @@ This is not done by this role collection and the user of this role needs to setu
     sigsum_db_pw: changeme
     sigsum_db_name: "{{ sigsum_logname }}"
 
-    sigsum_primary_url: "0.0.0.0:14784"
+    # The externally reachable URL of the primary log
+    # Needs to be over a valid TLS connection
+    sigsum_primary_url: "primary-log.example.org:14784"
+
+    # Default internal endpoint value
+    # Needs to be exposed over a valid TLS connection
+    sigsum_internal_endpoint: "127.0.0.1:14785"
 
 
-.. note::
+Currently Sigsum only supports a setup with one primary and secondary log.
 
-   *sigsum_primary_url* needs to point at a server with a valid TLS certificate
+
+.. code-block:: yaml
+
+    # Example primary configuration with a secondary setup.
+
+    ---
+    sigsum_logname: "sigsum-log"
+
+    sigsum_role: "secondary"
+    sigsum_url_prefix: "{{ sigsum_logname }}"
+
+    sigsum_user: sigsum
+    sigsum_db_pw: changeme
+    sigsum_db_name: "{{ sigsum_logname }}"
+
+    sigsum_secondary_url: "secondary-log.example.org:14785"
+    sigsum_secondary_pubkey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJOzTe1ykCAh/CVo8lbpUmE6oEVbGcz3Vcz/ZpkT+8FC sigsum key"
+
+    # Default external endpoint value
+    # Needs to be exposed over a valid TLS connection
+    sigsum_external_endpoint: "127.0.0.1:14784"
+
+
+To fetch the *sigsum_secondary_pubkey* value, look at the deployment of the secondary node as the role will print the created public key at the end of the role setup.
+
+After setup re-run the role on the node to deploy with the recently included secondary configuration values.
 
 
 mariadb configuration
@@ -89,6 +128,7 @@ respective roles. The easiest way to do this is to use the values already define
 
 .. code-block:: yaml
 
+    ---
     mysql_root_user: root
     mysql_root_password: changeme
     mysql_database:

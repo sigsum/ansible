@@ -40,7 +40,7 @@ sigsum_url_prefix: sigsum
 sigsum_role: "primary"
 
 sigsum_external_endpoint: "127.0.0.1:14784"
-sigsum_internal_endpoint: "192.168.19.1:14785"
+sigsum_internal_endpoint: "127.0.0.1:14785"
 sigsum_trillian_rpc_server: "localhost:6962"
 sigsum_timeout: 10s
 sigsum_key: ""
