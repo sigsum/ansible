@@ -6,7 +6,7 @@
 Sigsum.Ansible
 ==============
 
-Collection version 0.0.3
+Collection version 0.0.5
 
 .. contents::
    :local:
@@ -15,11 +15,12 @@ Collection version 0.0.3
 Description
 -----------
 
-Roles and modules for installing sigsum
+Roles and modules for installing and setting up a Sigsum log
 
-**Author:**
+**Authors:**
 
 * Foxboron
+* ln5
 
 **Supported ansible-core versions:**
 
