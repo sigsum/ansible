@@ -35,8 +35,7 @@ secondary node.
 Primary configuration
 ---------------------
 
-To run a primary node one only needs to setup the logname and the appropriate role. There should be an accessible
-mysql database connection reachable for the instance.
+To run a primary node one only needs to setup the logname and the appropriate role. There should be an accessible mysql database connection reachable for the instance. If there isn't any database available this role collection includes a basic mariadb role that sets this up properly.
 
 .. code-block:: yaml
 
@@ -65,7 +64,7 @@ expects this endpoint to be a TLS terminated connection with a valid TLS certifi
 
 This is not done by this role collection and the user of this role needs to setup a reverse proxy.
 
-The secondary configuration needs to have the internal endpoint reachable for the primary log to communicate with it.
+The secondary configuration needs to have the internal endpoint reachable for the primary node to communicate with it.
 
 .. code-block:: yaml
 
@@ -75,7 +74,6 @@ The secondary configuration needs to have the internal endpoint reachable for th
     sigsum_logname: "sigsum-log"
 
     sigsum_role: "secondary"
-    sigsum_url_prefix: "{{ sigsum_logname }}"
 
     sigsum_user: sigsum
     sigsum_db_pw: changeme
@@ -92,6 +90,22 @@ The secondary configuration needs to have the internal endpoint reachable for th
 
 Currently Sigsum only supports a setup with one primary and secondary log.
 
+When running the role, ansible will print the generated ssh public key for the secondary node. This is the value we need to use for *sigsum_secondary_pubkey* in our primary node configuraion.
+
+Example output:
+
+.. code-block:: bash
+
+    TASK [sigsum.ansible.sigsum : Read public key] *********************************
+    ok: [sigsum-primary]
+
+    TASK [sigsum.ansible.sigsum : Print public key of sigsum log molecule-test] ****
+    ok: [sigsum-primary] => {
+        "msg": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJOzTe1ykCAh/CVo8lbpUmE6oEVbGcz3Vcz/ZpkT+8FC sigsum key\n"
+    }
+
+
+Example primary configuration with added secondary node options:
 
 .. code-block:: yaml
 
@@ -101,7 +115,6 @@ Currently Sigsum only supports a setup with one primary and secondary log.
     sigsum_logname: "sigsum-log"
 
     sigsum_role: "secondary"
-    sigsum_url_prefix: "{{ sigsum_logname }}"
 
     sigsum_user: sigsum
     sigsum_db_pw: changeme
@@ -114,8 +127,6 @@ Currently Sigsum only supports a setup with one primary and secondary log.
     # Needs to be exposed over a valid TLS connection
     sigsum_external_endpoint: "127.0.0.1:14784"
 
-
-To fetch the *sigsum_secondary_pubkey* value, look at the deployment of the secondary node as the role will print the created public key at the end of the role setup.
 
 After setup re-run the role on the node to deploy with the recently included secondary configuration values.
 

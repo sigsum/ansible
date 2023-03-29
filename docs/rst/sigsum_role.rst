@@ -951,43 +951,6 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-main--sigsum_public_key"></div>
-
-      .. _ansible_collections.sigsum.ansible.sigsum_role__parameter-main__sigsum_public_key:
-
-      .. rst-class:: ansible-option-title
-
-      **sigsum_public_key**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-main--sigsum_public_key" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      public key string (openssh format), either unencrypted private key, or a public key (accessed via ssh-agent)
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-main--sigsum_rate_limit_file"></div>
 
       .. _ansible_collections.sigsum.ansible.sigsum_role__parameter-main__sigsum_rate_limit_file:
@@ -1107,7 +1070,7 @@ Parameters
 
       needs a file that has a openssh formated public key
 
-      only used when setting up a secondary
+      only used when setting up a secondary for the primary node
 
 
       .. raw:: html
@@ -1148,7 +1111,7 @@ Parameters
 
       needs a file that has a openssh formated public key
 
-      only used when setting up a secondary
+      only used when setting up a secondary for the primary
 
 
       .. raw:: html
@@ -1526,7 +1489,7 @@ Parameters
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-default-bold:`Default:` :ansible-option-default:`"sigsum"`
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`""`
 
       .. raw:: html
 
