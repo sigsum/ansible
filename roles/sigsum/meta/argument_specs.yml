@@ -74,7 +74,7 @@ argument_specs:
 
       sigsum_url_prefix:
         type: "str"
-        default: sigsum
+        default: ""
         description: "a prefix that precedes /<endpoint>"
 
       # TODO: Better description

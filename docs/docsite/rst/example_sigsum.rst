@@ -75,7 +75,6 @@ The secondary configuration needs to have the internal endpoint reachable for th
     sigsum_logname: "sigsum-log"
 
     sigsum_role: "secondary"
-    sigsum_url_prefix: "{{ sigsum_logname }}"
 
     sigsum_user: sigsum
     sigsum_db_pw: changeme
@@ -101,7 +100,6 @@ Currently Sigsum only supports a setup with one primary and secondary log.
     sigsum_logname: "sigsum-log"
 
     sigsum_role: "secondary"
-    sigsum_url_prefix: "{{ sigsum_logname }}"
 
     sigsum_user: sigsum
     sigsum_db_pw: changeme
