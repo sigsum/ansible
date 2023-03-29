@@ -135,8 +135,13 @@ argument_specs:
 
       sigsum_key_file:
         type: "str"
-        default: ""
-        description: "key file (openssh format), either unencrypted private key, or a public key (accessed via ssh-agent)"
+        description: 
+          - "key file path (openssh format), either unencrypted private key, or a public key (accessed via ssh-agent)"
+
+      sigsum_key:
+        type: "str"
+        description:
+          - "key string (openssh format), either unencrypted private key, or a public key (accessed via ssh-agent)"
 
       sigsum_interval:
         type: "str"
@@ -196,8 +201,17 @@ argument_specs:
 
       sigsum_secondary_pubkey_file:
         type: "str"
-        default: ""
-        description: "public key file for secondary node"
+        description:
+          - "public key file for secondary node"
+          - "needs a file that has a openssh formated public key"
+          - "only used when setting up a secondary for the primary"
+
+      sigsum_secondary_pubkey:
+        type: "str"
+        description: 
+          - "public key string for secondary node"
+          - "needs a file that has a openssh formated public key"
+          - "only used when setting up a secondary for the primary node"
 
 # # TODO: Path wont be used
 # sigsum_sth_file: "/var/lib/sigsum-log/sth"
