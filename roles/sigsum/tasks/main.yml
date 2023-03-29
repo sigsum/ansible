@@ -8,6 +8,7 @@
   ansible.builtin.copy:
     content: 'deb https://ftp.acc.umu.se/debian bullseye-backports main'
     dest: /etc/apt/sources.list.d/bullseye-backports.list
+    force: no
   when: ansible_distribution == 'Debian' and ansible_distribution_release == 'bullseye'
 
 - name: Install dependencies
@@ -161,6 +162,43 @@
   become_user: "{{ sigsum_user }}"
   become: true
 
+- name: register sigsum_key_file
+  ansible.builtin.set_fact:
+    sigsum_key_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/logkey"
+  when: sigsum_key_file == ""
+
+- name: write sigsum_key_file
+  become_user: "{{ sigsum_user }}"
+  become: true
+  ansible.builtin.copy:
+    content: "{{sigsum_key}}"
+    dest: "{{ sigsum_key_file }}"
+    force: no
+  when: sigsum_key != ""
+
+# This should not overwrite the file if it exists
+- name: generate sigsum key
+  become_user: "{{ sigsum_user }}"
+  become: true
+  command: "./go/bin/sigsum-key gen -o {{ sigsum_key_file }}"
+  args:
+    creates: "{{ sigsum_key_file }}"
+    chdir: "/var/sigsum/{{sigsum_user}}"
+
+- name: write secondary_pubkey_file
+  become_user: "{{ sigsum_user }}"
+  become: true
+  ansible.builtin.copy:
+    content: "{{sigsum_secondary_pubkey}}"
+    dest: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/secondary-pubkey"
+    force: no
+  when: sigsum_secondary_pubkey != "" and sigsum_secondary_pubkey_file == ""
+
+- name: register secondary_pubkey_file
+  ansible.builtin.set_fact:
+    secondary_pubkey_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/secondary-pubkey"
+  when: sigsum_secondary_pubkey != "" and sigsum_secondary_pubkey_file == ""
+
 - name: Install primary configuration file
   template:
     src: "config.toml.j2"
@@ -173,7 +211,7 @@
     backend: "{{sigsum_backend}}"
     url_prefix: "{{sigsum_url_prefix}}"
     timeout: "{{sigsum_timeout}}"
-    key_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/logkey"
+    key_file: "{{sigsum_key_file}}"
     interval: "{{sigsum_interval}}"
     log_file: "{{sigsum_log_file}}"
     log_level: "{{sigsum_log_level}}"

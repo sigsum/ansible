@@ -18,10 +18,6 @@ init_tree() {
     ~/go/bin/sigsum-mktree --mode empty --sth-file "$dn/sth"
 }
 
-init_keys() {
-    ~/go/bin/sigsum-key gen -o logkey
-}
-
 start_log() {
     [[ $# -gt 0 ]] && { local pref="$1"; shift; }
     case $role in
@@ -41,5 +37,4 @@ dn="$HOME/.config/sigsum/$logname"
 cd "$dn" 2>/dev/null || { mkdir -pm 0700 "$dn"; cd "$dn"; }
 
 [[ -s tree-id ]] || init_tree
-[[ -s logkey ]] || init_keys
 start_log $prefix
