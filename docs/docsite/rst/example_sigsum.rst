@@ -140,8 +140,6 @@ respective roles. The easiest way to do this is to use the values already define
 .. code-block:: yaml
 
     ---
-    mysql_root_user: root
-    mysql_root_password: changeme
     mysql_database:
       - "{{ sigsum_logname }}"
 
