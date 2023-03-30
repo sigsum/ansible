@@ -33,7 +33,7 @@ sigsum.ansible.mariadb role -- The main entry point for the mariadb role.
 .. Collection note
 
 .. note::
-    This role is part of the `sigsum.ansible collection <https://galaxy.ansible.com/sigsum/ansible>`_ (version 0.1.0).
+    This role is part of the `sigsum.ansible collection <https://galaxy.ansible.com/sigsum/ansible>`_ (version 1.0.0).
 
     To install it use: :code:`ansible-galaxy collection install sigsum.ansible`.
 
@@ -151,12 +151,12 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The mariadb root user password
+      The mariadb root user password, by default using unix socket
 
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-default-bold:`Default:` :ansible-option-default:`"changeme"`
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`""`
 
       .. raw:: html
 

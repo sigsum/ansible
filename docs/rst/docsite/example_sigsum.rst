@@ -49,7 +49,7 @@ To run a primary node one only needs to setup the logname and the appropriate ro
 
     sigsum_user: sigsum
     sigsum_db_pw: changeme
-    sigsum_db_name: "{{ sigsum_logname }}"
+    sigsum_db_name: "sigsum"
 
 .. note::
 
@@ -77,7 +77,7 @@ The secondary configuration needs to have the internal endpoint reachable for th
 
     sigsum_user: sigsum
     sigsum_db_pw: changeme
-    sigsum_db_name: "{{ sigsum_logname }}"
+    sigsum_db_name: "sigsum"
 
     # The externally reachable URL of the primary log
     # Needs to be over a valid TLS connection
@@ -118,7 +118,7 @@ Example primary configuration with added secondary node options:
 
     sigsum_user: sigsum
     sigsum_db_pw: changeme
-    sigsum_db_name: "{{ sigsum_logname }}"
+    sigsum_db_name: "sigsum"
 
     sigsum_secondary_url: "secondary-log.example.org:14785"
     sigsum_secondary_pubkey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJOzTe1ykCAh/CVo8lbpUmE6oEVbGcz3Vcz/ZpkT+8FC sigsum key"
@@ -140,8 +140,6 @@ respective roles. The easiest way to do this is to use the values already define
 .. code-block:: yaml
 
     ---
-    mysql_root_user: root
-    mysql_root_password: changeme
     mysql_database:
       - "{{ sigsum_logname }}"
 
@@ -149,7 +147,11 @@ respective roles. The easiest way to do this is to use the values already define
       - user: "{{sigsum_user}}"
         password: "{{sigsum_db_pw}}"
         database_privs:
-          - '{{sigsum_logname}}.*:ALL'
+          - '{{sigsum_db_name}}.*:ALL'
+
+
+Alternatively both ansible roles is setup with the same insecure defaults for testing purposes and can be used
+without specifying these values.
 
 
 Role setup

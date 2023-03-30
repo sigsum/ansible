@@ -33,7 +33,7 @@ sigsum.ansible.sigsum role -- The main entry point for the myapp role.
 .. Collection note
 
 .. note::
-    This role is part of the `sigsum.ansible collection <https://galaxy.ansible.com/sigsum/ansible>`_ (version 0.1.0).
+    This role is part of the `sigsum.ansible collection <https://galaxy.ansible.com/sigsum/ansible>`_ (version 1.0.0).
 
     To install it use: :code:`ansible-galaxy collection install sigsum.ansible`.
 
