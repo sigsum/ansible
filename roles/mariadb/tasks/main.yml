@@ -44,6 +44,7 @@
         login_user: root
         login_unix_socket: "/run/mysqld/mysqld.sock"
         state: present
+      no_log: True
       with_items:
         - 127.0.0.1
         - localhost
@@ -68,6 +69,7 @@
     login_password: "{{ mysql_root_password }}"
     login_unix_socket: "/run/mysqld/mysqld.sock"
     state: present
+  no_log: True
   with_items: '{{ mysql_users }}'
 
 - name: Add database permissions to users
@@ -78,6 +80,7 @@
     name: '{{ item.0.user}}'
     append_privs: yes
     priv: '{{item.1}}'
+  no_log: True
   with_subelements:
     - "{{ mysql_users }}"
     - database_privs
