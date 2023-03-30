@@ -6,4 +6,8 @@ mysql_root_password: changeme
 mysql_database:
   - test
 
-mysql_users: []
+mysql_users:
+  - user: "sigsum"
+    password: "changeme"
+    database_privs:
+      - 'test.*:ALL'
