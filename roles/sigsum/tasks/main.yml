@@ -113,18 +113,31 @@
     state: present
   register: database_exists
 
-- block:
-  - name: Initiate db
-    command: "{{ sigsum_trillian_srcdir }}/scripts/resetdb.sh --force"
-    args:
-      chdir: "{{ sigsum_trillian_srcdir }}"
-    environment:
-      MYSQL_USER: "{{ sigsum_user }}"
-      MYSQL_DATABASE: "{{ sigsum_db_name }}"
-      MYSQL_PASSWORD: "{{ sigsum_db_pw }}"
-      MYSQL_ROOT_USER: "{{ mysql_root_user }}"
-      MYSQL_ROOT_PASSWORD: "{{ mysql_root_password }}"
+- name: Setup database
   when: database_exists.changed
+  block:
+    - name: Initiate db without password
+      command: "{{ sigsum_trillian_srcdir }}/scripts/resetdb.sh --force"
+      args:
+        chdir: "{{ sigsum_trillian_srcdir }}"
+      environment:
+        MYSQL_USER: "{{ sigsum_user }}"
+        MYSQL_DATABASE: "{{ sigsum_db_name }}"
+        MYSQL_PASSWORD: "{{ sigsum_db_pw }}"
+        MYSQL_ROOT_USER: "{{ mysql_root_user }}"
+      when: mysql_root_password == ""
+
+    - name: Initiate db with password
+      command: "{{ sigsum_trillian_srcdir }}/scripts/resetdb.sh --force"
+      args:
+        chdir: "{{ sigsum_trillian_srcdir }}"
+      environment:
+        MYSQL_USER: "{{ sigsum_user }}"
+        MYSQL_DATABASE: "{{ sigsum_db_name }}"
+        MYSQL_PASSWORD: "{{ sigsum_db_pw }}"
+        MYSQL_ROOT_USER: "{{ mysql_root_user }}"
+        MYSQL_ROOT_PASSWORD: "{{ mysql_root_password }}"
+      when: mysql_root_password != ""
 
 - name: Install sigsum-log startup script
   copy:
