@@ -152,7 +152,8 @@ respective roles. The easiest way to do this is to use the values already define
           - '{{sigsum_db_name}}.*:ALL'
 
 
-Alternatively both ansible roles is setup with the same insecure defaults for testing purposes and can be used as-is.
+Alternatively both ansible roles is setup with the same insecure defaults for testing purposes and can be used
+without specifying these values.
 
 
 Role setup
