@@ -39,19 +39,17 @@ sigsum_url_prefix: "{{ sigsum_logname }}"
 
 sigsum_user: sigsum
 sigsum_db_pw: changeme
-sigsum_db_name: "{{ sigsum_logname }}"
+sigsum_db_name: "sigsum"
 
 # Setup mysql
-mysql_root_user: root
-mysql_root_password: changeme
 mysql_database:
-  - "{{ sigsum_logname }}"
+  - "{{ sigsum_db_name }}"
 
 mysql_users:
   - user: "{{sigsum_user}}"
     password: "{{sigsum_db_pw}}"
     database_privs:
-      - '{{sigsum_logname}}.*:ALL'
+      - '{{sigsum_db_name}}.*:ALL'
 ```
 
 ### Modules
@@ -75,5 +73,3 @@ See [CHANGELOG](docs/docsite/rst/CHANGELOG.rst)
 
 ## Licensing
 See [LICENSE](LICENSE).
-
-
