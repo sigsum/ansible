@@ -8,6 +8,15 @@ CHANGELOG
    :local:
 
 
+v1.0.1
+======
+
+Release Summary
+---------------
+
+Added ``no_log`` options to the ``sigsum.ansible.mariadb`` role to hide passwords from showing in the ansible log output.
+
+
 v1.0.0
 ======
 
