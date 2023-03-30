@@ -24,28 +24,31 @@
     name: mariadb
     state: started
 
-- name: Check if mysql root password was not set
-  shell: >
-    mysql -u root
-    -h localhost
-    -e "quit"
-  changed_when: false
-  ignore_errors: true
-  register: check_passwd_root
+- name: Setup root passwrod
+  when: mysql_root_password != ""
+  block:
+    - name: Check if mysql root password was not set
+      shell: >
+        mysql -u root
+        -h localhost
+        -e "quit"
+      changed_when: false
+      ignore_errors: true
+      register: check_passwd_root
 
-- name: Set MariaDB root password for 127.0.0.1, localhost
-  mysql_user:
-    name: root
-    password: "{{ mysql_root_password }}"
-    host: "{{ item }}"
-    login_user: root
-    login_unix_socket: "/run/mysqld/mysqld.sock"
-    state: present
-  with_items:
-    - 127.0.0.1
-    - localhost
-  when: check_passwd_root.rc == 0
-  notify: Flush Priviliges
+    - name: Set MariaDB root password for 127.0.0.1, localhost
+      mysql_user:
+        name: root
+        password: "{{ mysql_root_password }}"
+        host: "{{ item }}"
+        login_user: root
+        login_unix_socket: "/run/mysqld/mysqld.sock"
+        state: present
+      with_items:
+        - 127.0.0.1
+        - localhost
+      when: check_passwd_root.rc == 0
+      notify: Flush Priviliges
 
 # TODO: Remove. We don't want to create the database here
 # - name: Create a databases
@@ -63,6 +66,7 @@
     password: '{{ item.password }}'
     login_user: root
     login_password: "{{ mysql_root_password }}"
+    login_unix_socket: "/run/mysqld/mysqld.sock"
     state: present
   with_items: '{{ mysql_users }}'
 

@@ -1,7 +1,7 @@
 ---
 
 mysql_root_user: root
-mysql_root_password: changeme
+mysql_root_password: ""
 
 mysql_database:
   - test

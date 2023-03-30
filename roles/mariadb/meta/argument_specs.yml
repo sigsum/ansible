@@ -13,8 +13,8 @@ argument_specs:
 
       mysql_root_password:
         type: "str"
-        default: changeme
-        description: "The mariadb root user password"
+        default: ""
+        description: "The mariadb root user password, by default using unix socket"
 
       mysql_database:
         type: "list"
