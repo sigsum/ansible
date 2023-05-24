@@ -212,6 +212,20 @@
     secondary_pubkey_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/secondary-pubkey"
   when: sigsum_secondary_pubkey != "" and sigsum_secondary_pubkey_file == ""
 
+- name: register sigsum_policy_file
+  ansible.builtin.set_fact:
+    sigsum_policy_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/witness-config"
+  when: sigsum_policy_file == "" and sigsum_witness_config != ""
+
+- name: write witness config
+  become_user: "{{ sigsum_user }}"
+  become: true
+  ansible.builtin.copy:
+    content: "{{sigsum_witness_config}}"
+    dest: "{{ sigsum_policy_file }}"
+    force: no
+  when: sigsum_policy_file != ""
+
 - name: Install primary configuration file
   template:
     src: "config.toml.j2"
@@ -230,6 +244,7 @@
     log_level: "{{sigsum_log_level}}"
     witnesses: "{{sigsum_witnesses}}"
     max_range: "{{sigsum_max_range}}"
+    policy_file: "{{sigsum_policy_file}}"
     rate_limit_file: "{{sigsum_rate_limit_file}}"
     allow_test_domain: "{{sigsum_allow_test_domain}}"
     secondary_url: "{{sigsum_secondary_url}}"

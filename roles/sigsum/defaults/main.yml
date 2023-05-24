@@ -58,11 +58,13 @@ sigsum_allow_test_domain: false
 sigsum_secondary_url: ""
 sigsum_secondary_pubkey: ""
 sigsum_secondary_pubkey_file: ""
+sigsum_witness_config: ""
 
 # Internal implementation detail
 # TODO: Path wont be used
 sigsum_sth_file: "/var/lib/sigsum-log/sth"
 sigsum_trillian_tree_id_file: "/var/lib/sigsum-log/tree-id"
+sigsum_policy_file: ""
 
 # Secondary
 sigsum_primary_url: ""

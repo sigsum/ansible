@@ -55,6 +55,9 @@ secondary-pubkey-file = "{{secondary_pubkey_file}}"
 {% if sth_file %}
 sth-file = "{{sth_file}}"
 {%endif%}
+{% if policy_file %}
+policy-file = "{{policy_file}}"
+{%endif%}
 {% endif %}
 
 {% if secondary is defined %}
