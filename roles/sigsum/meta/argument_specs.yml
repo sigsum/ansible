@@ -219,10 +219,6 @@ argument_specs:
           - "the witness configuration for the sigsum primary"
           - "supported in sigsum-log version >=v0.12.0"
 
-# # TODO: Path wont be used
-# sigsum_sth_file: "/var/lib/sigsum-log/sth"
-# "path to file where latest published STH is being stored"
-
       sigsum_primary_url:
         type: "str"
         default: ""
