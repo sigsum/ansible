@@ -1,68 +1,64 @@
-{% if external_endpoint %}
-external-endpoint = "{{external_endpoint}}"
+{% if sigsum_external_endpoint %}
+external-endpoint = "{{sigsum_external_endpoint}}"
 {% endif %}
-{% if internal_endpoint %}
-internal-endpoint = "{{internal_endpoint}}"
+{% if sigsum_internal_endpoint %}
+internal-endpoint = "{{sigsum_internal_endpoint}}"
 {% endif %}
-{% if trillian_rpc_server %}
-trillian-rpc-server = "{{trillian_rpc_server}}"
+{% if sigsum_trillian_rpc_server %}
+trillian-rpc-server = "{{sigsum_trillian_rpc_server}}"
 {% endif %}
-{% if backend %}
-backend = "{{backend}}"
+{% if sigsum_backend %}
+backend = "{{sigsum_backend}}"
 {% endif %}
-{% if url_prefix %}
-url-prefix = "{{url_prefix}}"
+{% if sigsum_url_prefix %}
+url-prefix = "{{sigsum_url_prefix}}"
 {% endif %}
-{% if trillian_tree_id_file %}
-trillian-tree-id-file = "{{trillian_tree_id_file}}"
+trillian-tree-id-file = "{{sigsum_trillian_tree_id_file}}"
+{% if sigsum_timeout %}
+timeout = "{{sigsum_timeout}}"
 {% endif %}
-{% if timeout %}
-timeout = "{{timeout}}"
+{% if sigsum_key_file %}
+key-file = "{{sigsum_key_file}}"
 {% endif %}
-{% if key_file %}
-key-file = "{{key_file}}"
+{% if sigsum_interval %}
+interval = "{{sigsum_interval}}"
 {% endif %}
-{% if interval %}
-interval = "{{interval}}"
+{% if sigsum_log_file %}
+log-file = "{{sigsum_log_file}}"
 {% endif %}
-{% if log_file %}
-log-file = "{{log_file}}"
-{% endif %}
-{% if log_level %}
-log-level = "{{log_level}}"
+{% if sigsum_log_level %}
+log-level = "{{sigsum_log_level}}"
 {% endif %}
 
 {% if primary is defined %}
 [primary]
-{% if witnesses %}
-witnesses = "{{witnesses}}"
+{% if sigsum_witnesses %}
+witnesses = "{{sigsum_witnesses}}"
 {% endif %}
-{% if max_range %}
-max-range = {{max_range}}
+{% if sigsum_max_range %}
+max-range = {{sigsum_max_range}}
 {%endif%}
-{% if rate_limit_file %}
-rate-limit-file = "{{rate_limit_file}}"
+{% if sigsum_rate_limit_file %}
+rate-limit-file = "{{sigsum_rate_limit_file}}"
 {%endif%}
-{% if allow_test_domain %}
-allow-test-domain = {{allow_test_domain}}
+{% if sigsum_allow_test_domain %}
+allow-test-domain = {{sigsum_allow_test_domain}}
 {%endif%}
-{% if secondary_url %}
-secondary-url = "{{secondary_url}}"
+{% if sigsum_secondary_url %}
+secondary-url = "{{sigsum_secondary_url}}"
 {%endif%}
-{% if secondary_pubkey_file %}
-secondary-pubkey-file = "{{secondary_pubkey_file}}"
+{% if sigsum_secondary_pubkey_file %}
+secondary-pubkey-file = "{{sigsum_secondary_pubkey_file}}"
 {%endif%}
-{% if sth_file %}
-sth-file = "{{sth_file}}"
-{%endif%}
-{% if policy_file %}
-policy-file = "{{policy_file}}"
+sth-file = "{{sigsum_sth_file}}"
+{% if sigsum_policy_file is defined %}
+policy-file = "{{sigsum_policy_file}}"
 {%endif%}
 {% endif %}
 
 {% if secondary is defined %}
 [secondary]
-{% if primary_url %}
-primary-url = "{{primary_url}}"
+{% if sigsum_primary_url %}
+primary-url = "{{sigsum_primary_url}}"
 {% endif %}
 {% endif %}
