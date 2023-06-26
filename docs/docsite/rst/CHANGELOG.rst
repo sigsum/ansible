@@ -14,7 +14,7 @@ Next Release
 Release Summary
 ---------------
 
-Added ``sigsum_witness_config`` option to the ``sigsum.ansible.sigsum`` to enable witness configuraitons for the primary node.
+Added ``sigsum_witness_config`` option to the ``sigsum.ansible.sigsum`` role to enable witness configuration for the primary node.
 
 
 v1.0.1
