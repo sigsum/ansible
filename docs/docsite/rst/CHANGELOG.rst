@@ -15,7 +15,9 @@ Release Summary
 ---------------
 
 Bumped default trillian version from v1.5.1 to v1.5.2.
+
 Bumped default sigsum-lib-go version from v0.1.23 to v0.3.4.
+
 Bumped default sigsum-log-go version from v0.9.0 to v0.12.0.
 
 Added ``sigsum_witness_config`` option to the ``sigsum.ansible.sigsum`` role to enable witness configuration for the primary node.
