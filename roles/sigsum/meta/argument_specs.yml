@@ -213,9 +213,11 @@ argument_specs:
           - "needs a file that has a openssh formated public key"
           - "only used when setting up a secondary for the primary node"
 
-# # TODO: Path wont be used
-# sigsum_sth_file: "/var/lib/sigsum-log/sth"
-# "path to file where latest published STH is being stored"
+      sigsum_witness_config:
+        type: "str"
+        description: 
+          - "the witness configuration for the sigsum primary"
+          - "supported in sigsum-log version >=v0.12.0"
 
       sigsum_primary_url:
         type: "str"

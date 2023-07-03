@@ -212,30 +212,27 @@
     secondary_pubkey_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/secondary-pubkey"
   when: sigsum_secondary_pubkey != "" and sigsum_secondary_pubkey_file == ""
 
+- name: register sigsum_policy_file
+  ansible.builtin.set_fact:
+    sigsum_policy_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/witness-config"
+  when: sigsum_policy_file is not defined and sigsum_witness_config != ""
+
+- name: write witness config
+  become_user: "{{ sigsum_user }}"
+  become: true
+  ansible.builtin.copy:
+    content: "{{sigsum_witness_config}}"
+    dest: "{{ sigsum_policy_file }}"
+  when: sigsum_policy_file is defined and sigsum_witness_config != ""
+
 - name: Install primary configuration file
   template:
     src: "config.toml.j2"
     dest: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/config.toml"
   vars:
     primary: true
-    external_endpoint: "{{ sigsum_external_endpoint }}"
-    internal_endpoint: "{{sigsum_internal_endpoint}}"
-    trillian_rpc_server: "{{sigsum_trillian_rpc_server}}"
-    backend: "{{sigsum_backend}}"
-    url_prefix: "{{sigsum_url_prefix}}"
-    timeout: "{{sigsum_timeout}}"
-    key_file: "{{sigsum_key_file}}"
-    interval: "{{sigsum_interval}}"
-    log_file: "{{sigsum_log_file}}"
-    log_level: "{{sigsum_log_level}}"
-    witnesses: "{{sigsum_witnesses}}"
-    max_range: "{{sigsum_max_range}}"
-    rate_limit_file: "{{sigsum_rate_limit_file}}"
-    allow_test_domain: "{{sigsum_allow_test_domain}}"
-    secondary_url: "{{sigsum_secondary_url}}"
-    secondary_pubkey_file: "{{sigsum_secondary_pubkey_file}}"
-    sth_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/sth"
-    trillian_tree_id_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/tree-id"
+    sigsum_sth_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/sth"
+    sigsum_trillian_tree_id_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/tree-id"
   become_user: "{{ sigsum_user }}"
   become: true
   when: sigsum_role == "primary"
@@ -246,18 +243,8 @@
     dest: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/config.toml"
   vars:
     secondary: true
-    external_endpoint: "{{ sigsum_external_endpoint }}"
-    internal_endpoint: "{{sigsum_internal_endpoint}}"
-    trillian_rpc_server: "{{sigsum_trillian_rpc_server}}"
-    backend: "{{sigsum_backend}}"
-    url_prefix: "{{ sigsum_url_prefix}}"
-    trillian_tree_id_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/tree-id"
-    timeout: "{{sigsum_timeout}}"
-    key_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/logkey"
-    interval: "{{sigsum_interval}}"
-    log_file: "{{sigsum_log_file}}"
-    log_level: "{{sigsum_log_level}}"
-    primary_url: "{{sigsum_primary_url}}"
+    sigsum_key_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/logkey"
+    sigsum_trillian_tree_id_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/tree-id"
   become_user: "{{ sigsum_user }}"
   become: true
   when: sigsum_role == "secondary"
