@@ -223,7 +223,6 @@
   ansible.builtin.copy:
     content: "{{sigsum_witness_config}}"
     dest: "{{ sigsum_policy_file }}"
-    force: no
   when: sigsum_policy_file is defined and sigsum_witness_config != ""
 
 - name: Install primary configuration file
