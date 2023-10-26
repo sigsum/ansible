@@ -8,6 +8,17 @@ CHANGELOG
    :local:
 
 
+v1.0.3
+======
+
+Release Summary
+---------------
+
+Bumped default sigsum-go version from v0.3.4 to v0.6.1.
+
+Bumped default log-go version v0.12.0 to v0.14.0.
+
+
 v1.0.2
 ======
 
