@@ -64,7 +64,7 @@ argument_specs:
 
       sigsum_log_version:
         type: "str"
-        default: v0.14.0
+        default: v0.14.1
         description: "The sigsum log repository version"
 
       sigsum_logname:

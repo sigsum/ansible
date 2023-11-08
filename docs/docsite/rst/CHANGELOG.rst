@@ -8,6 +8,16 @@ CHANGELOG
    :local:
 
 
+v1.0.4
+======
+
+Release Summary
+---------------
+
+Bumped default log-go version from v0.14.0 to v0.14.1.
+
+
+
 v1.0.3
 ======
 
