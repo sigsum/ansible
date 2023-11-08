@@ -21,8 +21,7 @@ collections:
   source: git+https://git.glasklar.is/sigsum/admin/ansible.git 
 ```
 
-In order to install a particular branch of the repo, you can append
-',BRANCHNAME' to the URL.
+In order to install a particular branch of the repo, you can append ``,BRANCHNAME`` to the URL.
 
 ## Usage
 
@@ -54,17 +53,15 @@ mysql_users:
 
 ### Modules
 Name | Description
---- | ---
+---- | -----------
 [sigsum.ansible.sigsum](docs/rst/sigsum_role.rst)|Setup and run a sigsum log instance.
 [sigsum.ansible.mariadb](docs/rst/mariadb_role.rst)|Setup a mariadb server for sigsum.
 
 ## Testing with molecule
 
-This collection can be tested with molecule. It requires a running docker daemon
-on the system and python.
+This collection can be tested with molecule. It requires a running docker daemon on the system and python.
 
-`make converge` sets up the virtualenv and install molecule, then runs the test
-suite.
+`make converge` sets up the virtualenv and install molecule, then runs the test suite.
 
 To destroy the containers created for the playbook, use `make destroy`.
 
