@@ -1,38 +1,62 @@
-Role Name
-=========
+litebastion
+===========
+An ansible role that installs, configures, and manages the [litebastion
+software][] as a systemd service.
 
-A brief description of the role goes here.
+The litebastion service will be restarted on changes to the systemd service
+file, the selected software version, and runtime options.  The litebastion
+service is reloaded with SIGHUP if the list of backends is updated.
+
+Read [C2SP/https-bastion][] to learn more about what a bastion host is.
+
+[litebastion software]: https://github.com/FiloSottile/litetlog?tab=readme-ov-file#litebastion
+[C2SP/https-bastion]: https://github.com/C2SP/C2SP/blob/main/https-bastion.md
 
 Requirements
 ------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+The target system must have systemd installed and running.
 
 Role Variables
 --------------
-
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+See [defaults/main.yml](./defaults/main.yml).
 
 Dependencies
 ------------
+None
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+Install the role
+----------------
+Import the `litebastion` role as `./roles/litebastion`:
+
+    $ ansible-galaxy install git+https://git.glasklar.is/sigsum/admin/litebastion,main -p ./roles
+
+Replace `main` with a git-tag to checkout a fixed version.
+
+Use the `--force` flag to downgrade or upgrade the version.
+
+View installed roles
+---------------------
+View roles that were installed in the `./roles` directory:
+
+    $ ansible-galaxy role list -p ./roles
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+To be added.
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+Hints:
+- `systemctl status litebastion`
+- `journalctl -u litebastion.service`
 
 License
 -------
+BSD 2-Clause License
 
-BSD
+Contact
+-------
+* IRC room `#sigsum`
+* Matrix room `#sigsum` which is bridged with IRC
+* The [sigsum-general][] mailing list
 
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+[sigsum-general]: https://lists.sigsum.org/mailman3/postorius/lists/sigsum-general.lists.sigsum.org/
