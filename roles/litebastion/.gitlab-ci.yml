@@ -1,0 +1,13 @@
+stages:
+  - lint
+
+ansible-lint:
+  stage: lint
+  image: debian:stable
+  before_script:
+    - apt update
+    - apt install -y ansible-lint
+    - ansible --version
+    - ansible-lint --version
+  script:
+    - ansible-lint .
