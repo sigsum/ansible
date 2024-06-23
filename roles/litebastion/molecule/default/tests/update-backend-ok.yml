@@ -1,0 +1,22 @@
+---
+- name: "Update backends.conf: verify"
+  hosts: all
+  become: true
+  tasks:
+    - name: Check number of litebastion service starts
+      ansible.builtin.shell: "journalctl -u litebastion.service | grep 'Started litebastion.service' | wc -l"
+      register: num_start
+
+    - name: Check number of litebastion service reloads
+      ansible.builtin.shell: "journalctl -u litebastion.service | grep 'Reloaded litebastion.service' | wc -l"
+      register: num_reload
+
+    - name: Assert that there's a single start
+      assert:
+        that: num_start.stdout|int == 1
+        fail_msg: "Want one litebastion start, have {{ num_start.stdout }}"
+
+    - name: Assert that there's a single reload
+      assert:
+        that: num_reload.stdout|int == 1
+        fail_msg: "Want one litebastion reload, have {{ num_reload.stdout }}"
