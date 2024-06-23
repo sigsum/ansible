@@ -3,9 +3,9 @@ litebastion
 An ansible role that installs, configures, and manages the [litebastion
 software][] as a systemd service.
 
-The litebastion service will be restarted on changes to the systemd service
-file, the selected software version, and runtime options.  The litebastion
-service is reloaded with SIGHUP if the list of backends is updated.
+The litebastion service is restarted on changes to (i) the systemd service file,
+(ii) the selected software version, or (iii) the software's runtime options.
+The litebastion service is reloaded with SIGHUP if the list of backends change.
 
 Read [C2SP/https-bastion][] to learn more about what a bastion host is.
 
@@ -14,7 +14,9 @@ Read [C2SP/https-bastion][] to learn more about what a bastion host is.
 
 Requirements
 ------------
-The target system must have systemd installed and running.
+The target system must have systemd installed and running.  The system's package
+manager must also install a recent enough golang compiler (or the playbook will
+fail).  On Debian stable, you may set `litebastion_debian_backports: true`.
 
 Role Variables
 --------------
@@ -51,7 +53,12 @@ View roles that were installed in the `./roles` directory:
 Example Playbook
 ----------------
 
-To be added.
+    ---
+    - name: Example playbook
+      hosts: all
+      become: true
+      roles:
+        - litebastion
 
 Hints:
 - `systemctl status litebastion`
