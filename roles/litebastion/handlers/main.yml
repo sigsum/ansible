@@ -1,2 +1,40 @@
 ---
-# handlers file for litebastion
+- name: Go install
+  ansible.builtin.command:
+    cmd: "go install {{ litebastion_gomodule }}@{{ litebastion_goversion }}"
+  become_user: "{{ litebastion_user }}"
+  become: true
+  changed_when: true # silence ansible-lint
+
+- name: Restrict usage
+  ansible.builtin.file:
+    path: "{{ litebastion_directory }}/go/bin/litebastion"
+    owner: "{{ litebastion_user }}"
+    group: "{{ litebastion_user }}"
+    mode: "0700"
+
+- name: Set bind permissions
+  community.general.capabilities:
+    path: "{{ litebastion_directory }}/go/bin/litebastion"
+    capability: "cap_net_bind_service+ep"
+    state: present
+
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Reload litebastion
+  ansible.builtin.systemd:
+    name: litebastion
+    state: reloaded
+
+- name: Restart litebastion
+  ansible.builtin.systemd:
+    name: litebastion
+    state: restarted
+
+- name: Enable litebastion
+  ansible.builtin.systemd:
+    name: litebastion.service
+    state: started
+    enabled: true

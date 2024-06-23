@@ -1,2 +1,23 @@
 ---
-# defaults file for litebastion
+litebastion_gomodule: filippo.io/litetlog/cmd/litebastion
+litebastion_goversion: v0.1.1
+litebastion_user: litebastion
+litebastion_directory: /var/lib/litebastion
+litebastion_debian_backports: false
+
+# ACME and listen options.  Note that it is essential to use port 443 because
+# certificates are acquired with Let's Encrypt.  It is of course possible to run
+# on an address like localhost:8443 if SRV_ADDR:443 is somehow redirected to it.
+litebastion_email: sysadmin@example.org
+litebastion_host: bastion.example.org
+litebastion_listen: localhost:8443
+
+# Allowed witness backends (key hashes, hint: sigsum-key hash -k key.pub).
+# Note: litebastion will be reloaded with SIGHUP on changes to this list, and
+# already connected backends will not be affected by such reloading.
+litebastion_backends:
+  - 2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae # sha256("foo")
+  - fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9 # sha256("bar")
+
+# Verbose logging options
+litebastion_h2v: false

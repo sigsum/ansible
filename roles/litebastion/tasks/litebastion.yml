@@ -1,0 +1,48 @@
+---
+- name: Add system user
+  ansible.builtin.user:
+    name: "{{ litebastion_user }}"
+    system: true
+    shell: /sbin/nologin
+    home: "{{ litebastion_directory }}"
+    create_home: true
+    state: present
+
+- name: Record program version
+  ansible.builtin.copy:
+    content: "{{ litebastion_gomodule }}@{{ litebastion_goversion }}"
+    dest: "{{ litebastion_directory }}/litebastion.version"
+    mode: "0644"
+    owner: "{{ litebastion_user }}"
+    group: "{{ litebastion_user }}"
+  notify:
+    - Go install
+    - Restrict usage
+    - Set bind permissions
+
+- name: Configure backends file
+  ansible.builtin.template:
+    src: backends.j2
+    dest: "{{ litebastion_directory }}/backends.conf"
+    owner: "{{ litebastion_user }}"
+    group: "{{ litebastion_user }}"
+    mode: "0644"
+  register: backends
+
+- name: Configure systemd service
+  ansible.builtin.template:
+    src: litebastion.service.j2
+    dest: /etc/systemd/system/litebastion.service
+    mode: "0644"
+  register: configure
+  notify:
+    - Reload systemd daemon
+    - Restart litebastion
+    - Enable litebastion
+
+- name: Reload backends
+  ansible.builtin.command:
+    cmd: "/bin/true"
+  notify: Reload litebastion
+  when: backends.changed and not configure.changed
+  changed_when: true # silence ansible-lint

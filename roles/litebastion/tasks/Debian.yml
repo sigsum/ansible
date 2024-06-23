@@ -1,0 +1,21 @@
+---
+- name: Set default package source
+  ansible.builtin.set_fact:
+    package_source: "{{ ansible_distribution_release }}"
+
+- name: Set backports package source
+  ansible.builtin.set_fact:
+    package_source: "{{ ansible_distribution_release }}-backports"
+  when: litebastion_debian_backports|bool
+
+- name: Update package source
+  ansible.builtin.apt_repository:
+    repo: "deb http://deb.debian.org/debian {{ package_source }} main"
+    state: present
+    update_cache: true
+
+- name: Install system packages
+  ansible.builtin.apt:
+    name: golang-go
+    default_release: "{{ package_source }}"
+    state: present

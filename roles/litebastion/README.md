@@ -18,7 +18,15 @@ The target system must have systemd installed and running.
 
 Role Variables
 --------------
-See [defaults/main.yml](./defaults/main.yml).
+You will likely want to set the following variables:
+
+* `litebastion_goversion`
+* `litebastion_email`
+* `litebastion_host`
+* `litebastion_listen`
+* `litebastion_backends`
+
+See [defaults/main.yml](./defaults/main.yml) for details.
 
 Dependencies
 ------------
