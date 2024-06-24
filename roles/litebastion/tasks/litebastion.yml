@@ -19,6 +19,7 @@
     - Go install
     - Restrict usage
     - Set bind permissions
+    - Restart litebastion
 
 - name: Configure backends file
   ansible.builtin.template:
