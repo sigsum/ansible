@@ -4,7 +4,7 @@
     cmd: "go install {{ litebastion_gomodule }}@{{ litebastion_goversion }}"
   become_user: "{{ litebastion_user }}"
   become: true
-  changed_when: true # silence ansible-lint
+  changed_when: true  # silence ansible-lint
 
 - name: Restrict usage
   ansible.builtin.file:

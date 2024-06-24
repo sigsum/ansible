@@ -45,4 +45,4 @@
     cmd: "/bin/true"
   notify: Reload litebastion
   when: backends.changed and not configure.changed
-  changed_when: true # silence ansible-lint
+  changed_when: true  # silence ansible-lint
