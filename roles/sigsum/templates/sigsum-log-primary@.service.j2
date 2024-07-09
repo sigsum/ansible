@@ -7,6 +7,9 @@ After=trillian-server.service
 Type=simple
 User={{ sigsum_user }}
 StandardError=journal
+{% if sigsum_yubihsm_agent %}
+Environment=SSH_AGENT_SOCK={{ sigsum_yubihsm_agent_socket }}
+{% endif %}
 ExecStart=/usr/bin/sigsum-log-start.sh primary %i {{ sigsum_url_prefix }}
 Restart=on-failure
 

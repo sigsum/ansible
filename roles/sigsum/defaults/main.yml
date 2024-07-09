@@ -49,6 +49,8 @@ sigsum_interval: 30s
 sigsum_log_file: ""
 sigsum_log_level: "info"
 sigsum_backend: "trillian"
+sigsum_yubihsm_agent: false
+sigsum_yubihsm_agent_socket: "/home/{{ sigsum_user }}/.local/run/yubihsm-agent.socket"
 
 # Primary
 sigsum_witnesses: ""
