@@ -1,0 +1,16 @@
+---
+
+- ansible.builtin.include_tasks: yubihsm_connector.yml
+
+# BUG: Assuming environment variables GOBIN and GOPATH are not set.
+- name: Install yubihsm-agent (go install)
+  when: false
+  ansible.builtin.command:
+    cmd: go install sigsum.org/yubihsm/cmd/yubihsm-agent@latest
+    creates: ./go/bin/yubihsm-agent
+
+- name: Git clone yubihsm-agent source
+
+- name: Build yubihsm-agent from source
+
+- name: Install yubihsm-agent systemd unit files

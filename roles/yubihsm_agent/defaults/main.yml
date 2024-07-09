@@ -1,0 +1,4 @@
+---
+
+yubihsm_agent_enabled: false
+yubihsm_agent_socket: "/run/yubihsm-agent.sock"
