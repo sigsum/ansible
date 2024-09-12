@@ -1,6 +1,6 @@
 FROM {{ item.image }}
 
-ENV container docker
+ENV container podman
 STOPSIGNAL SIGRTMIN+3
 
 RUN \

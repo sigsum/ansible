@@ -2,7 +2,7 @@
 dependency:
   name: galaxy
 driver:
-  name: docker
+  name: podman
 platforms:
   - name: sigsum-primary
     image: docker.io/library/debian:bullseye
