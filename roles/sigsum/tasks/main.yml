@@ -4,22 +4,6 @@
 # different versions of trillian and sigsum-log-go. For testing a new
 # version, or for keeping an instance of an older protocol alive.
 
-- name: Install golang-go
-  block:
-    - name: Add bookworm-backports source
-      ansible.builtin.copy:
-        content: 'deb https://ftp.acc.umu.se/debian bookworm-backports main'
-        dest: /etc/apt/sources.list.d/bookworm-backports.list
-        force: no
-    - name: Update cache
-      ansible.builtin.apt:
-        update_cache: yes
-    - name: Install from bookworm-backports
-      ansible.builtin.apt:
-        default_release: bookworm-backports
-        pkg: golang-go
-  when: ansible_distribution == 'Debian' and ansible_distribution_release == 'bookworm'
-
 - name: Install git
   apt:
     pkg: git
