@@ -1,7 +1,7 @@
 # sigsum ansible collection
 
 This repository contains the roles for deploying sigsum transparency logs with
-ansible.
+ansible on Debian-bookworm systems.
 
 ## Installing this collection
 

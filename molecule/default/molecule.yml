@@ -2,11 +2,11 @@
 dependency:
   name: galaxy
 driver:
-  name: docker
+  name: podman
 platforms:
   - name: sigsum-primary
-    image: docker.io/library/debian:bullseye
-    dockerfile: ../Dockerfile.debian.bullseye.j2
+    image: docker.io/library/debian:bookworm
+    dockerfile: ../Dockerfile.debian.bookworm.j2
     privileged: true 
     cgroupns_mode: private
     override_command: false
@@ -22,8 +22,8 @@ platforms:
       - 14784:14784
       - 14785:14785
   - name: sigsum-secondary
-    image: docker.io/library/debian:bullseye
-    dockerfile: ../Dockerfile.debian.bullseye.j2
+    image: docker.io/library/debian:bookworm
+    dockerfile: ../Dockerfile.debian.bookworm.j2
     cgroupns_mode: private
     override_command: false
     privileged: true 

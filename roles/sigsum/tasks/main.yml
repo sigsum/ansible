@@ -4,25 +4,25 @@
 # different versions of trillian and sigsum-log-go. For testing a new
 # version, or for keeping an instance of an older protocol alive.
 
-- name: Add bullseye-backports
-  ansible.builtin.copy:
-    content: 'deb https://ftp.acc.umu.se/debian bullseye-backports main'
-    dest: /etc/apt/sources.list.d/bullseye-backports.list
-    force: no
-  when: ansible_distribution == 'Debian' and ansible_distribution_release == 'bullseye'
+- name: Install golang-go
+  block:
+    - name: Add bookworm-backports source
+      ansible.builtin.copy:
+        content: 'deb https://ftp.acc.umu.se/debian bookworm-backports main'
+        dest: /etc/apt/sources.list.d/bookworm-backports.list
+        force: no
+    - name: Update cache
+      ansible.builtin.apt:
+        update_cache: yes
+    - name: Install from bookworm-backports
+      ansible.builtin.apt:
+        default_release: bookworm-backports
+        pkg: golang-go
+  when: ansible_distribution == 'Debian' and ansible_distribution_release == 'bookworm'
 
-- name: Install dependencies
+- name: Install git
   apt:
-    update_cache: yes
-    pkg:
-    - golang-1.19
-    - git
-
-- name: Create a symbolic link for go and golang-1.19
-  ansible.builtin.file:
-    dest: /usr/bin/go
-    src: /usr/lib/go-1.19/bin/go
-    state: link
+    pkg: git
 
 - name: Create {{ sigsum_user }} user for sigsum
   user:

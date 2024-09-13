@@ -1,7 +1,7 @@
 ---
 sigsum_logname: 'molecule-test'
 sigsum_role: primary
-sigsum_url_prefix:
+sigsum_url_prefix: testonly
 sigsum_log_level: "info"
 
 sigsum_external_endpoint: 0.0.0.0:14784
