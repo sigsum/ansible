@@ -6,6 +6,7 @@
 ---How to run all molecule tests
 
     $ molecule test
+    $ molecule test -s golang
 
 ---How to develop with molecule
 
@@ -16,6 +17,8 @@ Interactive deploy, debug, deploy again, and clean-up session:
     $ molecule login --host sigsum-secondary
     $ molecule converge
     $ molecule destroy
+
+To work with a different scenario like ./molecule/golang, use "-s golang".
 
 ---How to make a release
 

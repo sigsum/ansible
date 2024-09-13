@@ -1,0 +1,7 @@
+---
+- name: Install golang
+  ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
+
+- name: Ensure minimum Go version
+  ansible.builtin.include_tasks: min_version.yml
+  when: golang_ensure_min_version
