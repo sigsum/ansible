@@ -1,0 +1,11 @@
+[Unit]
+Description=implements Ed25519 signing for various backends using the ssh-agent protocol
+
+[Service]
+Type=exec
+StandardInput=socket
+ExecStart={{ sigsum_agent_home }}/.config/sigsum-agent/start.sh
+KillSignal=SIGHUP
+
+[Install]
+WantedBy=default.target

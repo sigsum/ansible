@@ -1,0 +1,10 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  roles:
+    - role: sigsum.ansible.golang
+    - role: sigsum.ansible.sigsum_agent
+      sigsum_agent_user: svc1-sigsum-agent
+    - role: sigsum.ansible.sigsum_agent
+      sigsum_agent_user: svc2-sigsum-agent

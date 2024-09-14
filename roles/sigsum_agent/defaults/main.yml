@@ -1,0 +1,30 @@
+---
+# The source and version of the Go-installed sigsum-agent.
+sigsum_agent_gosource: "sigsum.org/key-mgmt/cmd/sigsum-agent"
+sigsum_agent_goversion: "v0.2.3"
+
+# Users that need to sign via a sigsum-agent instance must be added to the UNIX
+# group `sigsum_agent_user`.  Sign using the `sigsum_agent_socket` UNIX socket.
+sigsum_agent_user: "svc-sigsum-agent"
+sigsum_agent_home: "/var/lib/{{ sigsum_agent_user }}"
+sigsum_agent_run: "/var/run/{{ sigsum_agent_user }}"
+sigsum_agent_socket: "{{ sigsum_agent_run }}/sigsum-agent.socket"
+
+#
+# Exactly one of the following backends must be defined:
+#
+#   - Soft key
+#   - YubiHSM: TODO
+#
+# Uncomment and fill out the details for the backend of your choise.
+#
+
+# Configuration of a soft key in unencrypted OpenSSH private-key format
+# sigsum_agent_soft_key: |
+#   -----BEGIN OPENSSH PRIVATE KEY-----
+#   b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+#   QyNTUxOQAAACCO4aHR2nyFPJn4ZNrXQfQXS9PT75VOQ9EY8cvEjSB11QAAAJglIIhNJSCI
+#   TQAAAAtzc2gtZWQyNTUxOQAAACCO4aHR2nyFPJn4ZNrXQfQXS9PT75VOQ9EY8cvEjSB11Q
+#   AAAEAcgaf4muf4aZNKcPqFArM/g0WI2f+l/VCmGLiSR8YowI7hodHafIU8mfhk2tdB9BdL
+#   09PvlU5D0Rjxy8SNIHXVAAAAEW1vbGVjdWxlOnRlc3Rvbmx5AQIDBA==
+#   -----END OPENSSH PRIVATE KEY-----

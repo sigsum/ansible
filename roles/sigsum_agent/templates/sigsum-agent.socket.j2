@@ -1,0 +1,9 @@
+[Unit]
+Description=sigsum-agent activation socket
+
+[Socket]
+ListenStream={{ sigsum_agent_socket }}
+SocketMode=0660
+
+[Install]
+WantedBy=sockets.target
