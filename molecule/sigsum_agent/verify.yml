@@ -1,0 +1,99 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Add user alice
+      ansible.builtin.user:
+        user: alice
+        state: present
+
+    - name: Install ssh-keygen
+      ansible.builtin.apt:
+        name: openssh-client
+        state: present
+
+    - name: Read public key
+      ansible.builtin.openssh_keypair:
+        path: /var/lib/svc1-sigsum-agent/.config/sigsum-agent/key
+        type: ed25519
+        force: no  # don't overwrite the existing key
+      register: key
+
+    - name: Save public key
+      ansible.builtin.copy:
+        content: "{{ key.public_key }}"
+        dest: /home/alice/key.pub
+        owner: alice
+        group: alice
+        mode: '0644'
+
+    - name: Create test message
+      ansible.builtin.copy:
+        content: "test message"
+        dest: /home/alice/msg
+        owner: alice
+        group: alice
+        mode: '0644'
+
+    - name: Sign message and fail because of group permissions
+      ansible.builtin.shell: |
+        export SSH_AUTH_SOCK=/var/run/svc1-sigsum-agent/sigsum-agent.socket
+        ssh-keygen -Y sign -n testonly -f /home/alice/key.pub /home/alice/msg
+      become_user: alice
+      become: true
+      register: sign
+      ignore_errors: true
+
+    - name: Assert that signing failed
+      ansible.builtin.assert:
+        that: sign.rc != 0
+        fail_msg: "Signing succeeded without alice being part of sigsum-agent group"
+
+    - name: Add alice to the first sigsum-agent group
+      ansible.builtin.user:
+        user: alice
+        groups: svc1-sigsum-agent
+        append: yes
+
+    - name: Sign message
+      ansible.builtin.shell: |
+        export SSH_AUTH_SOCK=/var/run/svc1-sigsum-agent/sigsum-agent.socket
+        ssh-keygen -Y sign -n testonly -f /home/alice/key.pub /home/alice/msg
+      become_user: alice
+      become: true
+      register: sign
+
+    - name: Verify message
+      ansible.builtin.shell: ssh-keygen -Y check-novalidate -n testonly -f /home/alice/key.pub -s /home/alice/msg.sig </home/alice/msg
+      become_user: alice
+      become: true
+
+    - name: Try to read the private key and fail
+      ansible.builtin.shell: cat /var/lib/svc1-sigsum-agent/.config/sigsum-agent/key
+      become_user: alice
+      become: true
+      register: keyread
+      ignore_errors: true
+
+    - name: Assert that private key reading failed
+      ansible.builtin.assert:
+        that: keyread.rc != 0
+        fail_msg: "Private key leaked to alice: {{ keyread.stdout }}"
+
+    - name: Add alice to the second sigsum-agent group
+      ansible.builtin.user:
+        user: alice
+        groups: svc2-sigsum-agent
+        append: yes
+
+    - name: Sign message
+      ansible.builtin.shell: |
+        export SSH_AUTH_SOCK=/var/run/svc2-sigsum-agent/sigsum-agent.socket
+        ssh-keygen -Y sign -n testonly -f /home/alice/key.pub /home/alice/msg
+      become_user: alice
+      become: true
+
+    - name: Verify message
+      ansible.builtin.shell: ssh-keygen -Y check-novalidate -n testonly -f /home/alice/key.pub -s /home/alice/msg.sig </home/alice/msg
+      become_user: alice
+      become: true

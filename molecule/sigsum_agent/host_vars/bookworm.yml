@@ -1,0 +1,13 @@
+---
+golang_ensure_min_version: true
+golang_debian_use_backports: true
+
+# ssh-keygen -t ed25519 -f /tmp/key -C "molecule:testonly"
+sigsum_agent_soft_key: |
+  -----BEGIN OPENSSH PRIVATE KEY-----
+  b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+  QyNTUxOQAAACCO4aHR2nyFPJn4ZNrXQfQXS9PT75VOQ9EY8cvEjSB11QAAAJglIIhNJSCI
+  TQAAAAtzc2gtZWQyNTUxOQAAACCO4aHR2nyFPJn4ZNrXQfQXS9PT75VOQ9EY8cvEjSB11Q
+  AAAEAcgaf4muf4aZNKcPqFArM/g0WI2f+l/VCmGLiSR8YowI7hodHafIU8mfhk2tdB9BdL
+  09PvlU5D0Rjxy8SNIHXVAAAAEW1vbGVjdWxlOnRlc3Rvbmx5AQIDBA==
+  -----END OPENSSH PRIVATE KEY-----

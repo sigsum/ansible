@@ -1,0 +1,112 @@
+---
+###
+# Setup users and directories
+###
+- name: "Add sigsum-agent user ({{ sigsum_agent_user }})"
+  ansible.builtin.user:
+    name: "{{ sigsum_agent_user }}"
+    home: "{{ sigsum_agent_home }}"
+    create_home: true
+    system: true
+    state: present
+
+- name: Setup configuration directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: "{{ sigsum_agent_user }}"
+    group: "{{ sigsum_agent_user }}"
+    mode: '0700'
+    state: directory
+  loop:
+    - "{{ sigsum_agent_home }}"  # ensures this is not group and world readable
+    - "{{ sigsum_agent_home }}/.config/systemd/user"
+    - "{{ sigsum_agent_home }}/.config/sigsum-agent"
+
+- name: Setup shared group directory
+  ansible.builtin.file:
+    path: "{{ sigsum_agent_run }}"
+    owner: "{{ sigsum_agent_user }}"
+    group: "{{ sigsum_agent_user }}"
+    state: directory
+    mode: '0770'
+
+###
+# (Re)install sigsum-agent if the program version or compiler changed
+###
+- name: Check Go version
+  ansible.builtin.command: "go version"
+  changed_when: false  # not relevant for idempotence
+  register: go_version
+
+- name: Check if the user's Go binary needs (re)installing
+  ansible.builtin.copy:
+    content: |
+      go version: {{ go_version.stdout }}
+      go module source: {{ sigsum_agent_gosource }}
+      go module version: {{ sigsum_agent_goversion }}
+    dest: "{{ sigsum_agent_home }}/.config/sigsum-agent/metadata"
+    owner: "{{ sigsum_agent_user }}"
+    group: "{{ sigsum_agent_user }}"
+    mode: '0600'
+  notify:
+    - "Go install as user {{ sigsum_agent_user }}"
+    - "Restart sigsum-agent service (--user {{ sigsum_agent_user }})"
+
+###
+# Configure sigsum-agent
+###
+- name: Add sigsum-agent start script
+  ansible.builtin.template:
+    src: start.sh.j2
+    dest: "{{ sigsum_agent_home }}/.config/sigsum-agent/start.sh"
+    owner: "{{ sigsum_agent_user }}"
+    group: "{{ sigsum_agent_user }}"
+    mode: '0700'
+  notify: "Restart sigsum-agent service (--user {{ sigsum_agent_user }})"
+
+- name: Add sigsum-agent soft key
+  ansible.builtin.copy:
+    content: "{{ sigsum_agent_soft_key }}"
+    dest: "{{ sigsum_agent_home }}/.config/sigsum-agent/key"
+    owner: "{{ sigsum_agent_user }}"
+    group: "{{ sigsum_agent_user }}"
+    mode: '0600'
+  when: sigsum_agent_soft_key is defined
+  notify: "Restart sigsum-agent service (--user {{ sigsum_agent_user }})"
+
+###
+# Configure systemd
+###
+- name: Check the user's lingering status
+  ansible.builtin.stat:
+    path: "/var/lib/systemd/linger/{{ sigsum_agent_user }}"
+  register: lingering
+
+- name: Enable systemd lingering
+  ansible.builtin.command: "loginctl enable-linger {{ sigsum_agent_user }}"
+  when: not lingering.stat.exists
+  changed_when: true  # silence ansible-lint
+
+- name: Configure systemd socket activation
+  ansible.builtin.template:
+    src: sigsum-agent.socket.j2
+    dest: "{{ sigsum_agent_home }}/.config/systemd/user/sigsum-agent.socket"
+    owner: "{{ sigsum_agent_user }}"
+    group: "{{ sigsum_agent_user }}"
+    mode: '0600'
+  notify:
+    - "Reload systemd daemon (--user {{ sigsum_agent_user }})"
+    - "Restart sigsum-agent socket (--user {{ sigsum_agent_user }})"
+    - "Enable sigsum-agent socket (--user {{ sigsum_agent_user }})"
+
+- name: Configure systemd sigsum-agent service
+  ansible.builtin.template:
+    src: sigsum-agent.service.j2
+    dest: "{{ sigsum_agent_home }}/.config/systemd/user/sigsum-agent.service"
+    owner: "{{ sigsum_agent_user }}"
+    group: "{{ sigsum_agent_user }}"
+    mode: '0600'
+  notify:
+    - "Reload systemd daemon (--user {{ sigsum_agent_user }})"
+    - "Restart sigsum-agent service (--user {{ sigsum_agent_user }})"
+    - "Enable sigsum-agent service (--user {{ sigsum_agent_user }})"

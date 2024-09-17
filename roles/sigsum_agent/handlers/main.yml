@@ -1,0 +1,45 @@
+---
+- name: "Go install as user {{ sigsum_agent_user }}"
+  ansible.builtin.command: "go install {{ sigsum_agent_gosource }}@{{ sigsum_agent_goversion }}"
+  become_user: "{{ sigsum_agent_user }}"
+  become: true
+  changed_when: true  # silence ansible-lint
+
+- name: "Reload systemd daemon (--user {{ sigsum_agent_user }})"
+  ansible.builtin.systemd:
+    daemon_reload: true
+    scope: user
+  become_user: "{{ sigsum_agent_user }}"
+  become: true
+
+- name: "Restart sigsum-agent socket (--user {{ sigsum_agent_user }})"
+  ansible.builtin.systemd:
+    name: sigsum-agent.socket
+    state: restarted
+    scope: user
+  become_user: "{{ sigsum_agent_user }}"
+  become: true
+
+- name: "Restart sigsum-agent service (--user {{ sigsum_agent_user }})"
+  ansible.builtin.systemd:
+    name: sigsum-agent.service
+    state: restarted
+    scope: user
+  become_user: "{{ sigsum_agent_user }}"
+  become: true
+
+- name: "Enable sigsum-agent socket (--user {{ sigsum_agent_user }})"
+  ansible.builtin.systemd:
+    name: sigsum-agent.socket
+    enabled: true
+    scope: user
+  become_user: "{{ sigsum_agent_user }}"
+  become: true
+
+- name: "Enable sigsum-agent service (--user {{ sigsum_agent_user }})"
+  ansible.builtin.systemd:
+    name: sigsum-agent.service
+    enabled: true
+    scope: user
+  become_user: "{{ sigsum_agent_user }}"
+  become: true
