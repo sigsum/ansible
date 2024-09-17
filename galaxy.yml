@@ -6,6 +6,7 @@ version: 1.0.4
 authors:
   - Foxboron
   - ln5
+  - rgdd
 tags:
   - sigsum
 license_file: LICENSE
