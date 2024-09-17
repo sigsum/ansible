@@ -3,19 +3,21 @@
   hosts: all
   gather_facts: no
   pre_tasks:
-  - name: 
-    raw: 'apt update'
+  - name: Install python3
+    raw: 'apt update && apt install -y python3'
     args:
       executable: /bin/bash
-  - name: install python
-    raw: 'apt install -y python3'
-    args:
-      executable: /bin/bash
-  - name: install sudo
-    raw: 'apt install -y sudo'
-    args:
-      executable: /bin/bash
-  - name: install systemd
-    raw: 'apt install -y systemd'
-    args:
-      executable: /bin/bash
+
+  - name: Install basic dependencies
+    ansible.builtin.apt:
+      name:
+        - sudo
+        - systemd
+      state: present
+
+  - name: Install debug tooling
+    ansible.builtin.apt:
+      name:
+        - less
+        - vim
+      state: present
