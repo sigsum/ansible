@@ -1,0 +1,28 @@
+---
+- name: Verify
+  hosts: bookworm
+  become: true
+  vars:
+    molecule_role_success: false
+  tasks:
+    - name: Run role with minimum version check on (expect failure)
+      block:
+        - ansible.builtin.include_role:
+            name: sigsum.ansible.golang
+          vars:
+            golang_ensure_min_version: true  # Should cause failure
+
+        - name: Mark success
+          ansible.builtin.set_fact:
+            molecule_role_success: true
+
+      rescue:
+        - name: Check that the role failed due to too low Go version
+          ansible.builtin.assert:
+            that: '"Go version is less than" in ansible_failed_result.msg'
+            fail_msg: "Expected failiure due to too low Go version in bookworm"
+
+      always:
+        - name: Ensure that the role failed
+          ansible.builtin.assert:
+            that: not molecule_role_success
