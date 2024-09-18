@@ -11,5 +11,5 @@
 - name: Require the minimum Go version
   ansible.builtin.assert:
     that:
-      - "go_version_num is version('{{ golang_min_version }}', '>=')"
+      - "go_version_num is version(golang_min_version, '>=')"
     fail_msg: "Go version is less than {{ golang_min_version }}"
