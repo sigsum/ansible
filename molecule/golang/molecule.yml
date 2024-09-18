@@ -7,6 +7,6 @@ platforms:
   - name: bookworm
     image: docker.io/library/debian:bookworm
   - name: bookworm-backports
-    image: docker.io/library/debian:bookworm # the golang role will configure backports
+    image: docker.io/library/debian:bookworm  # the golang role will configure backports
   - name: trixie
     image: docker.io/library/debian:trixie
