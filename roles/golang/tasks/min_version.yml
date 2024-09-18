@@ -5,7 +5,7 @@
   register: go_version
 
 - name: Parse Go version number
-  set_fact:
+  ansible.builtin.set_fact:
     go_version_num: "{{ go_version.stdout | regex_search('go([0-9.]+)') | regex_replace('go', '') }}"
 
 - name: Require the minimum Go version
