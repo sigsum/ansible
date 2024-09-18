@@ -1,7 +1,7 @@
 ---
 - name: Get Go version output
   ansible.builtin.command: go version
-  changed_when: false # not relevant for idempotence
+  changed_when: false  # not relevant for idempotence
   register: go_version
 
 - name: Parse Go version number
