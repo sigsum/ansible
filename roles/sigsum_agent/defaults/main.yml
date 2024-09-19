@@ -11,15 +11,15 @@ sigsum_agent_run: "/var/run/{{ sigsum_agent_user }}"
 sigsum_agent_socket: "{{ sigsum_agent_run }}/sigsum-agent.socket"
 
 #
-# Exactly one of the following backends must be defined:
+# Exactly one of the following private-key backends must be defined:
 #
 #   - Soft key
-#   - YubiHSM: TODO
+#   - YubiHSM
 #
 # Uncomment and fill out the details for the backend of your choise.
 #
 
-# Configuration of a soft key in unencrypted OpenSSH private-key format
+# Configuration of a soft key (unencrypted OpenSSH private-key format)
 # sigsum_agent_soft_key: |
 #   -----BEGIN OPENSSH PRIVATE KEY-----
 #   b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
@@ -28,3 +28,10 @@ sigsum_agent_socket: "{{ sigsum_agent_run }}/sigsum-agent.socket"
 #   AAAEAcgaf4muf4aZNKcPqFArM/g0WI2f+l/VCmGLiSR8YowI7hodHafIU8mfhk2tdB9BdL
 #   09PvlU5D0Rjxy8SNIHXVAAAAEW1vbGVjdWxlOnRlc3Rvbmx5AQIDBA==
 #   -----END OPENSSH PRIVATE KEY-----
+
+# Configuration of a YubiHSM
+# sigsum_agent_yubihsm_passphrase: "changeme"  # auth password for session establishment
+sigsum_agent_yubihsm_auth_id: "200"  # default auth id for logs in core/key-mgmt
+sigsum_agent_yubihsm_key_id: "500"  # default key id for logs in core/key-mgmt
+sigsum_agent_yubihsm_addr: "localhost"  # default yubihsm-connector value
+sigsum_agent_yubihsm_port: "12345"  # default yubihsm-connector value

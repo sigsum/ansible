@@ -1,0 +1,76 @@
+We have soft-key molecule tests for the role at large.  Testing of the YubiHSM
+backend is however manual.  See below for hints on how to do such testing.
+
+---Install the YubiHSM software
+
+Packages yubihsm-connector and yubihsm-shell are available in Debian backports.
+If the YubiHSM device has been provisioned, only the connector is required.
+
+---Generate test key
+
+    $ yubihsm-shell
+    yubihsm> connect
+    Session keepalive set up to run every 15 seconds
+    yubihsm> session open 1 password
+    Created session 0
+    yubihsm> list objects 0
+    Found 1 object(s)
+    id: 0x0001, type: authentication-key, algo: aes128-yubico-authentication, sequence: 0, label: DEFAULT AUTHKEY CHANGE THIS ASAP
+    yubihsm> generate asymmetric 0 4711 "test key with id 4711 and domain 3" 3 exportable-under-wrap,sign-eddsa ed25519
+    Generated Asymmetric key 0x1267
+    yubihsm> list objects 0
+    Found 2 object(s)
+    id: 0x0001, type: authentication-key, algo: aes128-yubico-authentication, sequence: 0, label: DEFAULT AUTHKEY CHANGE THIS ASAP
+    id: 0x1267, type: asymmetric-key, algo: ed25519, sequence: 0, label: test key with id 4711 and domain 3
+    yubihsm> get pubkey 0 4711 asymmetric-key testkey.pem
+    yubihsm>
+    ^D
+
+---Deploy the sigsum_agent role on host example.org
+
+The variables that match the above provisioning would be:
+
+    ---
+    - hosts: example.org
+      roles:
+        - role: sigsum.ansible.sigsum_agent
+          sigsum_agent_user: "svc-test-sigsum-agent"
+          sigsum_agent_yubihsm_passphrase: "password"
+          sigsum_agent_yubihsm_auth_id: "1"
+          sigsum_agent_yubihsm_key_id: "4711"
+
+---Check that the sigsum-agent service is running
+
+    alice $ sudo XDG_RUNTIME_DIR=/run/user/$(id -u svc-test-sigsum-agent) -u svc-test-sigsum-agent systemctl --user status sigsum-agent.socket
+    alice $ sudo XDG_RUNTIME_DIR=/run/user/$(id -u svc-test-sigsum-agent) -u svc-test-sigsum-agent systemctl --user status sigsum-agent.service
+
+---Try signing with user alice
+
+    alice # usermod -aG svc-test-sigsum-agent alice
+    alice $ ls -l /var/run/svc-test-sigsum-agent/sigsum-agent.socket
+    alice $ export SSH_AUTH_SOCK=/var/run/svc-test-sigsum-agent/sigsum-agent.socket
+    alice $ ssh-add -L > key.pub
+    alice $ echo "test message" > msg
+    alice $ ssh-keygen -Y sign -n test -f key.pub msg
+    alice $ ssh-keygen -Y check-novalidate -n test -f key.pub -s msg.sig <msg
+
+---Clean-up what ansible installed
+
+    alice # gpasswd -d alice svc-test-sigsum-agent
+    alice # loginctl disable-linger svc-test-sigsum-agent
+    alice # userdel -r svc-test-sigsum-agent
+
+---Clean-up the generated key
+
+    $ yubihsm-shell
+    Using default connector URL: http://localhost:12345
+    yubihsm> connect
+    Session keepalive set up to run every 15 seconds
+    yubihsm> session open 1 password
+    Created session 0
+    yubihsm> delete 0 4711 asymmetric-key
+    yubihsm> list objects 0
+    Found 1 object(s)
+    id: 0x0001, type: authentication-key, algo: aes128-yubico-authentication, sequence: 0, label: DEFAULT AUTHKEY CHANGE THIS ASAP
+    yubihsm>
+    ^D
