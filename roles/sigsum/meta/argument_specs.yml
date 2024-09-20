@@ -163,14 +163,6 @@ argument_specs:
           - "error"
         description: "log level"
 
-          # Implementation detail
-#       sigsum_configdir_base: '.config/sigsum'
-#         type: "str"
-#         requires: true
-#         default: '.config/sigsum'
-#         description: "configdir_base"
-
-
 # # Primary
       sigsum_witnesses:
         type: "str"

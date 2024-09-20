@@ -7,9 +7,6 @@ sigsum_log_level: "info"
 sigsum_external_endpoint: 0.0.0.0:14784
 sigsum_internal_endpoint: 0.0.0.0:14785
 
-# sigsum_secondary_url: 'http://192.168.19.1:14785/'
-# sigsum_secondary_pubkey_file: '/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/secondary-pubkey'
-
 sigsum_trillian_sequencer_interval: 100ms
 sigsum_trillian_batch_size: 1000
 
