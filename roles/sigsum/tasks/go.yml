@@ -1,0 +1,26 @@
+---
+- name: Get {{ item.name }}'s install info
+  ansible.builtin.stat:
+    path: "{{ sigsum_home }}/go/bin/{{ item.name }}"
+  register: sigsum_bininfo
+  ignore_errors: true
+
+- name: Get {{ item.name }}'s old checksum
+  ansible.builtin.set_fact:
+    sigsum_binchecksum: "{{ sigsum_bininfo.stat.checksum if sigsum_bininfo.stat.exists else 'uninstalled' }}"
+
+- name: Ensure {{ item.name }} is installed
+  ansible.builtin.command: "go install {{ item.source }}/cmd/{{ item.name }}@{{ item.version }}"
+  changed_when: false  # not relevant for idempotence
+  become_user: "{{ sigsum_user }}"
+  become: true
+
+- name: Get {{ item.name }}'s install info
+  ansible.builtin.stat:
+    path: "{{ sigsum_home }}/go/bin/{{ item.name }}"
+  register: sigsum_bininfo
+
+- name: Trigger handlers
+  ansible.builtin.command: "/bin/true"
+  notify: "{{ item.handlers }}"
+  when: sigsum_binchecksum != sigsum_bininfo.stat.checksum

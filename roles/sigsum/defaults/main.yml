@@ -1,6 +1,7 @@
 ---
 
 sigsum_user: sigsum
+sigsum_home: "/var/sigsum/{{ sigsum_user }}"
 sigsum_db_name: test
 
 # For sigsum_db_pw, create a '!vault' blob by running the following
@@ -13,23 +14,26 @@ sigsum_db_name: test
 #
 sigsum_db_pw: changeme
 
-# TODO: Add the ability to run multiple instances of different
-# versions on a single node. Combinations of trillian and sigsum-go
-# dependencies might be necessary too.
+#
+# The default Go module source and version can be overriden by setting "source"
+# and "version".  For example, sigsum-key could be installed with this syntax:
+# - { name: "sigsum-key", source: "sigsum.org/sigsum-go", version: "v0.6.1" }
+#
+sigsum_lib_version: "v0.6.1"  # default version for tools from sigsum-go
+sigsum_tools_from_sigsum_go:
+  - { name: "sigsum-key" }
 
-sigsum_trillian_srcdir: /usr/src/trillian
-sigsum_trillian_repo: https://github.com/google/trillian
-sigsum_trillian_version: v1.5.2
+sigsum_log_version: "v0.14.1"  # default version for tools from log-go
+sigsum_tools_from_log_go:
+  - { name: "sigsum-mktree" }
+  - { name: "sigsum-log-primary" }
+  - { name: "sigsum-log-secondary" }
 
-sigsum_lib_srcdir: /usr/src/sigsum-lib-go
-sigsum_lib_repo: https://git.glasklar.is/sigsum/core/sigsum-go
-sigsum_lib_version: v0.6.1
-
-sigsum_log_srcdir: /usr/src/sigsum-log-go
-sigsum_log_repo: https://git.glasklar.is/sigsum/core/log-go
-sigsum_log_version: v0.14.1
-
-sigsum_configdir_base: '.config/sigsum'
+sigsum_trillian_version: "v1.5.2"  # default version for tools from trillian
+sigsum_tools_from_trillian_go:
+  - { name: "createtree" }
+  - { name: "trillian_log_signer" }
+  - { name: "trillian_log_server" }
 
 sigsum_trillian_sequencer_interval: 100ms
 sigsum_trillian_batch_size: 100

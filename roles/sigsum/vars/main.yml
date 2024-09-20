@@ -1,0 +1,36 @@
+---
+sigsum_install_tools_from_sigsum_go: >
+  [{% for tool in sigsum_tools_from_sigsum_go %}
+    {{
+      {
+        'name': tool.name,
+        'source': tool.source | default('sigsum.org/sigsum-go'),
+        'version': tool.version | default(sigsum_lib_version),
+        'handlers': [],
+      }
+    }},
+  {% endfor %}]
+
+sigsum_install_tools_from_log_go: >
+  [{% for tool in sigsum_tools_from_log_go %}
+    {{
+      {
+        'name': tool.name,
+        'source': tool.source | default('sigsum.org/log-go'),
+        'version': tool.version | default(sigsum_log_version),
+        'handlers': ['restart sigsum primary node', 'restart sigsum secondary node'],
+      }
+    }},
+  {% endfor %}]
+
+sigsum_install_tools_from_trillian_go: >
+  [{% for tool in sigsum_tools_from_trillian_go %}
+    {{
+      {
+        'name': tool.name,
+        'source': tool.source | default('github.com/google/trillian'),
+        'version': tool.version | default(sigsum_trillian_version),
+        'handlers': ['restart trillian',],
+      }
+    }},
+  {% endfor %}]

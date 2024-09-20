@@ -7,7 +7,7 @@ After=trillian-server.service
 Type=simple
 User={{ sigsum_user }}
 StandardError=journal
-ExecStart=/usr/bin/sigsum-log-start.sh secondary %i {{ sigsum_url_prefix }}
+ExecStart={{ sigsum_home }}/.local/bin/sigsum-log-start.sh secondary %i {{ sigsum_url_prefix }}
 Restart=on-failure
 
 [Install]
