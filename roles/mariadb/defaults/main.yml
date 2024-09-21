@@ -3,9 +3,6 @@
 mysql_root_user: root
 mysql_root_password: ""
 
-mysql_database:
-  - test
-
 mysql_users:
   - user: "sigsum"
     password: "changeme"
