@@ -20,4 +20,5 @@
       name:
         - less
         - vim
+        - curl
       state: present
