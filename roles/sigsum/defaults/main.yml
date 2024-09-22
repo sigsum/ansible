@@ -100,25 +100,28 @@ sigsum_trillian_batch_size: 100
 #                   Configure Sigsum log server options                        #
 ################################################################################
 #
+# Options that have zero-values and no comments are not essential to configure
+# explicitly.  Focus on understanding the other options that matter more.
+#
 # Read more:
 # https://git.glasklar.is/sigsum/core/log-go/-/blob/main/doc/setup.md#primary-node
 # https://git.glasklar.is/sigsum/core/log-go/-/blob/main/doc/setup.md#secondary-node
 #
-sigsum_url_prefix: sigsum  # would result in log URL example.org/sigsum
-sigsum_timeout: 10s  # timeout for ongoing requests
+sigsum_url_prefix: sigsum  # would result in a log URL like example.org/sigsum
+sigsum_timeout: 10s  # timeout for ongoing requests (sane default)
 sigsum_interval: 30s  # how often the log updates its (co)signed tree head
 sigsum_log_file: ""
 sigsum_log_level: "info"
-sigsum_external_endpoint: "127.0.0.1:14784"  # where public endpoints like get-tree-head are served
+sigsum_external_endpoint: "127.0.0.1:14784"  # where public endpoints are served (e.g., get-tree-head)
 sigsum_internal_endpoint: "127.0.0.1:14785"  # where internal endpoints are served (for "secondary stuff")
 sigsum_trillian_rpc_server: "localhost:6962"  # where the Trillian log-server listens for requests
-sigsum_backend: "trillian"
+sigsum_backend: "trillian" # the only production-worthy backend that is supported (sane default)
 sigsum_trillian_tree_id_file: ""
 sigsum_key_file: ""
 
 # Ignored unless sigsum_role == "primary"
 sigsum_policy_file: ""
-sigsum_rate_limit_file: ""
+sigsum_rate_limit_file: ""  # See https://git.glasklar.is/sigsum/core/log-go/-/blob/main/doc/rate-limit.md#sigsum-log-rate-limiting
 sigsum_allow_test_domain: false
 sigsum_secondary_url: ""
 sigsum_secondary_pubkey_file: ""
@@ -126,4 +129,4 @@ sigsum_sth_file: ""
 sigsum_max_range: 4096
 
 # Ignored unless sigsum_role == "secondary"
-sigsum_primary_url: ""
+sigsum_primary_url: ""  # where the primary log's public endpoints are served
