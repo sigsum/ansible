@@ -2,24 +2,25 @@
 sigsum_logname: 'molecule-test'
 sigsum_role: primary
 sigsum_url_prefix: testonly
+sigsum_interval: 3s
 sigsum_log_level: "info"
 
 sigsum_external_endpoint: 0.0.0.0:14784
 sigsum_internal_endpoint: 0.0.0.0:14785
 
-# sigsum_secondary_url: 'http://192.168.19.1:14785/'
-# sigsum_secondary_pubkey_file: '/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/secondary-pubkey'
-
 sigsum_trillian_sequencer_interval: 100ms
 sigsum_trillian_batch_size: 1000
 
+sigsum_tools_from_sigsum_go:
+  - { name: "sigsum-key" }  # needed by sigsum role
+  - { name: "sigsum-submit" }  # needed by verify.yml
+  - { name: "sigsum-verify" }  # needed by verify.yml
+
 sigsum_db_pw: changeme
+sigsum_db_name: test
 
 mysql_root_user: root
 mysql_root_password: "{{sigsum_db_pw}}" 
-mysql_database:
-  - test
-
 mysql_users:
   - user: sigsum
     password: changeme

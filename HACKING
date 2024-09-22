@@ -14,8 +14,7 @@
 Interactive deploy, debug, deploy again, and clean-up session:
 
     $ molecule converge
-    $ molecule login --host sigsum-primary
-    $ molecule login --host sigsum-secondary
+    $ molecule login
     $ molecule converge
     $ molecule destroy
 

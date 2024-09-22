@@ -1,94 +1,70 @@
 ---
-
 # TODO: Consider adding support for multiple instances running
 # different versions of trillian and sigsum-log-go. For testing a new
 # version, or for keeping an instance of an older protocol alive.
+# WIP: just need make systemd into user-scope now as well.
 
-- name: Install git
-  apt:
-    pkg: git
-
-- name: Create {{ sigsum_user }} user for sigsum
+- name: Add sigsum user ({{ sigsum_user }})
   user:
     name: "{{ sigsum_user }}"
     password_lock: true
-    home: "/var/sigsum/{{ sigsum_user }}"
+    home: "{{ sigsum_home }}"
     system: true
 
-- name: Prepare Trillian source directory
-  file:
-    path: "{{ sigsum_trillian_srcdir }}"
-    state: directory
-    mode: 0755
+- name: Configure user directories
+  ansible.builtin.file:
+    path: "{{ item }}"
     owner: "{{ sigsum_user }}"
     group: "{{ sigsum_user }}"
-
-- name: Prepare git.sigsum.org/sigsum-go source directory
-  file:
-    path: "{{ sigsum_lib_srcdir }}"
+    mode: '0700'
     state: directory
-    mode: 0755
+  loop:
+    - "{{ sigsum_home }}"
+    - "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}"
+    - "{{ sigsum_home }}/.local/bin"
+
+###
+# (Re)install Go programs and notify handlers if the resulting binaries changed.
+# A binary may change as a result of an updated Go compiler, changed Go module
+# version, etc.  The handlers that will run are defined in vars/main.yml.
+###
+- name: Ensure sigsum-go binaries are up-to-date
+  include_tasks: go.yml
+  loop: "{{ sigsum_install_tools_from_sigsum_go }}"
+
+- name: Ensure log-go binaries are up-to-date
+  include_tasks: go.yml
+  loop: "{{ sigsum_install_tools_from_log_go }}"
+
+- name: Ensure trillian-go binaries are up-to-date
+  include_tasks: go.yml
+  loop: "{{ sigsum_install_tools_from_trillian_go }}"
+
+###
+# Install scripts
+###
+- name: Install sigsum-log start-up script
+  copy:
+    src: sigsum-log-start.sh
+    dest: "{{ sigsum_home }}/.local/bin/sigsum-log-start.sh"
     owner: "{{ sigsum_user }}"
     group: "{{ sigsum_user }}"
+    mode: '0700'
 
-- name: Prepare git.sigsum.org/log-go source directory
-  file:
-    path: "{{ sigsum_log_srcdir }}"
-    state: directory
-    mode: 0755
+- name: Install trillian resetdb script
+  copy:
+    src: "{{ item }}"
+    dest: "{{ sigsum_home }}/.local/bin/{{ item }}"
     owner: "{{ sigsum_user }}"
     group: "{{ sigsum_user }}"
+    mode: '0700'
+  loop:
+    - storage.sql  # required by resetdb.sh
+    - resetdb.sh  # modified to use the locally checked-out storage.sql
 
-- name: Clone Trillian
-  become: yes
-  become_user: "{{ sigsum_user }}"
-  git:
-    repo: "{{ sigsum_trillian_repo }}"
-    version: "{{ sigsum_trillian_version }}"
-    dest: "{{ sigsum_trillian_srcdir }}"
-
-- name: Build and install Trillian
-  become: yes
-  become_user: "{{ sigsum_user }}"
-  command: go install ./...
-  args:
-    chdir: "{{ sigsum_trillian_srcdir }}"
-
-- name: Clone git.sigsum.org/sigsum-go
-  become: yes
-  become_user: "{{ sigsum_user }}"
-  git:
-    repo: "{{ sigsum_lib_repo }}"
-    version: "{{ sigsum_lib_version }}"
-    dest: "{{ sigsum_lib_srcdir }}"
-
-- name: Build and install git.sigsum.org/sigsum-go
-  become: yes
-  become_user: "{{ sigsum_user }}"
-  command: go install ./...
-  args:
-    chdir: "{{ sigsum_lib_srcdir }}"
-
-- name: Clone git.sigsum.org/log-go
-  become: yes
-  become_user: "{{ sigsum_user }}"
-  git:
-    repo: "{{ sigsum_log_repo }}"
-    version: "{{ sigsum_log_version }}"
-    dest: "{{ sigsum_log_srcdir }}"
-
-- name: Build and install git.sigsum.org/log-go
-  become: yes
-  become_user: "{{ sigsum_user }}"
-  shell: go install -ldflags="-X main.gitCommit=$(git describe --always)" ./...
-  args:
-    chdir: "{{ sigsum_log_srcdir }}"
-  notify:
-    - restart sigsum primary node
-    - restart sigsum secondary node
-
-# Try to create the database, if it sucsseeds, then we
-# should run the resetdb.sh script.
+###
+# Setup database
+###
 - name: check if database exists
   community.mysql.mysql_db:
     name: "{{ sigsum_db_name }}"
@@ -101,9 +77,7 @@
   when: database_exists.changed
   block:
     - name: Initiate db without password
-      command: "{{ sigsum_trillian_srcdir }}/scripts/resetdb.sh --force"
-      args:
-        chdir: "{{ sigsum_trillian_srcdir }}"
+      command: "{{ sigsum_home }}/.local/bin/resetdb.sh --force"
       environment:
         MYSQL_USER: "{{ sigsum_user }}"
         MYSQL_DATABASE: "{{ sigsum_db_name }}"
@@ -112,9 +86,7 @@
       when: mysql_root_password == ""
 
     - name: Initiate db with password
-      command: "{{ sigsum_trillian_srcdir }}/scripts/resetdb.sh --force"
-      args:
-        chdir: "{{ sigsum_trillian_srcdir }}"
+      command: "{{ sigsum_home }}/.local/bin/resetdb.sh --force"
       environment:
         MYSQL_USER: "{{ sigsum_user }}"
         MYSQL_DATABASE: "{{ sigsum_db_name }}"
@@ -123,12 +95,9 @@
         MYSQL_ROOT_PASSWORD: "{{ mysql_root_password }}"
       when: mysql_root_password != ""
 
-- name: Install sigsum-log startup script
-  copy:
-    src: sigsum-log-start.sh
-    dest: /usr/bin/sigsum-log-start.sh
-    mode: 0755
-
+###
+# Setup systemd
+###
 - name: Install service units
   template:
     src: "{{ item }}.service.j2"
@@ -149,19 +118,9 @@
     - trillian-signer
     - trillian-server
 
-- name: Prepare config directories for sigsum instance
-  file:
-    path: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}"
-    state: directory
-    mode: 0755
-    owner: "{{ sigsum_user }}"
-    group: "{{ sigsum_user }}"
-  become_user: "{{ sigsum_user }}"
-  become: true
-
 - name: register sigsum_key_file
   ansible.builtin.set_fact:
-    sigsum_key_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/logkey"
+    sigsum_key_file: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/logkey"
   when: sigsum_key_file == ""
 
 - name: write sigsum_key_file
@@ -173,32 +132,29 @@
     force: no
   when: sigsum_key != ""
 
-# This should not overwrite the file if it exists
-- name: generate sigsum key
-  become_user: "{{ sigsum_user }}"
-  become: true
-  command: "./go/bin/sigsum-key gen -o {{ sigsum_key_file }}"
+- name: Check if primary key needs to be generated
+  ansible.builtin.command: "/bin/true"
   args:
     creates: "{{ sigsum_key_file }}"
-    chdir: "/var/sigsum/{{sigsum_user}}"
+  notify: Generate primary key  # runs iff file does not exist
 
 - name: write secondary_pubkey_file
   become_user: "{{ sigsum_user }}"
   become: true
   ansible.builtin.copy:
     content: "{{sigsum_secondary_pubkey}}"
-    dest: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/secondary-pubkey"
+    dest: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/secondary-pubkey"
     force: no
   when: sigsum_secondary_pubkey != "" and sigsum_secondary_pubkey_file == ""
 
 - name: register secondary_pubkey_file
   ansible.builtin.set_fact:
-    secondary_pubkey_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/secondary-pubkey"
+    secondary_pubkey_file: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/secondary-pubkey"
   when: sigsum_secondary_pubkey != "" and sigsum_secondary_pubkey_file == ""
 
 - name: register sigsum_policy_file
   ansible.builtin.set_fact:
-    sigsum_policy_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/witness-config"
+    sigsum_policy_file: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/witness-config"
   when: sigsum_policy_file is not defined and sigsum_witness_config != ""
 
 - name: write witness config
@@ -212,11 +168,11 @@
 - name: Install primary configuration file
   template:
     src: "config.toml.j2"
-    dest: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/config.toml"
+    dest: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/config.toml"
   vars:
     primary: true
-    sigsum_sth_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/sth"
-    sigsum_trillian_tree_id_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/tree-id"
+    sigsum_sth_file: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/sth"
+    sigsum_trillian_tree_id_file: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/tree-id"
   become_user: "{{ sigsum_user }}"
   become: true
   when: sigsum_role == "primary"
@@ -224,15 +180,14 @@
 - name: Install secondary configuration file
   template:
     src: "config.toml.j2"
-    dest: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/config.toml"
+    dest: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/config.toml"
   vars:
     secondary: true
-    sigsum_key_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/logkey"
-    sigsum_trillian_tree_id_file: "/var/sigsum/{{sigsum_user}}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/tree-id"
+    sigsum_key_file: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/logkey"
+    sigsum_trillian_tree_id_file: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/tree-id"
   become_user: "{{ sigsum_user }}"
   become: true
   when: sigsum_role == "secondary"
-
 
 - name: Enable sigsum primary service units
   systemd:

@@ -1,10 +1,159 @@
 ---
-# This is an example playbook to execute Ansible tests.
-
-- name: Verify
-  hosts: all
-  gather_facts: false
+- name: Verify that primary log seems to work
+  hosts: sigsum-primary
+  vars_files:
+    - ../../roles/sigsum/defaults/main.yml  # role defaults
+    - host_vars/sigsum-primary.yml  # what converge used
+  vars:
+    test_user: alice
+    test_home: /home/alice
+    test_num_messages: 2
   tasks:
-  - name: Example assertion
-    ansible.builtin.assert:
-      that: true
+    - name: Check that systemd services are running
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        state: started
+        enabled: true
+      loop:
+        - "sigsum-log-primary@{{ sigsum_logname }}"
+        - trillian-server
+        - trillian-signer
+      register: services
+      failed_when: services.changed
+
+    # TODO: run tests with a secondary that is started and enabled
+    - name: Check that secondary log is disabled and not running
+      ansible.builtin.systemd:
+        name: "sigsum-log-secondary@{{ sigsum_logname }}"
+        state: stopped
+        enabled: false
+      register: service
+      failed_when: service.changed == true
+
+    - name: "Add test user {{ test_user }}"
+      ansible.builtin.user:
+        name: "{{ test_user }}"
+        state: present
+
+    - name: Create directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        owner: "{{ test_user }}"
+        group: "{{ test_user }}"
+        mode: '0755'
+        state: directory
+      loop:
+        - "{{ test_home }}/.local/bin"
+        - "{{ test_home }}/.config/sigsum"
+
+    - name: Copy sigsum-go binaries
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ sigsum_home }}/go/bin/{{ item }}"
+        dest: "{{ test_home }}/.local/bin/{{ item }}"
+        owner: "{{ test_user }}"
+        group: "{{ test_user }}"
+        mode: '0755'
+      loop:
+        - sigsum-key
+        - sigsum-submit
+        - sigsum-verify
+
+    - name: Copy primary log's public key
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/logkey.pub"
+        dest: "{{ test_home }}/.config/sigsum/{{ sigsum_logname }}.pub"
+        owner: "{{ test_user }}"
+        group: "{{ test_user }}"
+        mode: '0644'
+
+    - name: Convert primary log's public key to hex format
+      ansible.builtin.command: >
+        "{{ test_home }}/.local/bin/sigsum-key" hex
+          -k "{{ test_home }}/.config/sigsum/{{ sigsum_logname }}.pub"
+      register: logkey
+      become_user: "{{ test_user }}"
+      become: true
+
+    - name: Create sigsum policy without witnesses
+      ansible.builtin.copy:
+        content: |
+          log {{ logkey.stdout }} http://localhost:{{ sigsum_external_endpoint | split(':') | last }}/{{ sigsum_url_prefix }}
+          quorum none
+        dest: "{{ test_home }}/.config/sigsum/policy"
+        owner: "{{ test_user }}"
+        group: "{{ test_user }}"
+        mode: '0644'
+
+    # Note: by generating a new key we can run `molecule verify` multiple times
+    # with the same messages 0..test_num_messages and still get new log entries.
+    - name: Generate submit key for testing
+      ansible.builtin.command: >
+        "{{ test_home }}/.local/bin/sigsum-key" gen
+          -o "{{ test_home }}/.config/sigsum/key"
+      become_user: "{{ test_user }}"
+      become: true
+
+    - name: Create test messages
+      ansible.builtin.copy:
+        content: "test message {{ item }}"
+        dest: "{{ test_home }}/msg-{{ item }}"
+      loop: "{{ range(0, test_num_messages) }}"
+      become_user: "{{ test_user }}"
+      become: true
+
+    - name: Ensure sigsum-submit is happy (no old proof files)
+      ansible.builtin.file:
+        path: "{{ test_home }}/msg-{{item }}.proof"
+        state: absent
+      loop: "{{ range(0, test_num_messages) }}"
+
+    - name: Log test messages
+      ansible.builtin.command: |
+        "{{ test_home }}/.local/bin/sigsum-submit" \
+          -k "{{ test_home }}/.config/sigsum/key" \
+          -p "{{ test_home }}/.config/sigsum/policy" \
+          "{{ test_home }}/msg-{{ item }}"
+      loop: "{{ range(0, test_num_messages) }}"
+      become_user: "{{ test_user }}"
+      become: true
+
+    - name: Verify test messages
+      ansible.builtin.shell: |
+        "{{ test_home }}/.local/bin/sigsum-verify" \
+          -k "{{ test_home }}/.config/sigsum/key.pub" \
+          -p "{{ test_home }}/.config/sigsum/policy" \
+          "{{ test_home }}/msg-{{ item }}.proof" <"{{ test_home }}/msg-{{ item }}"
+      loop: "{{ range(0, test_num_messages) }}"
+      become_user: "{{ test_user }}"
+      become: true
+
+    - name: Remove proof files
+      ansible.builtin.file:
+        path: "{{ test_home }}/msg-{{ item }}.proof"
+        state: absent
+      loop: "{{ range(0, test_num_messages) }}"
+
+    # Note: this will not result in new log entries, but the proofs will be
+    # based on the same latest tree head.  Which means we will be getting some
+    # less trivial proof queries (>1 node hash) being sent to the log server.
+    - name: Attempt to log test messages again
+      ansible.builtin.command: |
+        "{{ test_home }}/.local/bin/sigsum-submit" \
+          -k "{{ test_home }}/.config/sigsum/key" \
+          -p "{{ test_home }}/.config/sigsum/policy" \
+          "{{ test_home }}/msg-{{ item }}"
+      loop: "{{ range(0, test_num_messages) }}"
+      become_user: "{{ test_user }}"
+      become: true
+
+    - name: Verify new proofs for the same test messages
+      ansible.builtin.shell: |
+        "{{ test_home }}/.local/bin/sigsum-verify" \
+          -k "{{ test_home }}/.config/sigsum/key.pub" \
+          -p "{{ test_home }}/.config/sigsum/policy" \
+          "{{ test_home }}/msg-{{ item }}.proof" <"{{ test_home }}/msg-{{ item }}"
+      loop: "{{ range(0, test_num_messages) }}"
+      become_user: "{{ test_user }}"
+      become: true
