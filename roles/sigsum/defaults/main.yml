@@ -11,8 +11,8 @@ sigsum_role: "primary"  # must be "primary" or "secondary"
 sigsum_key: ""
 
 # The Ed25519 public key of the secondary log server in OpenSSH format.  Will be
-# ignored unless sigsum_role == "primary".  In other words, if you are confuring
-# the key with sigsum_role == "secondary" the appropriate option is sigsum_key.
+# ignored unless sigsum_role == "primary".  In other words, if you are
+# configuring the key with sigsum_role == "secondary" you should use sigsum_key.
 sigsum_secondary_pubkey: ""
 
 # The witnesses that should be recognized by the primary log server in Sigsum
@@ -34,7 +34,7 @@ sigsum_witness_config: ""
 
 # This option only affects file paths on the local system.  To set a log name
 # that is externally visible, serve the log on a domain like example.org, and
-# optionally set `sigsum_url_prefix` to extend the log's base URL with a path.
+# optionally set sigsum_url_prefix to extend the log's base URL with a path.
 #
 # TODO: this option is confusing and should likely not be here.
 sigsum_logname: sigsum
@@ -59,9 +59,10 @@ sigsum_db_name: test
 #                   Tune which Go dependencies are installed                   #
 ################################################################################
 #
-# The default Go module source and version can be overriden by setting "source"
+# The default Go module source and version can be overridden by setting "source"
 # and "version".  For example, sigsum-key could be installed with this syntax:
-# - { name: "sigsum-key", source: "sigsum.org/sigsum-go", version: "v0.6.1" }
+#
+#   - { name: "sigsum-key", source: "sigsum.org/sigsum-go", version: "v0.6.1" }
 #
 # Note: the listed tools are required for the sigsum role to function.  So,
 # ensure to only extend the list of tools if you override the defaults.
@@ -76,7 +77,7 @@ sigsum_tools_from_log_go:
   - { name: "sigsum-log-primary" }
   - { name: "sigsum-log-secondary" }
 
-sigsum_trillian_version: "v1.5.2"  # default version for tools from trillian
+sigsum_trillian_version: "v1.5.2"  # default version for tools from Trillian
 sigsum_tools_from_trillian_go:
   - { name: "createtree" }
   - { name: "trillian_log_signer" }
@@ -110,7 +111,7 @@ sigsum_log_file: ""
 sigsum_log_level: "info"
 sigsum_external_endpoint: "127.0.0.1:14784"  # where public endpoints like get-tree-head are served
 sigsum_internal_endpoint: "127.0.0.1:14785"  # where internal endpoints are served (for "secondary stuff")
-sigsum_trillian_rpc_server: "localhost:6962"  # where the trillian log-server listens for requests
+sigsum_trillian_rpc_server: "localhost:6962"  # where the Trillian log-server listens for requests
 sigsum_backend: "trillian"
 sigsum_trillian_tree_id_file: ""
 sigsum_key_file: ""
