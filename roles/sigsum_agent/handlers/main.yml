@@ -1,10 +1,4 @@
 ---
-- name: "Go install as user {{ sigsum_agent_user }}"
-  ansible.builtin.command: "go install {{ sigsum_agent_gosource }}@{{ sigsum_agent_goversion }}"
-  become_user: "{{ sigsum_agent_user }}"
-  become: true
-  changed_when: true  # silence ansible-lint
-
 - name: "Reload systemd daemon (--user {{ sigsum_agent_user }})"
   ansible.builtin.systemd:
     daemon_reload: true

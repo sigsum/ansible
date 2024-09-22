@@ -33,24 +33,31 @@
 ###
 # (Re)install sigsum-agent if the program version or compiler changed
 ###
-- name: Check Go version
-  ansible.builtin.command: "go version"
-  changed_when: false  # not relevant for idempotence
-  register: go_version
+- name: Get sigsum-agent install info
+  ansible.builtin.stat:
+    path: "{{ sigsum_agent_home }}/go/bin/sigsum-agent"
+  register: sigsum_agent_bininfo
+  ignore_errors: true
 
-- name: Check if the user's Go binary needs (re)installing
-  ansible.builtin.copy:
-    content: |
-      go version: {{ go_version.stdout }}
-      go module source: {{ sigsum_agent_gosource }}
-      go module version: {{ sigsum_agent_goversion }}
-    dest: "{{ sigsum_agent_home }}/.config/sigsum-agent/metadata"
-    owner: "{{ sigsum_agent_user }}"
-    group: "{{ sigsum_agent_user }}"
-    mode: '0600'
-  notify:
-    - "Go install as user {{ sigsum_agent_user }}"
-    - "Restart sigsum-agent service (--user {{ sigsum_agent_user }})"
+- name: Get sigsum-agent old checksum
+  ansible.builtin.set_fact:
+    sigsum_agent_binchecksum: "{{ sigsum_agent_bininfo.stat.checksum if sigsum_agent_bininfo.stat.exists else 'uninstalled' }}"
+
+- name: Ensure sigsum-agent is installed
+  ansible.builtin.command: "go install {{ sigsum_agent_gosource}}@{{ sigsum_agent_goversion}}"
+  changed_when: false  # not relevant for idempotence
+  become_user: "{{ sigsum_agent_user }}"
+  become: true
+
+- name: Get sigsum-agent install info
+  ansible.builtin.stat:
+    path: "{{ sigsum_agent_home }}/go/bin/sigsum-agent"
+  register: sigsum_agent_bininfo
+
+- name: Trigger handlers
+  ansible.builtin.command: "/bin/true"
+  notify: "Restart sigsum-agent service (--user {{ sigsum_agent_user }})"
+  when: sigsum_agent_binchecksum != sigsum_agent_bininfo.stat.checksum
 
 ###
 # Configure sigsum-agent
