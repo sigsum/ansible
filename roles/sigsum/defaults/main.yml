@@ -55,7 +55,6 @@ sigsum_log_level: "info"
 sigsum_backend: "trillian"
 
 # Primary
-sigsum_witnesses: ""
 sigsum_max_range: 4096
 sigsum_rate_limit_file: ""
 sigsum_allow_test_domain: false
