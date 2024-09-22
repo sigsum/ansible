@@ -1,8 +1,13 @@
 ---
-
 sigsum_user: sigsum
 sigsum_home: "/var/sigsum/{{ sigsum_user }}"
 sigsum_db_name: test
+
+sigsum_logname: sigsum
+sigsum_role: "primary"
+sigsum_secondary_pubkey: ""
+sigsum_witness_config: ""
+sigsum_key: ""
 
 # For sigsum_db_pw, create a '!vault' blob by running the following
 # command and put the result it in a host_vars/ file. To avoid a newline
@@ -38,30 +43,29 @@ sigsum_tools_from_trillian_go:
 sigsum_trillian_sequencer_interval: 100ms
 sigsum_trillian_batch_size: 100
 
-sigsum_logname: sigsum
-sigsum_url_prefix: sigsum
-
-sigsum_role: "primary"
-
-sigsum_external_endpoint: "127.0.0.1:14784"
-sigsum_internal_endpoint: "127.0.0.1:14785"
-sigsum_trillian_rpc_server: "localhost:6962"
-sigsum_timeout: 10s
-sigsum_key: ""
-sigsum_key_file: ""
-sigsum_interval: 30s
+###
+# Tune command-line options that are passed to the Sigsum log server.
+###
+sigsum_url_prefix: sigsum  # would result in log URL example.org/sigsum
+sigsum_timeout: 10s  # timeout for ongoing requests
+sigsum_interval: 30s  # how often the log updates its (co)signed tree head
 sigsum_log_file: ""
 sigsum_log_level: "info"
+sigsum_external_endpoint: "127.0.0.1:14784"  # where public endpoints like get-tree-head are served
+sigsum_internal_endpoint: "127.0.0.1:14785"  # where internal endpoints are served (for "secondary stuff")
+sigsum_trillian_rpc_server: "localhost:6962"  # where the trillian log-server listens for requests
 sigsum_backend: "trillian"
+sigsum_trillian_tree_id_file: ""
+sigsum_key_file: ""
 
-# Primary
-sigsum_max_range: 4096
+# Options that are ignored unless sigsum_role == "primary"
+sigsum_policy_file: ""
 sigsum_rate_limit_file: ""
 sigsum_allow_test_domain: false
 sigsum_secondary_url: ""
-sigsum_secondary_pubkey: ""
 sigsum_secondary_pubkey_file: ""
-sigsum_witness_config: ""
+sigsum_sth_file: ""
+sigsum_max_range: 4096
 
-# Secondary
+# Options that are ignored unless sigsum_role == "secondary"
 sigsum_primary_url: ""
