@@ -1,23 +1,71 @@
 ---
-
 sigsum_user: sigsum
 sigsum_home: "/var/sigsum/{{ sigsum_user }}"
-sigsum_db_name: test
+sigsum_role: "primary"  # must be "primary" or "secondary"
 
-# For sigsum_db_pw, create a '!vault' blob by running the following
-# command and put the result it in a host_vars/ file. To avoid a newline
-# in the value, press C-d twice.
+# The Ed25519 private-key of the log server.  Can either be an unencrypted
+# OpenSSH private-key, or an OpenSSH public-key.  If it is a public key, the
+# private key must be accessible when using the ssh-agent protocol.
+#
+# A fresh key is generated and stored on disk for subsequent use if omitted.
+sigsum_key: ""
+
+# The Ed25519 public key of the secondary log server in OpenSSH format.  Will be
+# ignored unless sigsum_role == "primary".  In other words, if you are
+# configuring the key with sigsum_role == "secondary" you should use sigsum_key.
+sigsum_secondary_pubkey: ""
+
+# The witnesses that should be recognized by the primary log server in Sigsum
+# policy-file format.  Below is an example configuration to get you started.
+#
+#    witness example.org/foo e833b2909b71b461773421c77884d85243bf0cd872e9152a923dc67a747a33d8 https://foo.org/witness
+#    witness example.org/bar 52ea04b111556d962e2d16e692f9fa264a208e540694a85902cf853e5dda97ac https://example.org/bar/witnessops
+#    quorum none
+#
+# Note that the first identifier is a *human-meaningful name* that you can set
+# arbitrarily.  Using the witness' self-proclaimed URL-style identifier is
+# however a best practise.  The public Ed25519 key is in hex format.  The final
+# URL is where the witness serves its publicly reachable endpoints.
+#
+# Read more:
+# https://git.glasklar.is/sigsum/core/sigsum-go/-/blob/main/doc/policy.md
+#
+sigsum_witness_config: ""
+
+# This option only affects file paths on the local system.  To set a log name
+# that is externally visible, serve the log on a domain like example.org, and
+# optionally set sigsum_url_prefix to extend the log's base URL with a path.
+#
+# TODO: this option is confusing and should likely not be here.
+sigsum_logname: sigsum
+
+################################################################################
+#                            Database configuration                            #
+################################################################################
+#
+# For sigsum_db_pw, create a '!vault' blob by running the following command and
+# put the result it in a host_vars/ file. To avoid a newline in the value, press
+# C-d twice.
+#
 #   ansible-vault encrypt_string --vault-id host@/etc/vault/$(hostname -s)_vault_secret
 #
-# WARNING: The unencrypted value will end up in a world readable file
-# on the target system.
+# WARNING: The unencrypted value will end up in a world readable file on the
+# target system.
 #
 sigsum_db_pw: changeme
+sigsum_db_name: test
 
+################################################################################
+#                   Tune which Go dependencies are installed                   #
+################################################################################
 #
-# The default Go module source and version can be overriden by setting "source"
+# The default Go module source and version can be overridden by setting "source"
 # and "version".  For example, sigsum-key could be installed with this syntax:
-# - { name: "sigsum-key", source: "sigsum.org/sigsum-go", version: "v0.6.1" }
+#
+#   - { name: "sigsum-key", source: "sigsum.org/sigsum-go", version: "v0.6.1" }
+#
+# Note: the listed tools are required for the sigsum role to function.  So,
+# ensure to only extend the list of tools if you override the defaults.
 #
 sigsum_lib_version: "v0.6.1"  # default version for tools from sigsum-go
 sigsum_tools_from_sigsum_go:
@@ -29,40 +77,56 @@ sigsum_tools_from_log_go:
   - { name: "sigsum-log-primary" }
   - { name: "sigsum-log-secondary" }
 
-sigsum_trillian_version: "v1.5.2"  # default version for tools from trillian
+sigsum_trillian_version: "v1.5.2"  # default version for tools from Trillian
 sigsum_tools_from_trillian_go:
   - { name: "createtree" }
   - { name: "trillian_log_signer" }
   - { name: "trillian_log_server" }
 
+################################################################################
+#                        Configure Trillian options                            #
+################################################################################
+#
+# How many leaves can be sequenced per time unit is capped by the below options.
+# A 100ms interval and a batch size of 100 results in at most 1000 leaves/s.
+#
+# Read more:
+# https://www.rgdd.se/post/trillian-log-sequencing-demystified/
+#
 sigsum_trillian_sequencer_interval: 100ms
 sigsum_trillian_batch_size: 100
 
-sigsum_logname: sigsum
-sigsum_url_prefix: sigsum
-
-sigsum_role: "primary"
-
-sigsum_external_endpoint: "127.0.0.1:14784"
-sigsum_internal_endpoint: "127.0.0.1:14785"
-sigsum_trillian_rpc_server: "localhost:6962"
-sigsum_timeout: 10s
-sigsum_key: ""
-sigsum_key_file: ""
-sigsum_interval: 30s
+################################################################################
+#                   Configure Sigsum log server options                        #
+################################################################################
+#
+# Options that have zero-values and no comments are not essential to configure
+# explicitly.  Focus on understanding the other options that matter more.
+#
+# Read more:
+# https://git.glasklar.is/sigsum/core/log-go/-/blob/main/doc/setup.md#primary-node
+# https://git.glasklar.is/sigsum/core/log-go/-/blob/main/doc/setup.md#secondary-node
+#
+sigsum_url_prefix: sigsum  # would result in a log URL like example.org/sigsum
+sigsum_timeout: 10s  # timeout for ongoing requests (sane default)
+sigsum_interval: 30s  # how often the log updates its (co)signed tree head
 sigsum_log_file: ""
 sigsum_log_level: "info"
-sigsum_backend: "trillian"
+sigsum_external_endpoint: "127.0.0.1:14784"  # where public endpoints are served (e.g., get-tree-head)
+sigsum_internal_endpoint: "127.0.0.1:14785"  # where internal endpoints are served (for "secondary stuff")
+sigsum_trillian_rpc_server: "localhost:6962"  # where the Trillian log-server listens for requests
+sigsum_backend: "trillian" # the only production-worthy backend that is supported (sane default)
+sigsum_trillian_tree_id_file: ""
+sigsum_key_file: ""
 
-# Primary
-sigsum_witnesses: ""
-sigsum_max_range: 4096
-sigsum_rate_limit_file: ""
+# Ignored unless sigsum_role == "primary"
+sigsum_policy_file: ""
+sigsum_rate_limit_file: ""  # See https://git.glasklar.is/sigsum/core/log-go/-/blob/main/doc/rate-limit.md#sigsum-log-rate-limiting
 sigsum_allow_test_domain: false
 sigsum_secondary_url: ""
-sigsum_secondary_pubkey: ""
 sigsum_secondary_pubkey_file: ""
-sigsum_witness_config: ""
+sigsum_sth_file: ""
+sigsum_max_range: 4096
 
-# Secondary
-sigsum_primary_url: ""
+# Ignored unless sigsum_role == "secondary"
+sigsum_primary_url: ""  # where the primary log's public endpoints are served

@@ -1,64 +1,29 @@
-{% if sigsum_external_endpoint %}
-external-endpoint = "{{sigsum_external_endpoint}}"
-{% endif %}
-{% if sigsum_internal_endpoint %}
-internal-endpoint = "{{sigsum_internal_endpoint}}"
-{% endif %}
-{% if sigsum_trillian_rpc_server %}
-trillian-rpc-server = "{{sigsum_trillian_rpc_server}}"
-{% endif %}
-{% if sigsum_backend %}
-backend = "{{sigsum_backend}}"
-{% endif %}
-{% if sigsum_url_prefix %}
-url-prefix = "{{sigsum_url_prefix}}"
-{% endif %}
-trillian-tree-id-file = "{{sigsum_trillian_tree_id_file}}"
-{% if sigsum_timeout %}
-timeout = "{{sigsum_timeout}}"
-{% endif %}
-{% if sigsum_key_file %}
-key-file = "{{sigsum_key_file}}"
-{% endif %}
-{% if sigsum_interval %}
-interval = "{{sigsum_interval}}"
-{% endif %}
-{% if sigsum_log_file %}
-log-file = "{{sigsum_log_file}}"
-{% endif %}
-{% if sigsum_log_level %}
-log-level = "{{sigsum_log_level}}"
-{% endif %}
+#
+# This file is managed by ansible -- any manual edits will be overwritten.
+#
+{% if sigsum_url_prefix             -%}  url-prefix = "{{ sigsum_url_prefix }}"                        {{- '\n' }}{% endif %}
+{% if sigsum_timeout                -%}  timeout = "{{ sigsum_timeout }}"                              {{- '\n' }}{% endif %}
+{% if sigsum_interval               -%}  interval = "{{ sigsum_interval }}"                            {{- '\n' }}{% endif %}
+{% if sigsum_log_file               -%}  log-file = "{{ sigsum_log_file }}"                            {{- '\n' }}{% endif %}
+{% if sigsum_log_level              -%}  log-level = "{{ sigsum_log_level }}"                          {{- '\n' }}{% endif %}
+{% if sigsum_external_endpoint      -%}  external-endpoint = "{{ sigsum_external_endpoint }}"          {{- '\n' }}{% endif %}
+{% if sigsum_internal_endpoint      -%}  internal-endpoint = "{{ sigsum_internal_endpoint }}"          {{- '\n' }}{% endif %}
+{% if sigsum_trillian_rpc_server    -%}  trillian-rpc-server = "{{ sigsum_trillian_rpc_server }}"      {{- '\n' }}{% endif %}
+{% if sigsum_backend                -%}  backend = "{{ sigsum_backend }}"                              {{- '\n' }}{% endif %}
+{% if sigsum_trillian_tree_id_file  -%}  trillian-tree-id-file = "{{ sigsum_trillian_tree_id_file }}"  {{- '\n' }}{% endif %}
+{% if sigsum_key_file               -%}  key-file = "{{ sigsum_key_file }}"                            {{- '\n' }}{% endif %}
 
 {% if primary is defined %}
 [primary]
-{% if sigsum_witnesses %}
-witnesses = "{{sigsum_witnesses}}"
+{% if sigsum_policy_file is defined -%}  policy-file = "{{ sigsum_policy_file }}"                      {{- '\n' }}{% endif %}
+{% if sigsum_rate_limit_file        -%}  rate-limit-file = "{{ sigsum_rate_limit_file }}"              {{- '\n' }}{% endif %}
+{% if sigsum_allow_test_domain      -%}  allow-test-domain = {{ sigsum_allow_test_domain }}            {{- '\n' }}{% endif %}
+{% if sigsum_secondary_url          -%}  secondary-url = "{{ sigsum_secondary_url }}"                  {{- '\n' }}{% endif %}
+{% if sigsum_secondary_pubkey_file  -%}  secondary-pubkey-file = "{{ sigsum_secondary_pubkey_file }}"  {{- '\n' }}{% endif %}
+{% if sigsum_sth_file               -%}  sth-file = "{{ sigsum_sth_file }}"                            {{- '\n' }}{% endif %}
+{% if sigsum_max_range              -%}  max-range = {{ sigsum_max_range }}                            {{- '\n' }}{% endif %}
 {% endif %}
-{% if sigsum_max_range %}
-max-range = {{sigsum_max_range}}
-{%endif%}
-{% if sigsum_rate_limit_file %}
-rate-limit-file = "{{sigsum_rate_limit_file}}"
-{%endif%}
-{% if sigsum_allow_test_domain %}
-allow-test-domain = {{sigsum_allow_test_domain}}
-{%endif%}
-{% if sigsum_secondary_url %}
-secondary-url = "{{sigsum_secondary_url}}"
-{%endif%}
-{% if sigsum_secondary_pubkey_file %}
-secondary-pubkey-file = "{{sigsum_secondary_pubkey_file}}"
-{%endif%}
-sth-file = "{{sigsum_sth_file}}"
-{% if sigsum_policy_file is defined %}
-policy-file = "{{sigsum_policy_file}}"
-{%endif%}
-{% endif %}
-
 {% if secondary is defined %}
 [secondary]
-{% if sigsum_primary_url %}
-primary-url = "{{sigsum_primary_url}}"
-{% endif %}
+{% if sigsum_primary_url            -%}  primary-url = "{{ sigsum_primary_url }}"                      {{- '\n' }}{% endif %}
 {% endif %}
