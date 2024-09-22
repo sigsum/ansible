@@ -17,7 +17,7 @@
 {% if sigsum_allow_test_domain -%}       allow-test-domain = {{sigsum_allow_test_domain}}            {{- '\n' }}{% endif %}
 {% if sigsum_secondary_url -%}           secondary-url = "{{sigsum_secondary_url}}"                  {{- '\n' }}{% endif %}
 {% if sigsum_secondary_pubkey_file -%}   secondary-pubkey-file = "{{sigsum_secondary_pubkey_file}}"  {{- '\n' }}{% endif %}
-sth-file = "{{sigsum_sth_file}}"
+{% if sigsum_sth_file -%}                sth-file = "{{sigsum_sth_file}}"                            {{- '\n' }}{% endif %}
 {% if sigsum_max_range -%}               max-range = {{sigsum_max_range}}                            {{- '\n' }}{% endif %}
 {% if sigsum_witnesses -%}               witnesses = "{{sigsum_witnesses}}"                          {{- '\n' }}{% endif %}
 {% endif %}
