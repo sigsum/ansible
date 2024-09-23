@@ -23,8 +23,9 @@ Requirements
 It is assumed that the system already contains:
 
 * systemd
-* Go
-* yubihsm-connector (only required if [YubiHSM2][] is used as backend)
+* Go (you may want to use [roles/golang](../golang) for this)
+* yubihsm-connector (only required if [YubiHSM2][] is used as backend -- you may
+  want to use [roles/yubihsm_connector](../yubihsm_connector) for this)
 
 Provided that the above requirements are satisfied, the role should work on most
 Linux system.  Please note that we only test on Debian distributions though, see
