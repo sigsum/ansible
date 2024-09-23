@@ -1,0 +1,2 @@
+Just a trivial test that apt-install doesn't fail on bookworm and trixie, and
+that the yubihsm-connector has actually been added to the system.
