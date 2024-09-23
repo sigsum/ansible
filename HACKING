@@ -8,6 +8,7 @@
     $ molecule test
     $ molecule test -s golang
     $ molecule test -s sigsum_agent
+    $ molecule test -s yubihsm_connector
 
 ---How to develop with molecule
 

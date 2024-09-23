@@ -1,0 +1,7 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    # Exits with non-zero status if the user does not exist
+    - name: Check that the yubihsm-connector user was added
+      ansible.builtin.command: "getent passwd yubihsm-connector"
