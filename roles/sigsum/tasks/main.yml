@@ -11,6 +11,13 @@
     home: "{{ sigsum_home }}"
     system: true
 
+- name: Add user to shared ssh-agent group
+  ansible.builtin.user:
+    name: "{{ sigsum_user }}"
+    groups: "{{ sigsum_ssh_auth_group }}"
+    append: true
+  when: sigsum_ssh_auth_group is defined
+
 - name: Configure user directories
   ansible.builtin.file:
     path: "{{ item }}"

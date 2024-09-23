@@ -16,6 +16,18 @@ platforms:
       - /run
       - /run/lock
       - /tmp
+  - name: sigsum-primary-ssh-agent
+    image: docker.io/library/debian:bookworm
+    dockerfile: ../Dockerfile.debian.bookworm.j2
+    privileged: true
+    cgroupns_mode: private
+    override_command: false
+    volume_mounts:
+       - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
+    tmpfs:
+      - /run
+      - /run/lock
+      - /tmp
 provisioner:
   name: ansible
   playbooks:

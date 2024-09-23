@@ -1,9 +1,11 @@
 ---
 - name: Verify that primary log seems to work
-  hosts: sigsum-primary
+  hosts:
+    - sigsum-primary
+    - sigsum-primary-ssh-agent
   vars_files:
     - ../../roles/sigsum/defaults/main.yml  # role defaults
-    - host_vars/sigsum-primary.yml  # what converge used
+    - "host_vars/{{ inventory_hostname }}.yml"  # what converge used
   vars:
     test_user: alice
     test_home: /home/alice
@@ -59,10 +61,17 @@
         - sigsum-submit
         - sigsum-verify
 
+    # If there's a soft key on disk -> logkey.pub is the public key.
+    # If the ssh-agent protocol is used -> logkey is the public key.
+    - name: Figure out where the log's public-key file is stored
+      ansible.builtin.stat:
+        path: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/logkey.pub"
+      register: logkey_file
+
     - name: Copy primary log's public key
       ansible.builtin.copy:
         remote_src: true
-        src: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/logkey.pub"
+        src: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/logkey{{ '.pub' if logkey_file.stat.exists else '' }}"
         dest: "{{ test_home }}/.config/sigsum/{{ sigsum_logname }}.pub"
         owner: "{{ test_user }}"
         group: "{{ test_user }}"

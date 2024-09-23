@@ -5,10 +5,13 @@ sigsum_role: "primary"  # must be "primary" or "secondary"
 
 # The Ed25519 private-key of the log server.  Can either be an unencrypted
 # OpenSSH private-key, or an OpenSSH public-key.  If it is a public key, the
-# private key must be accessible when using the ssh-agent protocol.
+# private key must be accessible when using the ssh-agent protocol.  Specify the
+# appropriate socket path as well as the group needed for read+write access.
 #
 # A fresh key is generated and stored on disk for subsequent use if omitted.
 sigsum_key: ""
+# sigsum_ssh_auth_sock: "/path/to/ssh-agent/socket"
+# sigsum_ssh_auth_group: "ssh-agent-group"
 
 # The Ed25519 public key of the secondary log server in OpenSSH format.  Will be
 # ignored unless sigsum_role == "primary".  In other words, if you are
