@@ -11,11 +11,13 @@
 
 ---How to develop with molecule
 
-Interactive deploy, debug, deploy again, and clean-up session:
+Interactive deploy, debug, deploy again, verify, and clean-up session:
 
     $ molecule converge
-    $ molecule login
+    $ molecule login --host sigsum-primary
+    $ molecule login --host sigsum-primary-ssh-agent
     $ molecule converge
+    $ molecule verify
     $ molecule destroy
 
 To work with a different scenario like ./molecule/golang, use "-s golang".

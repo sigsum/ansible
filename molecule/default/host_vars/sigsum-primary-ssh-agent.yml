@@ -1,0 +1,38 @@
+---
+sigsum_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINz/oZP3Y1hpRanAU6ulH8kAs+g9pc25iHn7uNV3GOqe molecule-test"
+sigsum_agent_soft_key: |
+  -----BEGIN OPENSSH PRIVATE KEY-----
+  b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+  QyNTUxOQAAACDc/6GT92NYaUWpwFOrpR/JALPoPaXNuYh5+7jVdxjqngAAAJDS2Q5C0tkO
+  QgAAAAtzc2gtZWQyNTUxOQAAACDc/6GT92NYaUWpwFOrpR/JALPoPaXNuYh5+7jVdxjqng
+  AAAECxLfg+B3N3xGF2NY5DzErqRNtKGkXphQEYTH8LV8eLw9z/oZP3Y1hpRanAU6ulH8kA
+  s+g9pc25iHn7uNV3GOqeAAAADW1vbGVjdWxlLXRlc3Q=
+  -----END OPENSSH PRIVATE KEY-----
+
+sigsum_logname: 'molecule-test'
+sigsum_role: primary
+sigsum_url_prefix: testonly
+sigsum_interval: 3s
+sigsum_log_level: "info"
+
+sigsum_external_endpoint: 0.0.0.0:14784
+sigsum_internal_endpoint: 0.0.0.0:14785
+
+sigsum_trillian_sequencer_interval: 100ms
+sigsum_trillian_batch_size: 1000
+
+sigsum_tools_from_sigsum_go:
+  - { name: "sigsum-key" }  # needed by sigsum role
+  - { name: "sigsum-submit" }  # needed by verify.yml
+  - { name: "sigsum-verify" }  # needed by verify.yml
+
+sigsum_db_pw: changeme
+sigsum_db_name: test
+
+mysql_root_user: root
+mysql_root_password: "{{sigsum_db_pw}}" 
+mysql_users:
+  - user: sigsum
+    password: changeme
+    database_privs:
+      - 'test.*:ALL'

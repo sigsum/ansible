@@ -19,6 +19,9 @@ init_tree() {
 }
 
 start_log() {
+    {% if sigsum_ssh_auth_sock is defined %}
+    export SSH_AUTH_SOCK="{{ sigsum_ssh_auth_sock }}"
+    {% endif %}
     [[ $# -gt 0 ]] && { local pref="$1"; shift; }
     case $role in
 	primary)

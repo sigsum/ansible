@@ -5,3 +5,13 @@
     - sigsum.ansible.mariadb
     - sigsum.ansible.golang
     - sigsum.ansible.sigsum
+
+- name: Setup primary log-server with ssh-agent
+  hosts: sigsum-primary-ssh-agent
+  roles:
+    - role: sigsum.ansible.mariadb
+    - role: sigsum.ansible.golang
+    - role: sigsum.ansible.sigsum_agent
+    - role: sigsum.ansible.sigsum
+      sigsum_ssh_auth_sock: "{{ sigsum_agent_socket }}"
+      sigsum_ssh_auth_group: "{{ sigsum_agent_user }}"
