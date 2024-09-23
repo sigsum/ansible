@@ -44,8 +44,8 @@
 # Install scripts
 ###
 - name: Install sigsum-log start-up script
-  copy:
-    src: sigsum-log-start.sh
+  template:
+    src: sigsum-log-start.sh.j2
     dest: "{{ sigsum_home }}/.local/bin/sigsum-log-start.sh"
     owner: "{{ sigsum_user }}"
     group: "{{ sigsum_user }}"
