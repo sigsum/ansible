@@ -99,6 +99,10 @@ sigsum_tools_from_trillian_go:
 sigsum_trillian_sequencer_interval: 100ms
 sigsum_trillian_batch_size: 100
 
+# The supported verbosity levels are "INFO", "WARNING", "ERROR", and "FATAL".
+# Note that the "INFO" level is very noisy and more similar to debug logging.
+sigsum_trillian_verbosity: "WARNING"
+
 ################################################################################
 #                   Configure Sigsum log server options                        #
 ################################################################################

@@ -6,6 +6,8 @@ After=mariadb.service
 Type=simple
 User={{ sigsum_user }}
 ExecStart={{ sigsum_home }}/go/bin/trillian_log_signer \
+    --logtostderr=false \
+    --stderrthreshold={{ sigsum_trillian_verbosity }} \
     --force_master \
     --rpc_endpoint=localhost:6961 \
     --http_endpoint=localhost:6964 \

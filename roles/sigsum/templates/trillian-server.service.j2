@@ -7,6 +7,8 @@ After=trillian-signer.service
 Type=simple
 User={{ sigsum_user }}
 ExecStart={{ sigsum_home }}/go/bin/trillian_log_server \
+    --logtostderr=false \
+    --stderrthreshold={{ sigsum_trillian_verbosity }} \
     --rpc_endpoint=localhost:6962 \
     --http_endpoint=localhost:6963 \
     --mysql_uri '{{ sigsum_user }}:{{ sigsum_db_pw }}@tcp(127.0.0.1:3306)/{{ sigsum_db_name }}'
