@@ -1,72 +1,45 @@
-# sigsum ansible collection
+# Sigsum ansible collection
 
-This repository contains the roles for deploying sigsum transparency logs with
-ansible on Debian-bookworm systems.
+This repository contains ansible roles for deploying sigsum transparency logs
+on Debian-bookworm systems.  Each role has a slightly more detailed README.
 
-## Installing this collection
+## Install
 
-You can install the ``ansible.sigsum`` collection with the Ansible Galaxy CLI:
+Checkout the `ansible.sigsum` collection in your ansible repository:
 
-    ansible-galaxy collection install git+https://git.glasklar.is/sigsum/admin/ansible.git
+    $ mkdir -p collections
+    $ ansible-galaxy collection install git+https://git.glasklar.is/sigsum/admin/ansible.git,main -p collections/
 
-You can also include it in a `requirements.yml` file and install it with `ansible-galaxy collection install -r requirements.yml`, using the format:
+Replace `main` with a git-tag to checkout a fixed version.
 
-```yaml
----
-collections:
-  - name: sigsum.ansible
+Use the `--force` flag to downgrade or upgrade the version.
 
-# With the collection name, version, and source options
-- name: sigsum.ansible
-  source: git+https://git.glasklar.is/sigsum/admin/ansible.git 
-```
+Show the installed sigsum collection version using:
 
-In order to install a particular branch of the repo, you can append ``,BRANCHNAME`` to the URL.
+    $ ansible-galaxy collection list -p ./collections | grep sigsum
 
 ## Usage
 
-Below is an example setting up a primary log with a mysql database.
+See [example playbook](./molecule/default/converge.yml) and its
+[configuration](./molecule/default/host_vars/) for how to deploy a primary log
+server with a soft key that is only accessible using the ssh-agent protocol.
 
+See the [sigsum-agent](./roles/sigsum_agent) and
+[yubihsm-connector](./roles/yubihsm_connector) roles for further details on how
+to do a similar deployment with keys that are [protected by YubiHSMs][].
 
-```yaml
----
-# Setup primary log
-sigsum_logname: "sigsum-log"
+Read more about the Sigsum log server software and its configuration
+[here](https://git.glasklar.is/sigsum/core/log-go/-/tree/main/doc#configuring-and-using-the-log-server-implementation).
 
-sigsum_role: "primary"
-sigsum_url_prefix: "{{ sigsum_logname }}"
+[protected by YubiHSMs]: https://git.glasklar.is/sigsum/core/key-mgmt/#documentation
 
-sigsum_user: sigsum
-sigsum_db_pw: changeme
-sigsum_db_name: "sigsum"
+## Development
 
-# Setup mysql
-mysql_database:
-  - "{{ sigsum_db_name }}"
-
-mysql_users:
-  - user: "{{sigsum_user}}"
-    password: "{{sigsum_db_pw}}"
-    database_privs:
-      - '{{sigsum_db_name}}.*:ALL'
-```
-
-### Modules
-Name | Description
----- | -----------
-[sigsum.ansible.sigsum](docs/rst/sigsum_role.rst)|Setup and run a sigsum log instance.
-[sigsum.ansible.mariadb](docs/rst/mariadb_role.rst)|Setup a mariadb server for sigsum.
-
-## Testing with molecule
-
-This collection can be tested with molecule. It requires a running docker daemon on the system and python.
-
-`make converge` sets up the virtualenv and install molecule, then runs the test suite.
-
-To destroy the containers created for the playbook, use `make destroy`.
+The [HACKING](./HACKING) file describes how to run the tests.
 
 ## Changelog
-See [CHANGELOG](docs/docsite/rst/CHANGELOG.rst)
+
+See [CHANGELOG](./docs/docsite/rst/CHANGELOG.rst)
 
 ## Licensing
-See [LICENSE](LICENSE).
+See [LICENSE](./LICENSE).
