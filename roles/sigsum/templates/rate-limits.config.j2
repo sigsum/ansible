@@ -1,0 +1,12 @@
+#
+# This file is managed by ansible -- do not edit.
+#
+{% for entry in sigsum_allowlist_keys %}
+key {{ entry.key_hash }} {{ entry.limit }}
+{% endfor %}
+
+{% for entry in sigsum_allowlist_domains %}
+domain {{ entry.domain }} {{ entry.limit }}
+{% endfor %}
+
+public {{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/public-suffix-list.txt {{ sigsum_allowlist_limit }}

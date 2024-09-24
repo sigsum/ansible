@@ -32,8 +32,32 @@ sigsum_secondary_pubkey: ""
 #
 # Read more:
 # https://git.glasklar.is/sigsum/core/sigsum-go/-/blob/main/doc/policy.md
-#
 sigsum_witness_config: ""
+
+# The rate limit which should be applied to second-level domain names.  The
+# limit is daily and resets on restarts.  Set to -1 to disable rate limiting.
+#
+# Read more:
+# https://git.glasklar.is/sigsum/core/log-go/-/blob/main/doc/rate-limit.md#sigsum-log-rate-limiting
+sigsum_allowlist_limit: 1024
+
+# Submit keys that have their own daily rate-limits configured.  The key-hash
+# must be in hex.  The limit must be >= 0.  Example:
+#
+#   sigsum_allowlist_keys:
+#     - key_hash: 816d5284adbef481fd2654c66f02edbd0c6b4c5df287b9cea8be4e977bd7ce2a
+#       limit: 4096
+#
+sigsum_allowlist_keys: []
+
+# Domain names that have their own daily rate-limits configured.  The limit must
+# be >= 0.  Example:
+#
+#   sigsum_allowlist_domains:
+#     - domain: example.org
+#       limit: 4096
+#
+sigsum_allowlist_domains: []
 
 # This option only affects file paths on the local system.  To set a log name
 # that is externally visible, serve the log on a domain like example.org, and
@@ -128,7 +152,7 @@ sigsum_key_file: ""
 
 # Ignored unless sigsum_role == "primary"
 sigsum_policy_file: ""
-sigsum_rate_limit_file: ""  # See https://git.glasklar.is/sigsum/core/log-go/-/blob/main/doc/rate-limit.md#sigsum-log-rate-limiting
+sigsum_rate_limit_file: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/rate-limits.config"
 sigsum_allow_test_domain: false
 sigsum_secondary_url: ""  # where the secondary log's internal endpoint is served
 sigsum_secondary_pubkey_file: ""

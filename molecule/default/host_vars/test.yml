@@ -2,3 +2,18 @@
 test_user: alice
 test_home: /home/alice
 test_num_messages: 2
+
+#
+# sigsum-key gen -o /tmp/key
+# sigsum-key hex -k /tmp/key.pub
+#
+test_key: |
+  -----BEGIN OPENSSH PRIVATE KEY-----
+  b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtz
+  c2gtZWQyNTUxOQAAACDzH/8+YiMpMpYpowUfmL3eIsSPR8EtgKoii6AL6aExQwAA
+  AIj4Kct/+CnLfwAAAAtzc2gtZWQyNTUxOQAAACDzH/8+YiMpMpYpowUfmL3eIsSP
+  R8EtgKoii6AL6aExQwAAAEBHxBwHaXUCq8uogDsGx9OgPvSK0oAr5ccJfGEgKQGZ
+  yfMf/z5iIykylimjBR+Yvd4ixI9HwS2AqiKLoAvpoTFDAAAAAAECAwQF
+  -----END OPENSSH PRIVATE KEY-----
+test_pubkey: |
+  ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPMf/z5iIykylimjBR+Yvd4ixI9HwS2AqiKLoAvpoTFD sigsum key

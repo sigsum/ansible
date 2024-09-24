@@ -1,4 +1,15 @@
 ---
+# TODO: consider hosting a copy of this list on a sigsum domain.  The main
+# reason for doing so would be to avoid CI hammering and similar testing.
+# Related -- it would be nice to verify a (spicy) signature on this file.
+#
+# The public suffix list is updated at most once per day and usually a few times
+# a week.  It is discouraged to look for updates more often than once per day.
+#
+# Read more:
+# https://publicsuffix.org/list/
+sigsum_suffix_list_url: "https://publicsuffix.org/list/public_suffix_list.dat"
+
 sigsum_install_tools_from_sigsum_go: >
   [{% for tool in sigsum_tools_from_sigsum_go %}
     {{
