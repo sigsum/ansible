@@ -23,7 +23,8 @@ Dependencies
 
 Example playbook
 ----------------
-See the [molecule converge playbook](../../molecule/default/converge.yml) which
-deploys a primary log-server.  If you are using sigsum-agent with the YubiHSM
-backend, you would also want to add `role: sigsum.ansible.yubihsm_connector`.
-Note that you need to do your own key generation whenever sigsum-agent is used.
+See the [molecule converge playbook](../../molecule/default/converge.yml) for
+examples that deploy a primary-secondary log setup for database replication, as
+well as a standalone primary where the key is accessed using the ssh-agent
+protocol.  If you want to use sigsum-agent with the YubiHSM backend, you might
+want to install the connector with `role: sigsum.ansible.yubihsm_connector`.
