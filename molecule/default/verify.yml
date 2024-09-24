@@ -16,6 +16,7 @@
         - "sigsum-log-secondary@{{ sigsum_logname }}"
         - trillian-server
         - trillian-signer
+        - cron
       register: services
       failed_when: services.changed
 
@@ -55,6 +56,7 @@
         - "sigsum-log-primary@{{ sigsum_logname }}"
         - trillian-server
         - trillian-signer
+        - cron
       register: services
       failed_when: services.changed
 
@@ -131,12 +133,29 @@
 
     # Note: by generating a new key we can run `molecule verify` multiple times
     # with the same messages 0..test_num_messages and still get new log entries.
+    # This only works for hosts that have rate limits disabled, hence "when".
     - name: Generate submit key for testing
       ansible.builtin.command: >
         "{{ test_home }}/.local/bin/sigsum-key" gen
           -o "{{ test_home }}/.config/sigsum/key"
+      when: sigsum_allowlist_limit == -1
       become_user: "{{ test_user }}"
       become: true
+
+    - name: Use fixed allow-listed submit key
+      ansible.builtin.copy:
+        content: "{{ item.content }}"
+        dest: "{{ test_home }}/.config/sigsum/{{ item.name }}"
+        owner: "{{ test_user }}"
+        group: "{{ test_user }}"
+        mode: '0644'
+      loop:
+        - name: key
+          content: "{{ test_key }}"
+        - name: key.pub
+          content: "{{ test_pubkey }}"
+      no_log: true  # don't bloat output with test keys
+      when: sigsum_allowlist_limit != -1
 
     - name: Create test messages
       ansible.builtin.copy:

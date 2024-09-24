@@ -6,6 +6,15 @@ sigsum_user: sigsum
 sigsum_role: primary
 sigsum_logname: molecule-test
 
+sigsum_allowlist_keys:
+  - key_hash: 55e42395281d18e8fd7252b99bd993fd7d450135a5a97a329884f1f99e796442
+    limit: 1024  # see host_vars/test.yml for generation of this test key
+sigsum_allowlist_domains:
+  - domain: example.org
+    limit: 32  # dummy entry just to ensure generated config is accepted
+
+sigsum_key: |
+  ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINz/oZP3Y1hpRanAU6ulH8kAs+g9pc25iHn7uNV3GOqe molecule-test
 sigsum_agent_soft_key: |
   -----BEGIN OPENSSH PRIVATE KEY-----
   b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
@@ -14,8 +23,6 @@ sigsum_agent_soft_key: |
   AAAECxLfg+B3N3xGF2NY5DzErqRNtKGkXphQEYTH8LV8eLw9z/oZP3Y1hpRanAU6ulH8kA
   s+g9pc25iHn7uNV3GOqeAAAADW1vbGVjdWxlLXRlc3Q=
   -----END OPENSSH PRIVATE KEY-----
-sigsum_key: |
-  ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINz/oZP3Y1hpRanAU6ulH8kAs+g9pc25iHn7uNV3GOqe molecule-test
 
 #
 # Database settings

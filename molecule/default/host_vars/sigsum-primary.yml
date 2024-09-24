@@ -5,6 +5,7 @@
 sigsum_user: sigsum
 sigsum_role: primary
 sigsum_logname: molecule-test
+sigsum_allowlist_limit: -1  # disable rate limiting
 
 # Note: must be the public key of sigsum_key listed in sigsum-secondary.yml
 sigsum_secondary_pubkey: |

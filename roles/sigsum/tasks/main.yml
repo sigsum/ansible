@@ -4,6 +4,9 @@
 # version, or for keeping an instance of an older protocol alive.
 # WIP: just need make systemd into user-scope now as well.
 
+- name: Include distribution-dependent tasks
+  ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
+
 - name: Add sigsum user ({{ sigsum_user }})
   user:
     name: "{{ sigsum_user }}"
@@ -103,7 +106,67 @@
       when: mysql_root_password != ""
 
 ###
-# Setup systemd
+# Configure public suffix list and rate limiting
+###
+- name: Install script that downloads files with jitter
+  ansible.builtin.copy:
+    src: download-file.sh
+    dest: "{{ sigsum_home }}/.local/bin/download-file.sh"
+    owner: "{{ sigsum_user }}"
+    group: "{{ sigsum_user }}"
+    mode: '0700'
+
+- name: Check if the public suffix list exists
+  ansible.builtin.stat:
+    path: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/public-suffix-list.txt"
+  register: sigsum_suffix_file
+
+- name: Download the public suffix list for the first time
+  ansible.builtin.command: >
+      /bin/bash
+      "{{ sigsum_home }}/.local/bin/download-file.sh"
+      "{{ sigsum_suffix_list_url }}"
+      "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/public-suffix-list.txt"
+      0
+  when: sigsum_suffix_file.stat.exists == false
+  become_user: "{{ sigsum_user }}"
+  become: true
+
+- name: Add rate-limit configuration
+  ansible.builtin.template:
+    src: rate-limits.config.j2
+    dest: "{{ sigsum_rate_limit_file }}"
+    owner: "{{ sigsum_user }}"
+    group: "{{ sigsum_user }}"
+    mode: '0600'
+  when: sigsum_role == "primary"
+  notify: restart sigsum primary node
+
+# TODO: trigger a restart if the list changed.  This would be trivial to do in
+# the cronjob if we had a user-scoped .service file (unfortunately we don't).
+- name: Install weekly refreshing of the public suffix list
+  ansible.builtin.cron:
+    name: "Refresh the public suffix list on Mondays between 0200 and 0600"
+    user: "{{ sigsum_user }}"
+    job: >
+      /bin/bash
+      "{{ sigsum_home }}/.local/bin/download-file.sh"
+      "{{ sigsum_suffix_list_url }}"
+      "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/public-suffix-list.txt"
+      14400
+    weekday: 1
+    hour: 02
+    minute: 00
+    state: present
+
+- name: Ensure cron is started and enabled
+  ansible.builtin.systemd:
+    name: cron
+    state: started
+    enabled: true
+
+###
+# Misc configuration
 ###
 - name: Install service units
   template:
