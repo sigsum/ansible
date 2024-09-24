@@ -68,15 +68,6 @@
       - (sigsum_agent_soft_key is defined) != (sigsum_agent_yubihsm_passphrase is defined)
     fail_msg: "Either a soft key or yubihsm credentials are required"
 
-- name: Add sigsum-agent start script
-  ansible.builtin.template:
-    src: start.sh.j2
-    dest: "{{ sigsum_agent_home }}/.config/sigsum-agent/start.sh"
-    owner: "{{ sigsum_agent_user }}"
-    group: "{{ sigsum_agent_user }}"
-    mode: '0700'
-  notify: "Restart sigsum-agent service (--user {{ sigsum_agent_user }})"
-
 - name: Add sigsum-agent soft key
   ansible.builtin.copy:
     content: "{{ sigsum_agent_soft_key }}"
