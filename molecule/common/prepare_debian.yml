@@ -21,4 +21,8 @@
         - less
         - vim
         - curl
+        - iproute2
+        - ldnsutils
+        - iputils-ping
+        - netcat-traditional
       state: present

@@ -1,12 +1,14 @@
 ---
-- name: Setup primary log-server
-  hosts: sigsum-primary
+- name: Setup a log with primary-secondary database replication
+  hosts:
+    - sigsum-primary
+    - sigsum-secondary
   roles:
     - sigsum.ansible.mariadb
     - sigsum.ansible.golang
     - sigsum.ansible.sigsum
 
-- name: Setup primary log-server with ssh-agent
+- name: Setup a primary log with ssh-agent
   hosts: sigsum-primary-ssh-agent
   roles:
     - role: sigsum.ansible.mariadb

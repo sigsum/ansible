@@ -3,10 +3,10 @@
 # Basic settings
 #
 sigsum_user: sigsum
-sigsum_role: primary
+sigsum_role: secondary
 sigsum_logname: molecule-test
 
-sigsum_agent_soft_key: |
+sigsum_key: |
   -----BEGIN OPENSSH PRIVATE KEY-----
   b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
   QyNTUxOQAAACDc/6GT92NYaUWpwFOrpR/JALPoPaXNuYh5+7jVdxjqngAAAJDS2Q5C0tkO
@@ -14,8 +14,6 @@ sigsum_agent_soft_key: |
   AAAECxLfg+B3N3xGF2NY5DzErqRNtKGkXphQEYTH8LV8eLw9z/oZP3Y1hpRanAU6ulH8kA
   s+g9pc25iHn7uNV3GOqeAAAADW1vbGVjdWxlLXRlc3Q=
   -----END OPENSSH PRIVATE KEY-----
-sigsum_key: |
-  ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINz/oZP3Y1hpRanAU6ulH8kAs+g9pc25iHn7uNV3GOqe molecule-test
 
 #
 # Database settings
@@ -33,13 +31,10 @@ mysql_users:
 
 # Options passed to the log server
 sigsum_url_prefix: "{{ sigsum_logname }}"
-sigsum_interval: 3s
+sigsum_interval: 1s
 sigsum_external_endpoint: "0.0.0.0:3000"
 sigsum_internal_endpoint: "0.0.0.0:10000"
 sigsum_trillian_rpc_server: "localhost:6962"
 
-# Go tooling
-sigsum_tools_from_sigsum_go:
-  - { name: "sigsum-key" }  # needed by sigsum role
-  - { name: "sigsum-submit" }  # needed by verify.yml
-  - { name: "sigsum-verify" }  # needed by verify.yml
+# Secondary log-server options
+sigsum_primary_url: "http://sigsum-primary:{{ sigsum_internal_endpoint | split(':') | last }}/{{ sigsum_url_prefix }}"

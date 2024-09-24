@@ -21,12 +21,13 @@ Show the installed sigsum collection version using:
 ## Usage
 
 See [example playbook](./molecule/default/converge.yml) and its
-[configuration](./molecule/default/host_vars/) for how to deploy a primary log
-server with a soft key that is only accessible using the ssh-agent protocol.
+[configuration](./molecule/default/host_vars/) for two examples:
+- Deploy a primary-secondary log setup for database replication
+- Deploy a primary log where the key is accessed using the ssh-agent protocol
 
 See the [sigsum-agent](./roles/sigsum_agent) and
 [yubihsm-connector](./roles/yubihsm_connector) roles for further details on how
-to do a similar deployment with keys that are [protected by YubiHSMs][].
+to do similar ssh-agent deployments with keys [protected by YubiHSMs][].
 
 Read more about the Sigsum log server software and its configuration
 [here](https://git.glasklar.is/sigsum/core/log-go/-/tree/main/doc#configuring-and-using-the-log-server-implementation).

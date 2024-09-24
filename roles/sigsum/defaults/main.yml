@@ -130,10 +130,10 @@ sigsum_key_file: ""
 sigsum_policy_file: ""
 sigsum_rate_limit_file: ""  # See https://git.glasklar.is/sigsum/core/log-go/-/blob/main/doc/rate-limit.md#sigsum-log-rate-limiting
 sigsum_allow_test_domain: false
-sigsum_secondary_url: ""
+sigsum_secondary_url: ""  # where the secondary log's internal endpoint is served
 sigsum_secondary_pubkey_file: ""
 sigsum_sth_file: ""
 sigsum_max_range: 4096
 
 # Ignored unless sigsum_role == "secondary"
-sigsum_primary_url: ""  # where the primary log's public endpoints are served
+sigsum_primary_url: ""  # where the primary log's internal endpoint is served

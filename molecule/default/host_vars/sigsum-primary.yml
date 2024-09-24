@@ -1,28 +1,41 @@
 ---
-sigsum_logname: 'molecule-test'
+#
+# Basic settings
+#
+sigsum_user: sigsum
 sigsum_role: primary
-sigsum_url_prefix: testonly
-sigsum_interval: 3s
-sigsum_log_level: "info"
+sigsum_logname: molecule-test
 
-sigsum_external_endpoint: 0.0.0.0:14784
-sigsum_internal_endpoint: 0.0.0.0:14785
+# Note: must be the public key of sigsum_key listed in sigsum-secondary.yml
+sigsum_secondary_pubkey: |
+  ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINz/oZP3Y1hpRanAU6ulH8kAs+g9pc25iHn7uNV3GOqe molecule-test
 
-sigsum_trillian_sequencer_interval: 100ms
-sigsum_trillian_batch_size: 1000
-
-sigsum_tools_from_sigsum_go:
-  - { name: "sigsum-key" }  # needed by sigsum role
-  - { name: "sigsum-submit" }  # needed by verify.yml
-  - { name: "sigsum-verify" }  # needed by verify.yml
-
+#
+# Database settings
+#
 sigsum_db_pw: changeme
 sigsum_db_name: test
 
 mysql_root_user: root
-mysql_root_password: "{{sigsum_db_pw}}" 
+mysql_root_password: "{{ sigsum_db_pw }}"
 mysql_users:
-  - user: sigsum
-    password: changeme
+  - user: "{{ sigsum_user }}"
+    password: "{{ sigsum_db_pw }}"
     database_privs:
-      - 'test.*:ALL'
+      - '{{ sigsum_db_name }}.*:ALL'
+
+# Options passed to the log server
+sigsum_url_prefix: "{{ sigsum_logname }}"
+sigsum_interval: 3s
+sigsum_external_endpoint: "0.0.0.0:3000"
+sigsum_internal_endpoint: "0.0.0.0:10000"
+sigsum_trillian_rpc_server: "localhost:6962"
+
+# Primary log-server options
+sigsum_secondary_url: "http://sigsum-secondary:{{ sigsum_internal_endpoint | split(':') | last }}/{{ sigsum_url_prefix }}"
+
+# Go tooling
+sigsum_tools_from_sigsum_go:
+  - { name: "sigsum-key" }  # needed by sigsum role
+  - { name: "sigsum-submit" }  # needed by verify.yml
+  - { name: "sigsum-verify" }  # needed by verify.yml
