@@ -7,6 +7,82 @@ CHANGELOG
 .. contents::
    :local:
 
+v1.1.0
+======
+
+Release summary
+---------------
+
+This release adds support for accessing private keys using the ssh-agent
+protocol.  See the new sigsum-agent role for further details on how to use the
+ssh-agent protocol for process separation and private keys backed by YubiHSMs.
+
+This release also adds support for rate-limit configurations.  It is off by
+default, but can be enabled by setting sigsum_allowlist_limit >= 0.  See also
+the related settings sigsum_allowlist_keys and sigsum_allowlist_domains.
+
+This release comes with some internal refactoring and includes bug fixing.  Most
+notably, the log will no longer restart every time the sigsum role runs.  A few
+variables have been dropped in the process of refactoring, but no breakage is
+expected.  See the detailed notes if you want to clean-up your sigsum variables.
+
+Documentation and testing have been improved.  There are now molecule tests that
+also serve as examples of how to configure a primary-secondary log pair as well
+as a stand-alone primary that uses the sigsum-agent role and ssh-agent protocol.
+
+Debian bullseye has reached end of life.  We now target Debian bookworm systems.
+
+Detailed notes
+--------------
+
+The target environment for running molecule tests have been changed to podman.
+Instructions for running the tests have been migrated and improved, see HACKING.
+
+The distribution that our roles and tests target have been updated from Debian
+bullseye to Debian bookworm.  Debian bullseye may work but is not tested by us.
+
+A role that installs and configures sigsum-agent has been added, see
+roles/sigsum_agent.  For overview, sigsum-agent is a tiny ssh-agent signing
+oracle that works with two backends: unencrypted key-file and YubiHSM.  Use of
+this role is optional, i.e., the sigsum role has only been *extended* to work
+with configurations that access private keys using the ssh-agent protocol.  A
+related role for installing the YubiHSM connector has been added, see details in
+roles/yubihsm_connector.  Use of roles/yubihsm_connector is also optional.
+
+Git-clone checkouts of Go tooling (sigsum-go, log-go, and Trillian) have been
+deprecated.  The required tools are installed directly using Go's tooling.  No
+action is needed by existing users, but these variables are now ignored:
+
+* sigsum_trillian_srcdir (this directory can be deleted on the target host)
+* sigsum_trillian_repo
+* sigsum_lib_srcdir (this directory can be deleted on the target host)
+* sigsum_lib_repo
+* sigsum_log_srcdir (this directory can be deleted on the target host)
+* sigsum_log_repo
+
+The sigsum role is more idempotent now.  This fixes a bug where the Sigsum log
+servers would restart every time the role runs, causing unnecessary downtime.
+
+Diretories and files for the sigsum user are now configured with user-only
+permissions.  For example, directory permissions were changed from 0755 to 0700.
+
+Documentation of the sigsum role's default variables have been improved
+significantly.  You are encouraged to take a look in defaults/main.yml.
+
+An option to tune Trillian's log verbosity has been added:
+
+* sigsum_trillian_verbosity
+
+The default is WARNING.  This fixes a nit where the system's journal got spammed
+with INFO output.
+
+Configuration of rate-limits have been added.  The relevant variables are:
+
+* sigsum_allowlist_limit
+* sigsum_allowlist_keys
+* sigsum_allowlist_domains
+
+To enable rate limits (off by default), set sigsum_allowlist_limit >= 0.
 
 v1.0.4
 ======
