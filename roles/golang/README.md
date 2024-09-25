@@ -15,6 +15,12 @@ Dependencies
 ------------
 None.
 
+Known limitations
+-----------------
+If Go is already installed from, e.g., bookworm stable and backports is later
+added, then the old (stable) Go installation needs to be purged manually.  I.e.,
+otherwise the old Go package stays and the backported Go will not be installed.
+
 Example playbook
 ----------------
 See the [molecule converge playbook](../../molecule/golang/converge.yml).
