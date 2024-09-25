@@ -1,4 +1,5 @@
-We test that the primary log is up and running, including end-to-end tests like
-submitting checksums, requesting proofs, and verifying that these proofs are OK.
+We test that a primary-secondary log pair can be deployed, including end-to-end
+tests like submitting checksums, requesting proofs, and verifying that these
+proofs are OK.  We also check the secondary is replacing (expected tree size).
 
-We currently don't do any testing with a secondary.
+We also do a primary-only test that makes use of the new ssh-agent things.
