@@ -154,7 +154,6 @@ sigsum_backend: "trillian" # the only production-worthy backend that is supporte
 sigsum_key_file: ""
 
 # Ignored unless sigsum_role == "primary"
-sigsum_policy_file: ""
 sigsum_rate_limit_file: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/rate-limits.config"
 sigsum_allow_test_domain: false
 sigsum_secondary_url: ""  # where the secondary log's internal endpoint is served
