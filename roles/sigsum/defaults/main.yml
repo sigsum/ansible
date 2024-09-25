@@ -35,11 +35,11 @@ sigsum_secondary_pubkey: ""
 sigsum_witness_config: ""
 
 # The rate limit which should be applied to second-level domain names.  The
-# limit is daily and resets on restarts.  Set to -1 to disable rate limiting.
+# limit is daily and resets on restarts.  Set to >=0 to enable rate limiting.
 #
 # Read more:
 # https://git.glasklar.is/sigsum/core/log-go/-/blob/main/doc/rate-limit.md#sigsum-log-rate-limiting
-sigsum_allowlist_limit: 1024
+sigsum_allowlist_limit: -1
 
 # Submit keys that have their own daily rate-limits configured.  The key-hash
 # must be in hex.  The limit must be >= 0.  Example:
@@ -65,6 +65,10 @@ sigsum_allowlist_domains: []
 #
 # TODO: this option is confusing and should likely not be here.
 sigsum_logname: sigsum
+
+# This option determines where in the sigsum user's home directory to store
+# configuration.  TODO: it might be cleaner to always use the below value.
+sigsum_configdir_base: ".config/sigsum"
 
 ################################################################################
 #                            Database configuration                            #
@@ -147,16 +151,13 @@ sigsum_external_endpoint: "127.0.0.1:14784"  # where public endpoints are served
 sigsum_internal_endpoint: "127.0.0.1:14785"  # where internal endpoints are served (for "secondary stuff")
 sigsum_trillian_rpc_server: "localhost:6962"  # where the Trillian log-server listens for requests
 sigsum_backend: "trillian" # the only production-worthy backend that is supported (sane default)
-sigsum_trillian_tree_id_file: ""
 sigsum_key_file: ""
 
 # Ignored unless sigsum_role == "primary"
-sigsum_policy_file: ""
-sigsum_rate_limit_file: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/rate-limits.config"
+sigsum_rate_limit_file: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/rate-limits.config"
 sigsum_allow_test_domain: false
 sigsum_secondary_url: ""  # where the secondary log's internal endpoint is served
 sigsum_secondary_pubkey_file: ""
-sigsum_sth_file: ""
 sigsum_max_range: 4096
 
 # Ignored unless sigsum_role == "secondary"

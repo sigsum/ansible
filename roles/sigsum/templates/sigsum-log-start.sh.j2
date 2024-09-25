@@ -36,7 +36,7 @@ start_log() {
     esac
 }
 
-dn="$HOME/.config/sigsum/$logname"
+dn="$HOME/{{ sigsum_configdir_base }}/$logname"
 cd "$dn" 2>/dev/null || { mkdir -pm 0700 "$dn"; cd "$dn"; }
 
 [[ -s tree-id ]] || init_tree

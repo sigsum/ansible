@@ -17,7 +17,7 @@ See [defaults/main.yml](./defaults/main.yml).
 Dependencies
 ------------
 * sigsum.ansible.mariadb
-* sigsum.ansible.golang (or something else that installs Go)
+* sigsum.ansible.golang (imported by the sigsum role, no action needed)
 * sigsum.ansible.yubihsm_connector (optional)
 * sigsum.ansible.sigsum_agent (optional)
 

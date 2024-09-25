@@ -1,0 +1,5 @@
+---
+dependencies:
+  - role: sigsum.ansible.golang
+    golang_ensure_min_version: true
+    golang_debian_use_backports: true

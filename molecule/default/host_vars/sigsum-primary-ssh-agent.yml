@@ -6,6 +6,7 @@ sigsum_user: sigsum
 sigsum_role: primary
 sigsum_logname: molecule-test
 
+sigsum_allowlist_limit: 1024
 sigsum_allowlist_keys:
   - key_hash: 55e42395281d18e8fd7252b99bd993fd7d450135a5a97a329884f1f99e796442
     limit: 1024  # see host_vars/test.yml for generation of this test key
@@ -50,3 +51,7 @@ sigsum_tools_from_sigsum_go:
   - { name: "sigsum-key" }  # needed by sigsum role
   - { name: "sigsum-submit" }  # needed by verify.yml
   - { name: "sigsum-verify" }  # needed by verify.yml
+
+# Go compiler settings
+golang_ensure_min_version: true
+golang_debian_use_backports: true
