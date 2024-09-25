@@ -18,19 +18,16 @@ sigsum_agent_socket: "{{ sigsum_agent_run }}/sigsum-agent.socket"
 #
 # Uncomment and fill out the details for the backend of your choise.
 #
+# WARNING: it is a bad idea to put soft credentials like private keys and
+# passphrases in this configuration file in plaintext.  Use ansible vault.  For
+# a hint of how to do get started with this, see roles/sigsum's sigsum_db_pw.
+#
 
 # Configuration of a soft key (unencrypted OpenSSH private-key format)
-# sigsum_agent_soft_key: |
-#   -----BEGIN OPENSSH PRIVATE KEY-----
-#   b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-#   QyNTUxOQAAACCO4aHR2nyFPJn4ZNrXQfQXS9PT75VOQ9EY8cvEjSB11QAAAJglIIhNJSCI
-#   TQAAAAtzc2gtZWQyNTUxOQAAACCO4aHR2nyFPJn4ZNrXQfQXS9PT75VOQ9EY8cvEjSB11Q
-#   AAAEAcgaf4muf4aZNKcPqFArM/g0WI2f+l/VCmGLiSR8YowI7hodHafIU8mfhk2tdB9BdL
-#   09PvlU5D0Rjxy8SNIHXVAAAAEW1vbGVjdWxlOnRlc3Rvbmx5AQIDBA==
-#   -----END OPENSSH PRIVATE KEY-----
+# sigsum_agent_soft_key: ""
 
 # Configuration of a YubiHSM
-# sigsum_agent_yubihsm_passphrase: "changeme"  # auth password for session establishment
+# sigsum_agent_yubihsm_passphrase: ""  # auth password for session establishment
 sigsum_agent_yubihsm_auth_id: "200"  # default auth id for logs in core/key-mgmt
 sigsum_agent_yubihsm_key_id: "500"  # default key id for logs in core/key-mgmt
 sigsum_agent_yubihsm_addr: "localhost"  # default yubihsm-connector value
