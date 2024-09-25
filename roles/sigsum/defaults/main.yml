@@ -35,11 +35,11 @@ sigsum_secondary_pubkey: ""
 sigsum_witness_config: ""
 
 # The rate limit which should be applied to second-level domain names.  The
-# limit is daily and resets on restarts.  Set to -1 to disable rate limiting.
+# limit is daily and resets on restarts.  Set to >=0 to enable rate limiting.
 #
 # Read more:
 # https://git.glasklar.is/sigsum/core/log-go/-/blob/main/doc/rate-limit.md#sigsum-log-rate-limiting
-sigsum_allowlist_limit: 1024
+sigsum_allowlist_limit: -1
 
 # Submit keys that have their own daily rate-limits configured.  The key-hash
 # must be in hex.  The limit must be >= 0.  Example:
