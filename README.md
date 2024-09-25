@@ -40,7 +40,7 @@ The [HACKING](./HACKING) file describes how to run the tests.
 
 ## Changelog
 
-See [CHANGELOG](./docs/docsite/rst/CHANGELOG.rst)
+See [CHANGELOG](./docs/docsite/rst/CHANGELOG.rst).
 
 ## Licensing
 See [LICENSE](./LICENSE).
