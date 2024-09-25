@@ -159,7 +159,6 @@ sigsum_rate_limit_file: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum
 sigsum_allow_test_domain: false
 sigsum_secondary_url: ""  # where the secondary log's internal endpoint is served
 sigsum_secondary_pubkey_file: ""
-sigsum_sth_file: ""
 sigsum_max_range: 4096
 
 # Ignored unless sigsum_role == "secondary"
