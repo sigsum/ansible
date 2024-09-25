@@ -12,6 +12,10 @@ Checkout the `ansible.sigsum` collection in your ansible repository:
 
 Replace `main` with a git-tag to checkout a fixed version.
 
+Show the installed sigsum collection version using:
+
+    $ ansible-galaxy collection list -p ./collections | grep sigsum
+
 ## Usage
 
 See [example playbook](./molecule/default/converge.yml) and its
