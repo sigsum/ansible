@@ -151,7 +151,6 @@ sigsum_external_endpoint: "127.0.0.1:14784"  # where public endpoints are served
 sigsum_internal_endpoint: "127.0.0.1:14785"  # where internal endpoints are served (for "secondary stuff")
 sigsum_trillian_rpc_server: "localhost:6962"  # where the Trillian log-server listens for requests
 sigsum_backend: "trillian" # the only production-worthy backend that is supported (sane default)
-sigsum_trillian_tree_id_file: ""
 sigsum_key_file: ""
 
 # Ignored unless sigsum_role == "primary"
