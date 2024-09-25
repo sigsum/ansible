@@ -9,4 +9,4 @@ key {{ entry.key_hash }} {{ entry.limit }}
 domain {{ entry.domain }} {{ entry.limit }}
 {% endfor %}
 
-public {{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/public-suffix-list.txt {{ sigsum_allowlist_limit }}
+public {{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/public-suffix-list.txt {{ sigsum_allowlist_limit }}

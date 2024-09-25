@@ -101,13 +101,13 @@
     # If the ssh-agent protocol is used -> logkey is the public key.
     - name: Figure out where the log's public-key file is stored
       ansible.builtin.stat:
-        path: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/logkey.pub"
+        path: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/logkey.pub"
       register: logkey_file
 
     - name: Copy primary log's public key
       ansible.builtin.copy:
         remote_src: true
-        src: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/logkey{{ '.pub' if logkey_file.stat.exists else '' }}"
+        src: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/logkey{{ '.pub' if logkey_file.stat.exists else '' }}"
         dest: "{{ test_home }}/.config/sigsum/{{ sigsum_logname }}.pub"
         owner: "{{ test_user }}"
         group: "{{ test_user }}"

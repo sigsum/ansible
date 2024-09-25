@@ -30,7 +30,7 @@
     state: directory
   loop:
     - "{{ sigsum_home }}"
-    - "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}"
+    - "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}"
     - "{{ sigsum_home }}/.local/bin"
 
 ###
@@ -118,7 +118,7 @@
 
 - name: Check if the public suffix list exists
   ansible.builtin.stat:
-    path: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/public-suffix-list.txt"
+    path: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/public-suffix-list.txt"
   register: sigsum_suffix_file
 
 - name: Download the public suffix list for the first time
@@ -126,7 +126,7 @@
       /bin/bash
       "{{ sigsum_home }}/.local/bin/download-file.sh"
       "{{ sigsum_suffix_list_url }}"
-      "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/public-suffix-list.txt"
+      "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/public-suffix-list.txt"
       0
   when: sigsum_suffix_file.stat.exists == false
   become_user: "{{ sigsum_user }}"
@@ -152,7 +152,7 @@
       /bin/bash
       "{{ sigsum_home }}/.local/bin/download-file.sh"
       "{{ sigsum_suffix_list_url }}"
-      "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/public-suffix-list.txt"
+      "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/public-suffix-list.txt"
       14400
     weekday: 1
     hour: 02
@@ -190,7 +190,7 @@
 
 - name: register sigsum_key_file
   ansible.builtin.set_fact:
-    sigsum_key_file: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/logkey"
+    sigsum_key_file: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/logkey"
   when: sigsum_key_file == ""
 
 - name: write sigsum_key_file
@@ -213,18 +213,18 @@
   become: true
   ansible.builtin.copy:
     content: "{{sigsum_secondary_pubkey}}"
-    dest: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/secondary-pubkey"
+    dest: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/secondary-pubkey"
     force: no
   when: sigsum_secondary_pubkey != "" and sigsum_secondary_pubkey_file == ""
 
 - name: register secondary_pubkey_file
   ansible.builtin.set_fact:
-    secondary_pubkey_file: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/secondary-pubkey"
+    secondary_pubkey_file: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/secondary-pubkey"
   when: sigsum_secondary_pubkey != "" and sigsum_secondary_pubkey_file == ""
 
 - name: register sigsum_policy_file
   ansible.builtin.set_fact:
-    sigsum_policy_file: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/witness-config"
+    sigsum_policy_file: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/witness-config"
   when: sigsum_policy_file is not defined and sigsum_witness_config != ""
 
 - name: write witness config
@@ -238,11 +238,11 @@
 - name: Install primary configuration file
   template:
     src: "config.toml.j2"
-    dest: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/config.toml"
+    dest: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/config.toml"
   vars:
     primary: true
-    sigsum_sth_file: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/sth"
-    sigsum_trillian_tree_id_file: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/tree-id"
+    sigsum_sth_file: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/sth"
+    sigsum_trillian_tree_id_file: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/tree-id"
   become_user: "{{ sigsum_user }}"
   become: true
   when: sigsum_role == "primary"
@@ -250,11 +250,11 @@
 - name: Install secondary configuration file
   template:
     src: "config.toml.j2"
-    dest: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/config.toml"
+    dest: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/config.toml"
   vars:
     secondary: true
-    sigsum_key_file: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/logkey"
-    sigsum_trillian_tree_id_file: "{{ sigsum_home }}/.config/sigsum/{{ sigsum_logname }}/tree-id"
+    sigsum_key_file: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/logkey"
+    sigsum_trillian_tree_id_file: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/tree-id"
   become_user: "{{ sigsum_user }}"
   become: true
   when: sigsum_role == "secondary"
