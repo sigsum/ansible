@@ -34,6 +34,10 @@ Linux system.  Please note that we only test on Debian distributions though, see
 It is also assumed that a backend key has already been generated before using
 this role.  In other words, this role does not help with any key generation.
 
+While the role is user-scoped (e.g., only writing configuration in the specified
+sigsum-agent's home directory and using `systemd --user` for services), it is
+not supported to configure more than one sigsum-agent per play yet.
+
 Role variables
 --------------
 See [defaults/main.yml](./defaults/main.yml).  You will at minimum need to
@@ -44,14 +48,10 @@ configure access to the private key by defining *one* of these backends:
 
 The `sigsum_agent_socket` variable determines where the UNIX socket is located.
 
-To have multiple sigum-agent services on the same system, include the role
-several times but with different values for the `sigsum_agent_user` variable.
-
 Dependencies
 ------------
 None.
 
 Example playbook
 ----------------
-See the [molecule converge playbook](../../molecule/sigsum_agent/converge.yml)
-which installs two instances of the sigsum-agent service on the same system.
+See the [molecule converge playbook](../../molecule/sigsum_agent/converge.yml).
