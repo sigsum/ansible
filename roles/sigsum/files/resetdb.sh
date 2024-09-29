@@ -39,6 +39,8 @@ Accepts environment variables:
   (default: zaphod).
 - MYSQL_USER_HOST: The host that the Trillian user will connect from; use '%' as
   a wildcard (default: localhost).
+The MYSQL_HOST and MYSQL_PORT options will be ignored in favor of a UNIX socket
+if the MYSQL_ROOT_PASSWORD is unset or explicitly set to the empty string.
 EOF
 }
 
@@ -56,6 +58,7 @@ collect_vars() {
   [ -z ${MYSQL_USER+x} ] && MYSQL_USER="test"
   [ -z ${MYSQL_PASSWORD+x} ] && MYSQL_PASSWORD="zaphod"
   [ -z ${MYSQL_USER_HOST+x} ] && MYSQL_USER_HOST="localhost"
+  [ -z ${MYSQL_ROOT_PASSWORD+x} ] && MYSQL_ROOT_PASSWORD=""
   FLAGS=()
 
   # handle flags
@@ -72,14 +75,18 @@ collect_vars() {
   done
 
   FLAGS+=(-u "${MYSQL_ROOT_USER}")
-  FLAGS+=(--host "${MYSQL_HOST}")
-  FLAGS+=(--port "${MYSQL_PORT}")
+  if [ -z "$MYSQL_ROOT_PASSWORD" ]; then
+    FLAGS+=(--protocol=SOCKET)
+  else
+    FLAGS+=(--host "${MYSQL_HOST}")
+    FLAGS+=(--port "${MYSQL_PORT}")
+  fi
 
   # Optionally print flags (before appending password)
   [[ ${VERBOSE} = 'true' ]] && echo "- Using MySQL Flags: ${FLAGS[@]}"
 
   # append password if supplied
-  [ -z ${MYSQL_ROOT_PASSWORD+x} ] || FLAGS+=(-p"${MYSQL_ROOT_PASSWORD}")
+  [ -z "$MYSQL_ROOT_PASSWORD" ] || FLAGS+=(-p"${MYSQL_ROOT_PASSWORD}")
 }
 
 main() {

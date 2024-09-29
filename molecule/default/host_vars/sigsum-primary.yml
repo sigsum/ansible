@@ -16,8 +16,6 @@ sigsum_secondary_pubkey: |
 sigsum_db_pw: changeme
 sigsum_db_name: test
 
-mysql_root_user: root
-mysql_root_password: "{{ sigsum_db_pw }}"
 mysql_users:
   - user: "{{ sigsum_user }}"
     password: "{{ sigsum_db_pw }}"

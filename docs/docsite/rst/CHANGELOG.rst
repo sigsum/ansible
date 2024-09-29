@@ -19,6 +19,9 @@ The dynamic handler names in the sigsum_agent role were not functioning on some
 systems (tasks failed).  Now static handler names are used instead.  This means
 it is not yet supported to configure more than one sigsum-agent per play.
 
+The sigsum role did not work when omitting the MYSQL root password.  This has
+now been fixed by using a UNIX socket instead of the default host and port.
+
 v1.1.0
 ======
 
