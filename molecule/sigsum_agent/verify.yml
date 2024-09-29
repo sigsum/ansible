@@ -4,8 +4,7 @@
   vars:
     test_user: alice
     test_home: "/home/{{ test_user }}"
-    test_grp1: svc1-sigsum-agent  # must match converge.yml
-    test_grp2: svc2-sigsum-agent  # must match converge.yml
+    test_grp: svc-sigsum-agent  # must match converge.yml
   tasks:
     - name: "Add test user ({{ test_user }})"
       ansible.builtin.user:
@@ -20,7 +19,7 @@
 
     - name: Read public key
       ansible.builtin.openssh_keypair:
-        path: "/var/lib/{{ test_grp1 }}/.config/sigsum-agent/key"
+        path: "/var/lib/{{ test_grp }}/.config/sigsum-agent/key"
         type: ed25519
         force: no  # don't overwrite the existing key
       register: key
@@ -43,7 +42,7 @@
 
     - name: Sign message and fail because of group permissions
       ansible.builtin.shell: |
-        export SSH_AUTH_SOCK="/var/run/{{ test_grp1 }}/sigsum-agent.socket"
+        export SSH_AUTH_SOCK="/var/run/{{ test_grp }}/sigsum-agent.socket"
         ssh-keygen -Y sign -n testonly -f "{{ test_home }}/key.pub" "{{ test_home }}/msg"
       become_user: "{{ test_user }}"
       become: true
@@ -58,12 +57,12 @@
     - name: "Add {{ test_user }} to the first sigsum-agent group"
       ansible.builtin.user:
         user: "{{ test_user }}"
-        groups: "{{ test_grp1 }}"
+        groups: "{{ test_grp }}"
         append: yes
 
     - name: Sign message
       ansible.builtin.shell: |
-        export SSH_AUTH_SOCK="/var/run/{{ test_grp1 }}/sigsum-agent.socket"
+        export SSH_AUTH_SOCK="/var/run/{{ test_grp }}/sigsum-agent.socket"
         ssh-keygen -Y sign -n testonly -f "{{ test_home }}/key.pub" "{{ test_home }}/msg"
       become_user: "{{ test_user }}"
       become: true
@@ -75,7 +74,7 @@
       become: true
 
     - name: Try to read the private key and fail
-      ansible.builtin.shell: "cat /var/lib/{{ test_grp1 }}/.config/sigsum-agent/key"
+      ansible.builtin.shell: "cat /var/lib/{{ test_grp }}/.config/sigsum-agent/key"
       become_user: "{{ test_user }}"
       become: true
       register: keyread
@@ -85,27 +84,3 @@
       ansible.builtin.assert:
         that: keyread.rc != 0
         fail_msg: "Private key leaked to {{ test_user }}: {{ keyread.stdout }}"
-
-    - name: "Add {{ test_user }} to the second sigsum-agent group"
-      ansible.builtin.user:
-        user: "{{ test_user }}"
-        groups: "{{ test_grp2 }}"
-        append: yes
-
-    - name: Sign message
-      ansible.builtin.shell: |
-        export SSH_AUTH_SOCK="/var/run/{{ test_grp2 }}/sigsum-agent.socket"
-        ssh-keygen -Y sign -n testonly -f "{{ test_home }}/key.pub" "{{ test_home }}/msg"
-      become_user: "{{ test_user }}"
-      become: true
-
-    - name: Verify message
-      ansible.builtin.shell: ssh-keygen -Y check-novalidate -n testonly -f "{{ test_home }}/key.pub" -s "{{ test_home }}/msg.sig" <"{{ test_home }}/msg"
-      become_user: "{{ test_user }}"
-      become: true
-
-    - name: Clean-up so verify.yml can be run repeatedly
-      ansible.builtin.shell: |
-        gpasswd -d "{{ test_user }}" "{{ test_grp1 }}"
-        gpasswd -d "{{ test_user }}" "{{ test_grp2 }}"
-        userdel -r "{{ test_user }}"

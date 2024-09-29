@@ -7,6 +7,18 @@ CHANGELOG
 .. contents::
    :local:
 
+v1.1.1
+======
+
+This is bug-fix only release (WIP changelog).
+
+Bug fixes
+---------
+
+The dynamic handler names in the sigsum_agent role were not functioning on some
+systems (tasks failed).  Now static handler names are used instead.  This means
+it is not yet supported to configure more than one sigsum-agent per play.
+
 v1.1.0
 ======
 
