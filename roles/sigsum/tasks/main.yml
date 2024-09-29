@@ -75,7 +75,7 @@
 ###
 # Setup database
 ###
-- name: check if database exists
+- name: Check if database exists
   community.mysql.mysql_db:
     name: "{{ sigsum_db_name }}"
     login_user: "{{ sigsum_user }}"
@@ -83,27 +83,16 @@
     state: present
   register: database_exists
 
-- name: Setup database
+- name: Configure database for the first time
+  ansible.builtin.command: |
+    "{{ sigsum_home }}/.local/bin/resetdb.sh" --force
+  environment:
+    MYSQL_USER: "{{ sigsum_user }}"
+    MYSQL_DATABASE: "{{ sigsum_db_name }}"
+    MYSQL_PASSWORD: "{{ sigsum_db_pw }}"
+    MYSQL_ROOT_USER: "{{ mysql_root_user }}"
+    MYSQL_ROOT_PASSWORD: "{{ mysql_root_password }}"
   when: database_exists.changed
-  block:
-    - name: Initiate db without password
-      command: "{{ sigsum_home }}/.local/bin/resetdb.sh --force"
-      environment:
-        MYSQL_USER: "{{ sigsum_user }}"
-        MYSQL_DATABASE: "{{ sigsum_db_name }}"
-        MYSQL_PASSWORD: "{{ sigsum_db_pw }}"
-        MYSQL_ROOT_USER: "{{ mysql_root_user }}"
-      when: mysql_root_password == ""
-
-    - name: Initiate db with password
-      command: "{{ sigsum_home }}/.local/bin/resetdb.sh --force"
-      environment:
-        MYSQL_USER: "{{ sigsum_user }}"
-        MYSQL_DATABASE: "{{ sigsum_db_name }}"
-        MYSQL_PASSWORD: "{{ sigsum_db_pw }}"
-        MYSQL_ROOT_USER: "{{ mysql_root_user }}"
-        MYSQL_ROOT_PASSWORD: "{{ mysql_root_password }}"
-      when: mysql_root_password != ""
 
 ###
 # Configure public suffix list and rate limiting
