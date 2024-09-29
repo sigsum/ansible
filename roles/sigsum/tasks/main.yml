@@ -156,46 +156,8 @@
     enabled: true
 
 ###
-# Misc configuration
+# Misc additional sigsum-log configuration
 ###
-- name: Install Trillian systemd services
-  template:
-    src: "{{ item }}.service.j2"
-    dest: "/lib/systemd/system/{{ item }}.service"
-  with_items:
-    - trillian-signer
-    - trillian-server
-  notify:
-    - reload systemd
-    - restart trillian
-
-- name: Install sigsum-primary systemd service
-  template:
-    src: "sigsum-log-primary@.service.j2"
-    dest: "/lib/systemd/system/sigsum-log-primary@.service"
-  when: sigsum_role == "primary"
-  notify:
-    - reload systemd
-    - restart sigsum primary node
-
-- name: Install sigsum-secondary systemd service
-  template:
-    src: "sigsum-log-secondary@.service.j2"
-    dest: "/lib/systemd/system/sigsum-log-secondary@.service"
-  when: sigsum_role == "secondary"
-  notify:
-    - reload systemd
-    - restart sigsum secondary node
-
-- name: Enable trillian service units
-  systemd:
-    name: "{{ item }}"
-    enabled: true
-    state: started
-  with_items:
-    - trillian-signer
-    - trillian-server
-
 - name: register sigsum_key_file
   ansible.builtin.set_fact:
     sigsum_key_file: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/logkey"
@@ -270,20 +232,6 @@
   when: sigsum_role == "secondary"
   notify: restart sigsum secondary node
 
-- name: Enable sigsum primary service units
-  systemd:
-    name: "sigsum-log-primary@{{ sigsum_logname }}"
-    enabled: true
-    state: started
-  when: sigsum_role == "primary"
-
-- name: Enable sigsum secondary service units
-  systemd:
-    name: "sigsum-log-secondary@{{ sigsum_logname }}"
-    enabled: true
-    state: started
-  when: sigsum_role == "secondary"
-
 - name: register status of public key
   stat:
     path: "{{sigsum_key_file}}.pub"
@@ -299,3 +247,58 @@
     - name: "Print public key of sigsum log {{sigsum_logname}}"
       debug:
         msg: "{{ file_data.content | b64decode}}"
+
+###
+# Configure systemd
+###
+- name: Configure Trillian systemd services
+  template:
+    src: "{{ item }}.service.j2"
+    dest: "/lib/systemd/system/{{ item }}.service"
+  with_items:
+    - trillian-signer
+    - trillian-server
+  notify:
+    - reload systemd
+    - restart trillian
+
+- name: Ensure Trillian services are started and enabled
+  systemd:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  with_items:
+    - trillian-signer
+    - trillian-server
+
+- name: Configure sigsum-primary systemd service
+  template:
+    src: "sigsum-log-primary@.service.j2"
+    dest: "/lib/systemd/system/sigsum-log-primary@.service"
+  when: sigsum_role == "primary"
+  notify:
+    - reload systemd
+    - restart sigsum primary node
+
+- name: Enable sigsum primary service units
+  systemd:
+    name: "sigsum-log-primary@{{ sigsum_logname }}"
+    enabled: true
+    state: started
+  when: sigsum_role == "primary"
+
+- name: Configure sigsum-secondary systemd service
+  template:
+    src: "sigsum-log-secondary@.service.j2"
+    dest: "/lib/systemd/system/sigsum-log-secondary@.service"
+  when: sigsum_role == "secondary"
+  notify:
+    - reload systemd
+    - restart sigsum secondary node
+
+- name: Enable sigsum secondary service units
+  systemd:
+    name: "sigsum-log-secondary@{{ sigsum_logname }}"
+    enabled: true
+    state: started
+  when: sigsum_role == "secondary"
