@@ -1,9 +1,4 @@
 ---
-- name: Generate primary key
-  command: "{{ sigsum_home }}/go/bin/sigsum-key gen -o {{ sigsum_key_file }}"
-  become_user: "{{ sigsum_user }}"
-  become: true
-
 - name: reload systemd
   systemd:
     daemon_reload: true

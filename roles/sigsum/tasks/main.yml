@@ -172,11 +172,13 @@
     force: no
   when: sigsum_key != ""
 
-- name: Check if primary key needs to be generated
-  ansible.builtin.command: "/bin/true"
+- name: Generate signing key if it does not exist
+  ansible.builtin.command: |
+    "{{ sigsum_home }}/go/bin/sigsum-key" gen -o "{{ sigsum_key_file }}"
   args:
-    creates: "{{ sigsum_key_file }}"
-  notify: Generate primary key  # runs iff file does not exist
+    creates: "{{ sigsum_key_file }}"  # created iff file does not exist
+  become_user: "{{ sigsum_user }}"
+  become: true
 
 - name: write secondary_pubkey_file
   become_user: "{{ sigsum_user }}"
