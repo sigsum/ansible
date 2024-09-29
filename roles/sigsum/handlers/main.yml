@@ -4,6 +4,10 @@
   become_user: "{{ sigsum_user }}"
   become: true
 
+- name: reload systemd
+  systemd:
+    daemon_reload: true
+
 - name: restart trillian
   systemd:
     name: "{{ item }}"
@@ -21,7 +25,3 @@
   systemd:
     name: "sigsum-log-secondary@{{ sigsum_logname }}"
     state: restarted
-
-- name: reload systemd
-  systemd:
-    daemon_reload: true
