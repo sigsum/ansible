@@ -22,6 +22,10 @@ it is not yet supported to configure more than one sigsum-agent per play.
 The sigsum role did not work when omitting the MYSQL root password.  This has
 now been fixed by using a UNIX socket instead of the default host and port.
 
+Most configuration changes (like adding a witness or changing Trillian's logging
+verbosity) did not result in the appropriate service restarts.  This has now
+been improved while keeping the sigsum role idempotent if there are no changes.
+
 v1.1.0
 ======
 
