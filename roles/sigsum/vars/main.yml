@@ -29,7 +29,7 @@ sigsum_install_tools_from_log_go: >
         'name': tool.name,
         'source': tool.source | default('sigsum.org/log-go'),
         'version': tool.version | default(sigsum_log_version),
-        'handlers': ['restart sigsum primary node', 'restart sigsum secondary node'],
+        'handlers': ['restart sigsum {{ sigsum_role }} node'],
       }
     }},
   {% endfor %}]

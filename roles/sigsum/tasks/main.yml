@@ -60,6 +60,7 @@
     owner: "{{ sigsum_user }}"
     group: "{{ sigsum_user }}"
     mode: '0700'
+  notify: "restart sigsum {{ sigsum_role }} node"
 
 - name: Install trillian resetdb script
   copy:
@@ -157,16 +158,34 @@
 ###
 # Misc configuration
 ###
-- name: Install service units
+- name: Install Trillian systemd services
   template:
     src: "{{ item }}.service.j2"
     dest: "/lib/systemd/system/{{ item }}.service"
   with_items:
     - trillian-signer
     - trillian-server
-    - sigsum-log-primary@
-    - sigsum-log-secondary@
-  notify: reload systemd
+  notify:
+    - reload systemd
+    - restart trillian
+
+- name: Install sigsum-primary systemd service
+  template:
+    src: "sigsum-log-primary@.service.j2"
+    dest: "/lib/systemd/system/sigsum-log-primary@.service"
+  when: sigsum_role == "primary"
+  notify:
+    - reload systemd
+    - restart sigsum primary node
+
+- name: Install sigsum-secondary systemd service
+  template:
+    src: "sigsum-log-secondary@.service.j2"
+    dest: "/lib/systemd/system/sigsum-log-secondary@.service"
+  when: sigsum_role == "secondary"
+  notify:
+    - reload systemd
+    - restart sigsum secondary node
 
 - name: Enable trillian service units
   systemd:
@@ -222,7 +241,8 @@
   ansible.builtin.copy:
     content: "{{sigsum_witness_config}}"
     dest: "{{ sigsum_policy_file }}"
-  when: sigsum_policy_file is defined and sigsum_witness_config != ""
+  when: sigsum_policy_file is defined and sigsum_witness_config != "" and sigsum_role == "primary"
+  notify: restart sigsum primary node
 
 - name: Install primary configuration file
   template:
@@ -235,6 +255,7 @@
   become_user: "{{ sigsum_user }}"
   become: true
   when: sigsum_role == "primary"
+  notify: restart sigsum primary node
 
 - name: Install secondary configuration file
   template:
@@ -247,6 +268,7 @@
   become_user: "{{ sigsum_user }}"
   become: true
   when: sigsum_role == "secondary"
+  notify: restart sigsum secondary node
 
 - name: Enable sigsum primary service units
   systemd:
