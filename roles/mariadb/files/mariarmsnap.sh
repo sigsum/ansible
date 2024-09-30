@@ -10,5 +10,5 @@ VG="$(cat /root/.config/mariasnap/vg)"
 SNAPNAME=dbsnap
 BUPDIR=/var/backups/dbsnap
 
-umount $BUPDIR
+umount $BUPDIR || true          # Don't exit on failure
 lvremove -qq -y $VG/$SNAPNAME

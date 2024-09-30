@@ -10,7 +10,7 @@ CHANGELOG
 v1.1.1
 ======
 
-This is bug-fix only release (WIP changelog).
+This is a bug-fix only release.
 
 Bug fixes
 ---------
@@ -25,6 +25,10 @@ now been fixed by using a UNIX socket instead of the default host and port.
 Most configuration changes (like adding a witness or changing Trillian's logging
 verbosity) did not result in the appropriate service restarts.  This has now
 been improved while keeping the sigsum role idempotent if there are no changes.
+
+The MariaDB backup scripts kept failing once they'd started to fail in
+a particular way. This has now been fixed.
+
 
 v1.1.0
 ======
