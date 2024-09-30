@@ -75,7 +75,7 @@ collect_vars() {
   done
 
   FLAGS+=(-u "${MYSQL_ROOT_USER}")
-  if [ -z "$MYSQL_ROOT_PASSWORD" ]; then
+  if [ -z "${MYSQL_ROOT_PASSWORD}" ]; then
     FLAGS+=(--protocol=SOCKET)
   else
     FLAGS+=(--host "${MYSQL_HOST}")
