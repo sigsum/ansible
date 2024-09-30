@@ -30,4 +30,4 @@ system lvcreate -qq -l 100%FREE --snapshot -n $SNAPNAME $LV;
 EOF
 
 [ -d $BUPDIR ] || { mkdir -p $BUPDIR; chmod 700 $BUPDIR; }
-mount $VG/$SNAPNAME $BUPDIR
+mount -o ro $VG/$SNAPNAME $BUPDIR
