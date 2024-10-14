@@ -41,8 +41,8 @@ The variables that match the above provisioning would be:
 
 ---Check that the sigsum-agent service is running
 
-    alice $ sudo XDG_RUNTIME_DIR=/run/user/$(id -u svc-test-sigsum-agent) -u svc-test-sigsum-agent systemctl --user status sigsum-agent.socket
-    alice $ sudo XDG_RUNTIME_DIR=/run/user/$(id -u svc-test-sigsum-agent) -u svc-test-sigsum-agent systemctl --user status sigsum-agent.service
+    # systemctl status sigsum-agent.socket
+    # systemctl status sigsum-agent.service
 
 ---Try signing with user alice
 
@@ -56,9 +56,9 @@ The variables that match the above provisioning would be:
 
 ---Clean-up what ansible installed
 
-    alice # gpasswd -d alice svc-test-sigsum-agent
-    alice # loginctl disable-linger svc-test-sigsum-agent
-    alice # userdel -r svc-test-sigsum-agent
+    # gpasswd -d alice svc-test-sigsum-agent
+    # loginctl disable-linger svc-test-sigsum-agent
+    # userdel -r svc-test-sigsum-agent
 
 ---Clean-up the generated key
 

@@ -2,38 +2,23 @@
 - name: Reload systemd daemon
   ansible.builtin.systemd:
     daemon_reload: true
-    scope: user
-  become_user: "{{ sigsum_agent_user }}"
-  become: true
 
 - name: Restart sigsum-agent socket
   ansible.builtin.systemd:
     name: sigsum-agent.socket
     state: restarted
-    scope: user
-  become_user: "{{ sigsum_agent_user }}"
-  become: true
 
 - name: Restart sigsum-agent service
   ansible.builtin.systemd:
     name: sigsum-agent.service
     state: restarted
-    scope: user
-  become_user: "{{ sigsum_agent_user }}"
-  become: true
 
 - name: Enable sigsum-agent socket
   ansible.builtin.systemd:
     name: sigsum-agent.socket
     enabled: true
-    scope: user
-  become_user: "{{ sigsum_agent_user }}"
-  become: true
 
 - name: Enable sigsum-agent service
   ansible.builtin.systemd:
     name: sigsum-agent.service
     enabled: true
-    scope: user
-  become_user: "{{ sigsum_agent_user }}"
-  become: true
