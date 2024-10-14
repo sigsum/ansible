@@ -2,7 +2,9 @@
 Description=sigsum-agent activation socket
 
 [Socket]
+RuntimeDirectory={{ sigsum_agent_user }}
 ListenStream={{ sigsum_agent_socket }}
+SocketUser={{ sigsum_agent_user }}
 SocketMode=0660
 
 [Install]

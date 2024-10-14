@@ -17,20 +17,9 @@
         name: openssh-client
         state: present
 
-    - name: Read public key
-      ansible.builtin.openssh_keypair:
-        path: "/var/lib/{{ test_grp }}/.config/sigsum-agent/key"
-        type: ed25519
-        force: no  # don't overwrite the existing key
-      register: key
-
-    - name: Save public key
-      ansible.builtin.copy:
-        content: "{{ key.public_key }}"
-        dest: "{{ test_home }}/key.pub"
-        owner: "{{ test_user }}"
-        group: "{{ test_user }}"
-        mode: '0644'
+    - name: Extract and save public key
+      ansible.builtin.command: |
+        sh -c "echo ssh-ed25519 $(ssh-keygen -ef /var/lib/{{ test_grp }}/.config/sigsum-agent/key | grep ^AAAA) > {{ test_home }}/key.pub"
 
     - name: Create test message
       ansible.builtin.copy:

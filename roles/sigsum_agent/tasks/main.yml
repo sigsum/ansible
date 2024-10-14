@@ -19,16 +19,7 @@
     state: directory
   loop:
     - "{{ sigsum_agent_home }}"  # ensures this is not group and world readable
-    - "{{ sigsum_agent_home }}/.config/systemd/user"
     - "{{ sigsum_agent_home }}/.config/sigsum-agent"
-
-- name: Setup shared group directory
-  ansible.builtin.file:
-    path: "{{ sigsum_agent_run }}"
-    owner: "{{ sigsum_agent_user }}"
-    group: "{{ sigsum_agent_user }}"
-    state: directory
-    mode: '0770'
 
 ###
 # (Re)install sigsum-agent if the program version or compiler changed
@@ -101,13 +92,10 @@
   when: not lingering.stat.exists
   changed_when: true  # silence ansible-lint
 
-- name: Configure systemd socket activation
+- name: Configure systemd socket activation for sigsum-agent
   ansible.builtin.template:
     src: sigsum-agent.socket.j2
-    dest: "{{ sigsum_agent_home }}/.config/systemd/user/sigsum-agent.socket"
-    owner: "{{ sigsum_agent_user }}"
-    group: "{{ sigsum_agent_user }}"
-    mode: '0600'
+    dest: "/usr/lib/systemd/system/sigsum-agent.socket"
   notify:
     - Reload systemd daemon
     - Restart sigsum-agent socket
@@ -116,10 +104,7 @@
 - name: Configure systemd sigsum-agent service
   ansible.builtin.template:
     src: sigsum-agent.service.j2
-    dest: "{{ sigsum_agent_home }}/.config/systemd/user/sigsum-agent.service"
-    owner: "{{ sigsum_agent_user }}"
-    group: "{{ sigsum_agent_user }}"
-    mode: '0600'
+    dest: "/usr/lib/systemd/system/sigsum-agent.service"
   notify:
     - Reload systemd daemon
     - Restart sigsum-agent service
