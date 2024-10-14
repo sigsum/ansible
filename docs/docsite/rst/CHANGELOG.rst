@@ -7,6 +7,21 @@ CHANGELOG
 .. contents::
    :local:
 
+v1.1.2
+======
+
+This is a bug-fix only release.
+
+Bug fixes
+---------
+
+The runtime directory for sigsum_agent is now being created by systemd
+rather than by Ansible, fixing #22. sigsum_agent units are now being
+run by the system instance.
+
+Tests are no longer dependent on ansible.builtin.openssh_keypair.
+
+
 v1.1.1
 ======
 
