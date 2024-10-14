@@ -1,5 +1,9 @@
 [Unit]
 Description=sigsum-agent activation socket
+{% if sigsum_agent_yubihsm_passphrase is defined %}
+After=yubihsm-connector.service
+BindsTo=yubihsm-connector.service
+{% endif %}
 
 [Socket]
 RuntimeDirectory={{ sigsum_agent_user }}
@@ -8,4 +12,4 @@ SocketUser={{ sigsum_agent_user }}
 SocketMode=0660
 
 [Install]
-WantedBy=sockets.target
+WantedBy=multi-user.target
