@@ -17,4 +17,5 @@ ExecStart={{ sigsum_agent_home }}/go/bin/sigsum-agent {{ args }}
 KillSignal=SIGHUP
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target
+
