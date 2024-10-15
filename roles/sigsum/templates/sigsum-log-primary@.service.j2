@@ -1,7 +1,7 @@
 [Unit]
 Description=Sigsum log primary node
-Requires=trillian-server.service
-After=trillian-server.service
+Requires=trillian-server.service {% if sigsum_ssh_auth_sock is defined %}sigsum-agent.service{% endif +%}
+After=trillian-server.service {% if sigsum_ssh_auth_sock is defined %}sigsum-agent.service{% endif +%}
 
 [Service]
 Type=simple
