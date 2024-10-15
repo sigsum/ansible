@@ -17,4 +17,4 @@ RUN rm -f /lib/systemd/system/multi-user.target.wants/* \
   /lib/systemd/system/sysinit.target.wants/systemd-tmpfiles-setup* \
   /lib/systemd/system/systemd-update-utmp*
 
-CMD [ "/lib/systemd/systemd", "log-level=info", "unit=sysinit.target" ]
+CMD [ "/lib/systemd/systemd", "--log-level=info", "--unit=sysinit.target" ]
