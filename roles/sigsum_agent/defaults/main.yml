@@ -7,8 +7,7 @@ sigsum_agent_goversion: "v0.2.3"
 # group `sigsum_agent_user`.  Sign using the `sigsum_agent_socket` UNIX socket.
 sigsum_agent_user: "svc-sigsum-agent"
 sigsum_agent_home: "/var/lib/{{ sigsum_agent_user }}"
-sigsum_agent_run: "/run/{{ sigsum_agent_user }}"
-sigsum_agent_socket: "{{ sigsum_agent_run }}/sigsum-agent.socket"
+sigsum_agent_socket: "/run/{{ sigsum_agent_user }}/sigsum-agent.socket"
 
 #
 # Exactly one of the following private-key backends must be defined:
