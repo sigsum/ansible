@@ -109,3 +109,9 @@
     - Reload systemd daemon
     - Restart sigsum-agent service
     - Enable sigsum-agent service
+
+# Handlers are run at the end of the play, not at the end of the role.
+# When other roles depend on the agent being started we need to make
+# the handlers run before that.
+- name: Force notified handlers to run
+  ansible.builtin.meta: flush_handlers
