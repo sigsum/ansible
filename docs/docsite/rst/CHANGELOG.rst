@@ -7,6 +7,18 @@ CHANGELOG
 .. contents::
    :local:
 
+v1.1.3
+======
+
+This is a bug-fix only release.
+
+Bug fixes
+---------
+
+The sigsum_agent service now starts properly after a system reboot and
+the log services wait for it to do so.
+
+
 v1.1.2
 ======
 
