@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#
+# Managed by ansible -- do not edit.
+#
+{% set args = '\\\n    ' %}
+{% set args = args + '-db ~/.local/share/litewitness/database \\\n    ' %}
+{% set args = args + '-name ' + litewitness_name|string + ' \\\n    ' %}
+{% set args = args + '-key ' + litewitness_keygrip|string + ' \\\n    ' %}
+{% set args = args + '-ssh-agent ' + litewitness_sigsum_agent_socket|string + ' \\\n    ' %}
+{% if litewitness_bastion_endpoint is defined %}
+{% set args = args + '-bastion ' + litewitness_bastion_endpoint|string %}
+{% else %}
+{% set args = args + '-listen ' + litewitness_listen_endpoint|string %}
+{% endif %}
+
+~/go/bin/litewitness {{ args }}

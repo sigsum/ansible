@@ -1,0 +1,9 @@
+#
+# Managed by ansible -- do not edit.
+#
+# Empty lines and lines starting with "#" are ignored.
+# Every other line must list exactly one log key in hex.
+#
+{% for hex_key in litewitness_sigsum_log_keys %}
+{{ hex_key }}
+{% endfor %}

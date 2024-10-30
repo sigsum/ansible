@@ -1,0 +1,5 @@
+---
+- name: Enforce valid endpoint configuration
+  ansible.builtin.assert:
+    that: (litewitness_listen_endpoint is defined) != (litewitness_bastion_endpoint is defined)
+    fail_msg: "Either litewitness_bastion_endpoint or litewitness_listen_endpoint must be defined"

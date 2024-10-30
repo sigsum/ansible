@@ -1,0 +1,47 @@
+---
+#---
+# roles/golang
+#---
+golang_debian_use_backports: true
+
+#---
+# roles/sigsum_agent
+#---
+#
+# Derive test key:
+#
+#   $ ssh-keygen -t ed25519 -f /tmp/witness-key -C "molecule:testonly"
+#   $ cat /tmp/witness-key
+#   $ cat /tmp/witness-key.pub
+#
+sigsum_agent_soft_key: |
+  -----BEGIN OPENSSH PRIVATE KEY-----
+  b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+  QyNTUxOQAAACCnyWmob7t95/68BXnUwC7DiMO2roziqAMUBMyGo1yapAAAAJi/ow9qv6MP
+  agAAAAtzc2gtZWQyNTUxOQAAACCnyWmob7t95/68BXnUwC7DiMO2roziqAMUBMyGo1yapA
+  AAAEBOZ9Qjmlep4JjfSsmle7mgcPmzqOin/CUyblEgs1ofhqfJaahvu33n/rwFedTALsOI
+  w7aujOKoAxQEzIajXJqkAAAAEW1vbGVjdWxlOnRlc3Rvbmx5AQIDBA==
+  -----END OPENSSH PRIVATE KEY-----
+
+#---
+# roles/litewitness
+#---
+#
+# Derive keygrip:
+#
+#   $ sigsum-key hash -k /tmp/witness-key.pub
+#
+# Derive log key:
+#
+#   $ ssh-keygen -t ed25519 -f /tmp/log-key -C "molecule:testonly"
+#   $ cat /tmp/log-key.pub | sigsum-key hex
+#
+# The test vector in verify.yml is derived as follows:
+#
+#   $ git.glasklar.is/sigsum/core/sigsum-go/tests/mk-add-checkpoint-request$ go run . 0 4 < /tmp/log-key
+#
+litewitness_user: testonly
+litewitness_keygrip: 74f4c44e9025398a061683189a3eb86559a3bd2f231393c5212dd8d6c524ad02
+litewitness_listen_endpoint: "127.0.0.1:2009"
+litewitness_sigsum_log_keys:
+  - 6abd8c4051720ff8308b3c8c047cb69b8b5cd9dc03473f403a3dafd962add885

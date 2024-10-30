@@ -13,6 +13,7 @@
       name:
         - sudo
         - systemd
+        - sqlite3  # litewitness
       state: present
 
   - name: Install debug tooling

@@ -1,0 +1,20 @@
+---
+litewitness_basedir: /var/lib
+litewitness_home: "{{ litewitness_basedir }}/{{ litewitness_user }}"
+litewitness_database_file: "{{ litewitness_home }}/.local/share/litewitness/database"
+
+litewitness_sigsum_agent_user: "sigsum-agent-{{ litewitness_user }}"
+litewitness_sigsum_agent_run: "/var/run/{{ litewitness_sigsum_agent_user }}"
+litewitness_sigsum_agent_socket: "{{ litewitness_sigsum_agent_run }}/sigsum-agent.socket"
+
+litewitness_install_tools_from_litetlog: >
+  [{% for tool in litewitness_tools_from_litetlog %}
+    {{
+      {
+        'name': tool.name,
+        'source': tool.source | default('filippo.io/litetlog'),
+        'version': tool.version | default(litewitness_litetlog_version),
+        'handlers': ['Restart litewitness'],
+      }
+    }},
+  {% endfor %}]

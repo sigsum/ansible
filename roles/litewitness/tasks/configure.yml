@@ -1,0 +1,64 @@
+---
+- name: Add user
+  ansible.builtin.user:
+    name: "{{ litewitness_user }}"
+    home: "{{ litewitness_home }}"
+    create_home: true
+    system: true
+    shell: "/bin/bash"
+    state: present
+
+- name: Add user to shared sigsum-agent group
+  ansible.builtin.user:
+    name: "{{ litewitness_user }}"
+    groups: "{{ litewitness_sigsum_agent_user }}"
+    append: true
+
+- name: Create user directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: "{{ litewitness_user }}"
+    group: "{{ litewitness_user }}"
+    mode: "0755"
+    state: directory
+  loop:
+    - "{{ litewitness_home }}/.local/bin"
+    - "{{ litewitness_home }}/.local/share/litewitness"
+    - "{{ litewitness_home }}/.config/litewitness"
+
+- name: Add litewitness configuration (log keys)
+  ansible.builtin.template:
+    src: "log-keys.j2"
+    dest: "{{ litewitness_home }}/.config/litewitness/log-keys"
+    owner: "{{ litewitness_user }}"
+    group: "{{ litewitness_user }}"
+    mode: "0755"
+  notify: Reconfigure litewitness
+
+- name: Add configuration script
+  ansible.builtin.copy:
+    src: "litewitness-configure"
+    dest: "{{ litewitness_home }}/.local/bin/litewitness-configure"
+    owner: "{{ litewitness_user }}"
+    group: "{{ litewitness_user }}"
+    mode: "0755"
+  notify: Reconfigure litewitness
+
+- name: Add start script
+  ansible.builtin.template:
+    src: "litewitness-start.j2"
+    dest: "{{ litewitness_home }}/.local/bin/litewitness-start"
+    owner: "{{ litewitness_user }}"
+    group: "{{ litewitness_user }}"
+    mode: "0755"
+  notify: Restart litewitness
+
+- name: Add systemd .service file
+  ansible.builtin.template:
+    src: litewitness@.service.j2
+    dest: "/usr/lib/systemd/system/litewitness@.service"
+    mode: "0644"
+  notify:
+    - Reload systemd
+    - Enable and start litewitness
+    - Restart litewitness

@@ -7,6 +7,12 @@ CHANGELOG
 .. contents::
    :local:
 
+v1.2.X
+======
+
+This release adds support for deployment of transparency-log witnesses.  For
+further details, refer to the README in roles/litewitness.
+
 v1.1.3
 ======
 

@@ -1,0 +1,44 @@
+---
+# UNIX user on the system.  The litewitness systemd service (system scope) will
+# be named litewitness@USER.  The sigsum-agent service will be configured for a
+# separate UNIX user named sigsum-agent-USER such that USER can make use of it.
+litewitness_user: litewitness
+
+# The name of the witness.  Use a schema-less URL for a domain name that you
+# control.  This helps avoid accidental naming collisions for witnesses.
+litewitness_name: example.org/witness  # Does not need to be network reachable
+
+# Keyhash of the public Ed25519 witness key.  This is used as a handle when
+# accessing the private key via the SSH agent protocol (using sigsum-agent).
+litewitness_keygrip: "to be added"   # sigsum-key hash -k /path/to/pubkey
+
+# Ed25519 public keys of logs you're willing to witness
+litewitness_sigsum_log_keys: []  # one hex-encoded key per item
+
+# Populate one of:
+#
+#   * litewitness_bastion_endpoint
+#   * litewitness_listen_endpoint
+#
+# If you decide to run without a bastion host (https://c2sp.org/https-bastion),
+# then you need to sort out your own HTTPS reverse proxy for the witness.
+#
+# litewitness_bastion_endpoint: "bastion.example.org:443"
+# litewitness_listen_endpoint: "127.0.0.1:2009"
+
+#
+# Go dependencies.  For each of the listed tools it is possible to override the
+# default version and Go repository by also specifying "version" and "source" as
+# additional dict members alongside "name".  Note that the listed tools are
+# essential, so ensure to keep them if you're overriding and/or extending here.
+#
+# For example,
+#
+#  - {name: "litewitness", version: "v0.3.0", source: "example.org/litetlog"}
+#
+# would result in "go install example.org/litetlog/cmd/litewitness@v0.3.0".
+#
+litewitness_litetlog_version: "v0.2.1"  # default litetlog version
+litewitness_tools_from_litetlog:
+  - {name: "litewitness"}
+  - {name: "witnessctl"}

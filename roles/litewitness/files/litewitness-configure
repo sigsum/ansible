@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#
+# Managed by ansible -- do not edit.
+#
+
+set -eu
+
+db_file=$1; shift
+config_file=$1; shift
+
+witnessctl=~/go/bin/witnessctl
+dup_str="sqlite.Exec: Stmt.Step: SQLITE_CONSTRAINT_PRIMARYKEY: UNIQUE constraint failed:"
+log_file=$(dirname "$db_file")/.litewitness-configure.tmp
+
+trap clean_up EXIT
+function clean_up() {
+    rm -f "$log_file"
+}
+
+while IFS= read -r line; do
+	if [[ -z "$line" ]] || [[ "$line" =~ ^# ]]; then
+		continue # Skip empty lines and comments
+	fi
+
+	"$witnessctl" add-sigsum-log -db "$db_file" -key "$line" 2> "$log_file" ||
+		grep -q "$dup_str" "$log_file" ||
+		(cat "$log_file"; exit 1)
+done < "$config_file"

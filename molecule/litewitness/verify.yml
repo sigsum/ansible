@@ -1,0 +1,53 @@
+---
+- name: Verify
+  hosts: all
+  vars_files:
+    - ../../roles/litewitness/defaults/main.yml  # role defaults
+    - ../../roles/litewitness/vars/main.yml  # role defaults
+    - "host_vars/{{ inventory_hostname }}.yml"  # what converge used
+  tasks:
+    - name: Check litewitness systemd service
+      ansible.builtin.systemd:
+        name: "litewitness@{{ litewitness_user }}"
+        state: started
+        enabled: true
+      register: services
+      failed_when: services.changed
+
+    - name: Check litebastion listening addr
+      ansible.builtin.wait_for:
+        host: "{{ litewitness_listen_endpoint.split(':')[0] }}"
+        port: "{{ litewitness_listen_endpoint.split(':')[1] }}"
+        state: started
+
+    - name: Backup initial database state
+      ansible.builtin.shell: |
+        sqlite3 {{ litewitness_database_file }} ".backup '{{ litewitness_database_file }}.BAK'"
+
+    - name: Test add-checkpoint request
+      ansible.builtin.shell: |
+        cd /tmp
+        cat << EOF > req
+        old 0
+
+        sigsum.org/v1/tree/4804b3df59edc03c0eee2a2aa5d85e2ea2636bb1709b1efd0a0fafdaeb6336f4
+        4
+        RfpVcbzFAvcKDDNbuRIi2dqE6cEyNzUzKw9PVjAob0Y=
+
+        — sigsum.org/v1/tree/4804b3df59edc03c0eee2a2aa5d85e2ea2636bb1709b1efd0a0fafdaeb6336f4 McqIJKO1qTo09NJRw2f3wrJx2lLr8l2pAq42GGn3OfaoCQdHP4xxs7cocp9hsSGOD03MZ8BXrH9/SkMJ3VAkIYUXbwc=
+        EOF
+
+        cat req | curl -s -w '%{content_type}\n%{http_code}\n' --data-binary @- http://{{ litewitness_listen_endpoint }}/add-checkpoint > rsp
+        [ "$(tail -n1 rsp)" = 200 ] || exit 1
+
+        cat req | curl -s -w '%{content_type}\n%{http_code}\n' --data-binary @- http://{{ litewitness_listen_endpoint }}/add-checkpoint > rsp
+        [ "$(tail -n1 rsp)" = 409 ] || exit 1
+
+    - name: Restore initial database state
+      ansible.builtin.shell: |
+        systemctl stop litewitness@{{ litewitness_user }}
+        rm {{ litewitness_database_file }}-wal
+        rm {{ litewitness_database_file }}-shm
+        mv {{ litewitness_database_file }}.BAK {{ litewitness_database_file }}
+        chown {{ litewitness_user }}:{{ litewitness_user }} {{ litewitness_database_file }}
+        systemctl start litewitness@{{ litewitness_user }}
