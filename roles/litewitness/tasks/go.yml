@@ -1,0 +1,27 @@
+---
+- name: "Get install info -- {{ item.name }}"
+  ansible.builtin.stat:
+    path: "{{ litewitness_home }}/go/bin/{{ item.name }}"
+  register: sigsum_bininfo
+  ignore_errors: true
+
+- name: "Get old checksum -- {{ item.name }}"
+  ansible.builtin.set_fact:
+    sigsum_binchecksum: "{{ sigsum_bininfo.stat.checksum if sigsum_bininfo.stat.exists else 'uninstalled' }}"
+
+- name: "Ensure progam is installed -- {{ item.name }}"
+  ansible.builtin.command: "go install {{ item.source }}/cmd/{{ item.name }}@{{ item.version }}"
+  changed_when: false  # not relevant for idempotence
+  become_user: "{{ litewitness_user }}"
+  become: true
+
+- name: "Get install info again -- {{ item.name }}"
+  ansible.builtin.stat:
+    path: "{{ litewitness_home }}/go/bin/{{ item.name }}"
+  register: sigsum_bininfo
+
+- name: Trigger handlers
+  ansible.builtin.command: "/bin/true"
+  notify: "{{ item.handlers }}"
+  when: sigsum_binchecksum != sigsum_bininfo.stat.checksum
+  changed_when: true  # silence ansible-lint

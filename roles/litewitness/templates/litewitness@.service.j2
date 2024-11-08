@@ -1,0 +1,14 @@
+[Unit]
+Description=Witnessing of append-only transparency logs
+Requires=sigsum-agent.service
+After=sigsum-agent.service
+
+[Service]
+Type=simple
+User=%i
+StandardError=journal
+ExecStart={{ litewitness_basedir }}/%i/.local/bin/litewitness-start
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
