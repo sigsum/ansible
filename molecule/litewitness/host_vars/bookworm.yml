@@ -29,12 +29,12 @@ sigsum_agent_soft_key: |
 #
 # Derive keygrip:
 #
-#   $ sigsum-key hash -k /tmp/witness-key.pub
+#   $ sigsum-key to-hash -k /tmp/witness-key.pub
 #
 # Derive log key:
 #
 #   $ ssh-keygen -t ed25519 -f /tmp/log-key -C "molecule:testonly"
-#   $ cat /tmp/log-key.pub | sigsum-key hex
+#   $ cat /tmp/log-key.pub | sigsum-key to-hex
 #
 # The test vector in verify.yml is derived as follows:
 #
