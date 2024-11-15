@@ -1,0 +1,14 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  tasks:
+    - name: "Use test module"
+      sigsum.ansible.my_test:
+        name: "Alice"
+        new: True
+      register: test_output
+
+    - name: "Print test output"
+      ansible.builtin.debug:
+        msg: "Message is: {{ test_output.message }}"

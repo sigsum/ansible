@@ -1,0 +1,8 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: podman
+platforms:
+  - name: bookworm
+    image: docker.io/library/debian:bookworm
