@@ -9,6 +9,7 @@ User=%i
 StandardError=journal
 ExecStart={{ litewitness_basedir }}/%i/.local/bin/litewitness-start
 Restart=on-failure
+RestartSec=1m
 
 [Install]
 WantedBy=multi-user.target
