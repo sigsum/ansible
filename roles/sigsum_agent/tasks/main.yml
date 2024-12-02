@@ -83,14 +83,12 @@
 # Configure systemd
 ###
 - name: Check the user's lingering status
-  ansible.builtin.stat:
-    path: "/var/lib/systemd/linger/{{ sigsum_agent_user }}"
+  ansible.builtin.command: "loginctl --value --property=Linger show-user {{ sigsum_agent_user }}"
   register: lingering
 
 - name: Enable systemd lingering
   ansible.builtin.command: "loginctl enable-linger {{ sigsum_agent_user }}"
-  when: not lingering.stat.exists
-  changed_when: true  # silence ansible-lint
+  when: lingering.stdout == "no"
 
 - name: Configure systemd socket activation for sigsum-agent
   ansible.builtin.template:
