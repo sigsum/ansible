@@ -95,7 +95,7 @@
 - name: Configure systemd socket activation for sigsum-agent
   ansible.builtin.template:
     src: sigsum-agent.socket.j2
-    dest: "/usr/lib/systemd/system/sigsum-agent.socket"
+    dest: "/etc/systemd/system/sigsum-agent.socket"
   notify:
     - Reload systemd daemon
     - Restart sigsum-agent socket
@@ -104,7 +104,7 @@
 - name: Configure systemd sigsum-agent service
   ansible.builtin.template:
     src: sigsum-agent.service.j2
-    dest: "/usr/lib/systemd/system/sigsum-agent.service"
+    dest: "/etc/systemd/system/sigsum-agent.service"
   notify:
     - Reload systemd daemon
     - Restart sigsum-agent service

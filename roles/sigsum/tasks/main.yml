@@ -256,7 +256,7 @@
 - name: Configure Trillian systemd services
   template:
     src: "{{ item }}.service.j2"
-    dest: "/lib/systemd/system/{{ item }}.service"
+    dest: "/etc/systemd/system/{{ item }}.service"
   with_items:
     - trillian-signer
     - trillian-server
@@ -276,7 +276,7 @@
 - name: Configure sigsum-primary systemd service
   template:
     src: "sigsum-log-primary@.service.j2"
-    dest: "/lib/systemd/system/sigsum-log-primary@.service"
+    dest: "/etc/systemd/system/sigsum-log-primary@.service"
   when: sigsum_role == "primary"
   notify:
     - reload systemd
@@ -292,7 +292,7 @@
 - name: Configure sigsum-secondary systemd service
   template:
     src: "sigsum-log-secondary@.service.j2"
-    dest: "/lib/systemd/system/sigsum-log-secondary@.service"
+    dest: "/etc/systemd/system/sigsum-log-secondary@.service"
   when: sigsum_role == "secondary"
   notify:
     - reload systemd

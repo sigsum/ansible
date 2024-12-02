@@ -56,7 +56,7 @@
 - name: Add systemd .service file
   ansible.builtin.template:
     src: litewitness@.service.j2
-    dest: "/usr/lib/systemd/system/litewitness@.service"
+    dest: "/etc/systemd/system/litewitness@.service"
     mode: "0644"
   notify:
     - Reload systemd
