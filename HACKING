@@ -1,7 +1,22 @@
 ---How to install molecule on Debian
 
-    $ apt install podman
-    # pip install molecule molecule-podman
+First ensure you have podman and python3-venv installed:
+
+    $ apt install podman python3-venv
+
+Then install molecule using pip in a Python virtual environment
+(venv):
+
+    $ python3 -m venv venv
+    $ source venv/bin/activate
+    $ pip install molecule molecule-podman
+
+Using a Python virtual environment in this way means that venv/bin is
+added to your PATH environment variable (the "activate" script does
+that for you), and all packages installed by pip are also installed in
+the venv directory. You can then run tests using molecule as described
+below. (If you then want to cleanup then just exit your shell and
+remove the venv directory.)
 
 ---How to run all molecule tests
 
