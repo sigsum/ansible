@@ -8,6 +8,10 @@
 {% endif %}
 [Unit]
 Description=implements Ed25519 signing for various backends using the ssh-agent protocol
+{% if sigsum_agent_yubihsm_passphrase is defined %}
+After=yubihsm-connector.service
+BindsTo=yubihsm-connector.service
+{% endif %}
 
 [Service]
 Type=exec
