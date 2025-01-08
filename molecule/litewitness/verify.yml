@@ -14,7 +14,7 @@
       register: services
       failed_when: services.changed
 
-    - name: Check litebastion listening addr
+    - name: Check litewitness listening addr
       ansible.builtin.wait_for:
         host: "{{ litewitness_listen_endpoint.split(':')[0] }}"
         port: "{{ litewitness_listen_endpoint.split(':')[1] }}"
