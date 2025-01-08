@@ -40,8 +40,12 @@ sigsum_agent_soft_key: |
 #
 #   $ git.glasklar.is/sigsum/core/sigsum-go/tests/mk-add-checkpoint-request$ go run . 0 4 < /tmp/log-key
 #
+# The duplicate key below ensures we regression-check witnessctl-configure,
+# which should ignore errors when configuring a log that was already added.
+#
 litewitness_user: testonly
 litewitness_keygrip: 74f4c44e9025398a061683189a3eb86559a3bd2f231393c5212dd8d6c524ad02
 litewitness_listen_endpoint: "127.0.0.1:2009"
 litewitness_sigsum_log_keys:
+  - 6abd8c4051720ff8308b3c8c047cb69b8b5cd9dc03473f403a3dafd962add885
   - 6abd8c4051720ff8308b3c8c047cb69b8b5cd9dc03473f403a3dafd962add885
