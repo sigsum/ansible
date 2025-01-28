@@ -7,11 +7,26 @@ CHANGELOG
 .. contents::
    :local:
 
-v1.2.X
+v1.2.0
 ======
 
 This release adds support for deployment of transparency-log witnesses.  For
 further details, refer to the README in roles/litewitness.
+
+Changes
+-------
+
+A litewitness role has been added, along with corresponding molecule
+tests.
+
+Generated systemd unit files are now placed under /etc/systemd instead
+of under /lib as it was before.
+
+Bug fixes
+---------
+
+A problem with dependencies after reboot was solved by setting
+dependencies in .service file instead of in .socket file.
 
 v1.1.3
 ======
