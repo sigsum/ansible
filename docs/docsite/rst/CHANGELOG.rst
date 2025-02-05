@@ -7,11 +7,33 @@ CHANGELOG
 .. contents::
    :local:
 
-v1.2.X
+v1.2.0
 ======
 
 This release adds support for deployment of transparency-log witnesses.  For
 further details, refer to the README in roles/litewitness.
+
+Changes
+-------
+
+A litewitness role has been added, along with corresponding molecule
+tests.
+
+Generated systemd unit files are now placed under /etc/systemd instead
+of under /lib as it was before. The new location /etc/systemd has
+higher priority than the old location (see man systemd.unit), so users
+do not need to change anything.
+
+In the litewitness role, set RestartSec=1m in the .service file. This
+should help avoid giving up too early due to start rate limiting, and
+also avoid too frequent error messages.
+
+Bug fixes
+---------
+
+A problem with dependencies after reboot was solved by setting
+dependencies in the sigsum-agent .service file instead of in the
+.socket file. This fix regards the sigsum_agent role.
 
 v1.1.3
 ======
