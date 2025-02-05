@@ -24,6 +24,10 @@ of under /lib as it was before. The new location /etc/systemd has
 higher priority than the old location (see man systemd.unit), so you
 do not need to change anything.
 
+In the litewitness role, set RestartSec=1m in the .service file. This
+should help avoid giving up too early due to start rate limiting, and
+also avoid too frequent error messages.
+
 Bug fixes
 ---------
 
