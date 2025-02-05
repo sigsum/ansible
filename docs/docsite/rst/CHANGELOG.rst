@@ -21,7 +21,7 @@ tests.
 
 Generated systemd unit files are now placed under /etc/systemd instead
 of under /lib as it was before. The new location /etc/systemd has
-higher priority than the old location (see man systemd.unit), so you
+higher priority than the old location (see man systemd.unit), so users
 do not need to change anything.
 
 In the litewitness role, set RestartSec=1m in the .service file. This
