@@ -28,7 +28,8 @@ Bug fixes
 ---------
 
 A problem with dependencies after reboot was solved by setting
-dependencies in .service file instead of in .socket file.
+dependencies in the sigsum-agent .service file instead of in the
+.socket file. This fix regards the sigsum_agent role.
 
 v1.1.3
 ======
