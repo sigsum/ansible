@@ -47,8 +47,8 @@ The variables that match the above provisioning would be:
 ---Try signing with user alice
 
     alice # usermod -aG svc-test-sigsum-agent alice
-    alice $ ls -l /var/run/svc-test-sigsum-agent/sigsum-agent.socket
-    alice $ export SSH_AUTH_SOCK=/var/run/svc-test-sigsum-agent/sigsum-agent.socket
+    alice $ ls -l /run/svc-test-sigsum-agent/sigsum-agent.socket
+    alice $ export SSH_AUTH_SOCK=/run/svc-test-sigsum-agent/sigsum-agent.socket
     alice $ ssh-add -L > key.pub
     alice $ echo "test message" > msg
     alice $ ssh-keygen -Y sign -n test -f key.pub msg
