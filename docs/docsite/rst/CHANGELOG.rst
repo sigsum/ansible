@@ -20,7 +20,9 @@ A litewitness role has been added, along with corresponding molecule
 tests.
 
 Generated systemd unit files are now placed under /etc/systemd instead
-of under /lib as it was before.
+of under /lib as it was before. The new location /etc/systemd has
+higher priority than the old location (see man systemd.unit), so you
+do not need to change anything.
 
 Bug fixes
 ---------
