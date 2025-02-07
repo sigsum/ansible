@@ -4,7 +4,7 @@ litewitness_home: "{{ litewitness_basedir }}/{{ litewitness_user }}"
 litewitness_database_file: "{{ litewitness_home }}/.local/share/litewitness/database"
 
 litewitness_sigsum_agent_user: "sigsum-agent-{{ litewitness_user }}"
-litewitness_sigsum_agent_run: "/var/run/{{ litewitness_sigsum_agent_user }}"
+litewitness_sigsum_agent_run: "/run/{{ litewitness_sigsum_agent_user }}"
 litewitness_sigsum_agent_socket: "{{ litewitness_sigsum_agent_run }}/sigsum-agent.socket"
 
 litewitness_install_tools_from_litetlog: >

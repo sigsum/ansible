@@ -31,7 +31,7 @@
 
     - name: Sign message and fail because of group permissions
       ansible.builtin.shell: |
-        export SSH_AUTH_SOCK="/var/run/{{ test_grp }}/sigsum-agent.socket"
+        export SSH_AUTH_SOCK="/run/{{ test_grp }}/sigsum-agent.socket"
         ssh-keygen -Y sign -n testonly -f "{{ test_home }}/key.pub" "{{ test_home }}/msg"
       become_user: "{{ test_user }}"
       become: true
@@ -51,7 +51,7 @@
 
     - name: Sign message
       ansible.builtin.shell: |
-        export SSH_AUTH_SOCK="/var/run/{{ test_grp }}/sigsum-agent.socket"
+        export SSH_AUTH_SOCK="/run/{{ test_grp }}/sigsum-agent.socket"
         ssh-keygen -Y sign -n testonly -f "{{ test_home }}/key.pub" "{{ test_home }}/msg"
       become_user: "{{ test_user }}"
       become: true
