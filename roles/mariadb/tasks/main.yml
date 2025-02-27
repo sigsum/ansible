@@ -33,8 +33,10 @@
         -h localhost
         -e "quit"
       changed_when: false
-      ignore_errors: true
       register: check_passwd_root
+      failed_when: >
+        (check_passwd_root.rc != 0) and
+        ("Access denied for user" not in check_passwd_root.stderr)
 
     - name: Set MariaDB root password for 127.0.0.1, localhost
       mysql_user:
