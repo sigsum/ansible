@@ -26,6 +26,22 @@ remove the venv directory.)
     $ molecule test -s yubihsm_connector
     $ molecule test -s litewitness
 
+If a test fails, molecule gives a nonzero return code.
+
+---What to expect in the output from the molecule tests
+
+The warning "WARNING  Driver podman does not provide a schema" is to be
+expected, that warning can be ignored.
+
+The "molecule test -s golang" test gives red-colored output indicating
+a failure for the "Require the minimum Go version" task, but that is
+an expected failure intentionally triggered by the test to verify that
+the version number check works, so that red output can be safely
+ignored.
+
+Apart from the exceptions above, the output from the molecule tests
+should include no other error or warning messages.
+
 ---How to develop with molecule
 
 Interactive deploy, debug, deploy again, verify, and clean-up session:
