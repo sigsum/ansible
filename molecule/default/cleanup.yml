@@ -1,0 +1,5 @@
+---
+# Empty playbook to avoid molecule warnings
+- name: Empty playbook
+  hosts: all
+  gather_facts: no
