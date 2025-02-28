@@ -3,5 +3,5 @@
 golang_ensure_min_version: false
 
 # Debian options
-golang_debian_deb_source: https://ftp.acc.umu.se/debian
+golang_debian_deb_source: https://deb.debian.org/debian
 golang_debian_use_backports: false
