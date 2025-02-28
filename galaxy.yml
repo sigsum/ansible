@@ -13,4 +13,4 @@ tags:
 license_file: LICENSE
 description: Roles and modules for installing and setting up a Sigsum log
 dependencies:
-  "community.mysql": "3.6.0"
+  "community.mysql": "3.12.0"
