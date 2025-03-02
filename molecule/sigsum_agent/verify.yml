@@ -36,7 +36,9 @@
       become_user: "{{ test_user }}"
       become: true
       register: sign
-      ignore_errors: true
+      failed_when: >
+        (sign.rc != 0) and
+        ("No private key found" not in sign.stderr)
 
     - name: Assert that signing failed
       ansible.builtin.assert:
@@ -67,7 +69,9 @@
       become_user: "{{ test_user }}"
       become: true
       register: keyread
-      ignore_errors: true
+      failed_when: >
+        (keyread.rc != 0) and
+        ("Permission denied" not in keyread.stderr)
 
     - name: Assert that private key reading failed
       ansible.builtin.assert:
