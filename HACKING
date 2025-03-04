@@ -26,7 +26,19 @@ remove the venv directory.)
     $ molecule test -s yubihsm_connector
     $ molecule test -s litewitness
 
-If a test fails, molecule gives a nonzero return code.
+If a test fails, molecule gives a nonzero return code. This means that
+you can use a script like the following to run all mulecule tests,
+where the "All tests passed successfully" echo line is reached only if
+all tests passed:
+
+    #!/bin/bash
+    set -e
+    molecule test
+    molecule test -s golang
+    molecule test -s sigsum_agent
+    molecule test -s yubihsm_connector
+    molecule test -s litewitness
+    echo All tests passed successfully
 
 ---What to expect in the output from the molecule tests
 
