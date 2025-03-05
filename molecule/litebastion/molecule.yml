@@ -21,3 +21,45 @@ provisioner:
   name: ansible
   playbooks:
     prepare: ../common/prepare_debian.yml
+
+# For reference, see:
+# https://ansible.readthedocs.io/projects/molecule/configuration/#scenario
+#
+# The below is intentionally configured to facilitate use of:
+# - molecule converge
+# - molecule test
+# - molecule destroy
+#
+# Think of "molecule converge" as running ansible on a host.  Multiple
+# invocations of converge results in multiple runs of ansible on the host.
+#
+# Use "molecule login" to get a shell on the host.  This is, e.g., helpful
+# for debugging and interactive testing (editing a file, converge again, etc).
+#
+# Use "molecule destroy" to clean up the host.  If any container is lingering
+# (podman container ls --all), use "molecule destroy --all" instead.
+#
+# Use "molecule test" to run an automated test.  Add "--destroy never" to keep
+# the container in case of failure (which permits "molecule login").
+scenario:
+  name: litebastion
+  converge_sequence:
+    - prepare
+    - create
+    - converge
+  test_sequence:
+    - destroy
+    - create
+    - prepare
+    - converge
+    - idempotence
+    # Basic tests
+    - verify
+    # Test configuration updates
+    - side_effect tests/update-backend-do.yml
+    - converge
+    - verify tests/update-backend-ok.yml
+    # Done
+    - destroy
+  destroy_sequence:
+    - destroy
