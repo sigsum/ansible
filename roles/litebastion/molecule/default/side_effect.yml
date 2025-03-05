@@ -1,0 +1,3 @@
+---
+# Placeholder to avoid playbook not found error, see:
+# https://github.com/ansible/molecule/issues/3617
