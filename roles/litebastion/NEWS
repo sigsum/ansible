@@ -1,0 +1,6 @@
+NEWS for litebastion vX
+
+    First release of the litebastion ansible role.
+
+    Features:
+    * Idempontent deployment of the litebastion software as a systemd service.

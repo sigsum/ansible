@@ -1,0 +1,9 @@
+---
+- name: Include distribution-dependent variables
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Include distribution-dependent tasks
+  ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
+
+- name: Install and configure the litebastion service
+  ansible.builtin.include_tasks: litebastion.yml

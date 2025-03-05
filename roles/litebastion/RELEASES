@@ -1,0 +1,31 @@
+Releases are made in the form of git tags.  There is no fixed release cycle.  In
+other words, releases are made whenever something new becomes ready.  Please
+refer to the repository's NEWS file to learn about what changed in each release.
+
+--- Tagging conventions
+The git tags in this repository are formatted as
+
+  vX[.Y][-rcZ]
+
+where X, Y, and Z are monotonically increasing counters.  Point releases (.Y)
+are used for bug fixing and other minor updates.  Release candidates (-rcZ) are
+used to facilitate testing of a release.  A few example tags are shown below.
+
+  v1
+  v1-rc1
+  v1.1
+  v1.1-rc1
+  v1.1-rc2
+  v1.2
+  v1.2-rc1
+  v2
+  v2-rc1
+
+---Quality assurance
+Quality is assured by using the molecule testing framework for testing on the
+platforms listed in the ansible-galaxy metadata file, see meta/main.yml.  To
+catch obvious errors, ansible-lint and yamllint are also enforced by our CI.
+
+Before cutting a release, the most recent release candidate is used for
+deployment on a system that runs Debian bookworm.  This manual test includes
+ensuring that a witness backend is able to connect and use the bastion host.

@@ -1,0 +1,18 @@
+[Unit]
+Description=litebastion service
+After=network.target
+
+[Service]
+Type=simple
+User={{ litebastion_user }}
+Restart=always
+ExecStart={{ litebastion_directory }}/go/bin/litebastion {% if litebastion_h2v == true %}-h2v {% endif %} \
+    -backends "{{ litebastion_directory }}/backends.conf" \
+    -listen "{{ litebastion_listen }}" \
+    -email "{{ litebastion_email }}" \
+    -host "{{ litebastion_host }}" \
+    -cache "{{ litebastion_directory }}/acme"
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
