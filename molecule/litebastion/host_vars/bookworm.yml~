@@ -1,5 +1,0 @@
----
-#---
-# roles/golang
-#---
-golang_debian_use_backports: true
