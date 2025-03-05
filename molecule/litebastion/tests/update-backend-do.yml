@@ -1,0 +1,14 @@
+---
+- name: "Update backends.conf: side-affect"
+  hosts: all
+  vars_files:
+    - ../../../roles/litebastion/defaults/main.yml
+  tasks:
+    - name: Update backends.conf
+      ansible.builtin.lineinfile:
+        path: "{{ litebastion_directory }}/backends.conf"
+        line: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        owner: "{{ litebastion_user }}"
+        group: "{{ litebastion_user }}"
+        mode: "0644"
+        state: present
