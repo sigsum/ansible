@@ -25,6 +25,7 @@ remove the venv directory.)
     $ molecule test -s sigsum_agent
     $ molecule test -s yubihsm_connector
     $ molecule test -s litewitness
+    $ molecule test -s litebastion
 
 If a test fails, molecule gives a nonzero return code. This means that
 you can use a script like the following to run all mulecule tests,
@@ -38,6 +39,7 @@ all tests passed:
     molecule test -s sigsum_agent
     molecule test -s yubihsm_connector
     molecule test -s litewitness
+    molecule test -s litebastion
     echo All tests passed successfully
 
 ---What to expect in the output from the molecule tests

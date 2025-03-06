@@ -1,23 +1,26 @@
 ---
-# We can omit create.yml and destroy.yml when using molecule's podman driver.
-# For hints on the "platforms options" that this driver seems to support, see:
-# https://github.com/ansible-community/molecule-plugins/blob/main/src/molecule_plugins/podman/driver.py
+dependency:
+  name: galaxy
 driver:
   name: podman
-
-# For reference, see:
-# https://hub.docker.com/r/trfore/docker-debian12-systemd
 platforms:
-  - name: bookworm-systemd
-    image: docker.io/trfore/docker-debian12-systemd:latest
-    command: /usr/sbin/init
+  - name: bookworm
+    image: docker.io/library/debian:bookworm
+    dockerfile: ../Dockerfile.debian.bookworm.j2
+    privileged: true
+    cgroupns_mode: private
+    override_command: false
+    volume_mounts:
+       - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
     tmpfs:
       - /run
+      - /run/lock
       - /tmp
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    privileged: false
-    pre_build_image: true
+
+provisioner:
+  name: ansible
+  playbooks:
+    prepare: ../common/prepare_debian.yml
 
 # For reference, see:
 # https://ansible.readthedocs.io/projects/molecule/configuration/#scenario
@@ -39,13 +42,15 @@ platforms:
 # Use "molecule test" to run an automated test.  Add "--destroy never" to keep
 # the container in case of failure (which permits "molecule login").
 scenario:
-  name: default
+  name: litebastion
   converge_sequence:
+    - prepare
     - create
     - converge
   test_sequence:
     - destroy
     - create
+    - prepare
     - converge
     - idempotence
     # Basic tests

@@ -1,0 +1,5 @@
+---
+dependencies:
+  - role: sigsum.ansible.golang
+    vars:
+      golang_ensure_min_version: true
