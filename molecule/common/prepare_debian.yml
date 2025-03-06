@@ -12,7 +12,7 @@
     ansible.builtin.apt:
       name:
         - sudo
-        - procps # kill command, needed for service reload
+        - procps # kill command, needed for service reload (litebastion)
         - systemd
         - sqlite3  # litewitness
       state: present
