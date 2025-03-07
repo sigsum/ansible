@@ -42,3 +42,11 @@ See [CHANGELOG](./docs/docsite/rst/CHANGELOG.rst).
 
 ## Licensing
 See [LICENSE](./LICENSE).
+
+## Contact
+
+* IRC room `#sigsum`
+* Matrix room `#sigsum` which is bridged with IRC
+* The [sigsum-general][] mailing list
+
+[sigsum-general]: https://lists.sigsum.org/mailman3/postorius/lists/sigsum-general.lists.sigsum.org/
