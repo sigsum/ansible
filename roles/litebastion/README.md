@@ -35,7 +35,7 @@ See [defaults/main.yml](./defaults/main.yml) for details.
 * sigsum.ansible.golang
 
 You will need to enable backports on Debian bookworm systems, see
-[roles/golang](../roles/golang).
+[roles/golang](roles/golang).
 
 ## Example playbook
 
