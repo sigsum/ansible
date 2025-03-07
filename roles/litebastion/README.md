@@ -1,5 +1,5 @@
-litebastion
-===========
+# litebastion
+
 An ansible role that installs, configures, and manages the [litebastion
 software][] as a systemd service.
 
@@ -12,14 +12,14 @@ Read [C2SP/https-bastion][] to learn more about what a bastion host is.
 [litebastion software]: https://github.com/FiloSottile/litetlog?tab=readme-ov-file#litebastion
 [C2SP/https-bastion]: https://github.com/C2SP/C2SP/blob/main/https-bastion.md
 
-Requirements
-------------
+## Requirements
+
 The target system must have systemd installed and running.  The system's package
 manager must also install a recent enough golang compiler (or the playbook will
 fail).  On Debian stable, you may set `litebastion_debian_backports: true`.
 
-Role Variables
---------------
+## Role variables
+
 You will likely want to set the following variables:
 
 * `litebastion_goversion`
@@ -30,48 +30,18 @@ You will likely want to set the following variables:
 
 See [defaults/main.yml](./defaults/main.yml) for details.
 
-Dependencies
-------------
-None
+## Dependencies
 
-Install the role
-----------------
-Import the `litebastion` role as `./roles/litebastion`:
+* sigsum.ansible.golang
 
-    $ ansible-galaxy install git+https://git.glasklar.is/sigsum/admin/litebastion,main -p ./roles
+You will need to enable backports on Debian bookworm systems, see
+[roles/golang](../roles/golang).
 
-Replace `main` with a git-tag to checkout a fixed version.
+## Example playbook
 
-Use the `--force` flag to downgrade or upgrade the version.
-
-View installed roles
----------------------
-View roles that were installed in the `./roles` directory:
-
-    $ ansible-galaxy role list -p ./roles
-
-Example Playbook
-----------------
-
-    ---
-    - name: Example playbook
-      hosts: all
-      become: true
-      roles:
-        - litebastion
+See the litebastion [molecule-test](../../molecule/litebastion) for an
+example.
 
 Hints:
 - `systemctl status litebastion`
 - `journalctl -u litebastion.service`
-
-License
--------
-BSD 2-Clause License
-
-Contact
--------
-* IRC room `#sigsum`
-* Matrix room `#sigsum` which is bridged with IRC
-* The [sigsum-general][] mailing list
-
-[sigsum-general]: https://lists.sigsum.org/mailman3/postorius/lists/sigsum-general.lists.sigsum.org/
