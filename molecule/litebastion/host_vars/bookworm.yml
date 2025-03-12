@@ -8,3 +8,6 @@ litebastion_testonly_addr: "127.0.0.1"
 litebastion_testonly_port: "9000"
 
 litebastion_listen: "{{ litebastion_testonly_addr }}:{{ litebastion_testonly_port }}"
+
+litebastion_user: testonly
+litebastion_directory: /var/lib/litebastion

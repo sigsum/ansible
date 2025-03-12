@@ -4,7 +4,7 @@
   tasks:
     - name: Assert litebastion service is started
       ansible.builtin.systemd_service:
-        name: litebastion
+        name: "litebastion@{{ litebastion_user }}"
         state: started
 
     - name: Assert litebastion port is open

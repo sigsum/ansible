@@ -2,7 +2,7 @@
 - name: "Update backends.conf: side-affect"
   hosts: all
   vars_files:
-    - ../../../roles/litebastion/defaults/main.yml
+    - ../host_vars/bookworm.yml
   tasks:
     - name: Update backends.conf
       ansible.builtin.lineinfile:

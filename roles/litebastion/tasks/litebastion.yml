@@ -32,8 +32,8 @@
 
 - name: Configure systemd service
   ansible.builtin.template:
-    src: litebastion.service.j2
-    dest: /etc/systemd/system/litebastion.service
+    src: litebastion@.service.j2
+    dest: "/etc/systemd/system/litebastion@.service"
     mode: "0644"
   register: configure
   notify:

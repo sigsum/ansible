@@ -25,16 +25,16 @@
 
 - name: Reload litebastion
   ansible.builtin.systemd:
-    name: litebastion
+    name: "litebastion@{{ litebastion_user }}"
     state: reloaded
 
 - name: Restart litebastion
   ansible.builtin.systemd:
-    name: litebastion
+    name: "litebastion@{{ litebastion_user }}"
     state: restarted
 
 - name: Enable litebastion
   ansible.builtin.systemd:
-    name: litebastion.service
+    name: "litebastion@{{ litebastion_user }}.service"
     state: started
     enabled: true

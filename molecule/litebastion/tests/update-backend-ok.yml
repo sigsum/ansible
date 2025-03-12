@@ -1,19 +1,21 @@
 ---
 - name: "Update backends.conf: verify"
   hosts: all
+  vars_files:
+    - ../host_vars/bookworm.yml
   become: true
   tasks:
     - name: Check number of litebastion service starts
       ansible.builtin.shell: >
-        journalctl -u litebastion.service |
-        grep 'Started litebastion.service' |
+        journalctl -u litebastion@{{ litebastion_user }}.service |
+        grep 'Started litebastion@' |
         wc -l
       register: num_start
 
     - name: Check number of litebastion service reloads
       ansible.builtin.shell: >
-        journalctl -u litebastion.service |
-        grep 'Reloaded litebastion.service' |
+        journalctl -u litebastion@{{ litebastion_user }}.service |
+        grep 'Reloaded litebastion@' |
         wc -l
       register: num_reload
 
