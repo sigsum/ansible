@@ -38,7 +38,7 @@ litewitness_sigsum_log_keys: []  # one hex-encoded key per item
 #
 # would result in "go install example.org/litetlog/cmd/litewitness@v0.3.0".
 #
-litewitness_litetlog_version: "v0.4.1"  # default litetlog version
+litewitness_litetlog_version: "v0.4.3"  # default litetlog version
 litewitness_tools_from_litetlog:
   - {name: "litewitness"}
   - {name: "witnessctl"}
