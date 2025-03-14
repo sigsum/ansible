@@ -12,8 +12,15 @@ litewitness_name: example.org/witness  # Does not need to be network reachable
 # accessing the private key via the SSH agent protocol (using sigsum-agent).
 litewitness_keygrip: "to be added"   # sigsum-key hash -k /path/to/pubkey
 
-# Ed25519 public keys of logs you're willing to witness
+# Ed25519 public keys of sigsum logs you're willing to witness
 litewitness_sigsum_log_keys: []  # one hex-encoded key per item
+
+# Public keys of non-sigsum logs you're willing to witness, in vkey format
+# Example:
+# litewitness_vkey_log_keys:
+#   - {vkey: "sum.golang.org+033de0ae+Ac4zctda0e5eza+HJyk9SxEdh+s3Ux18htTTAD8OuAn8", origin: "go.sum database tree"}
+#   - {vkey: "other.example.org+aaaa+bbbb+cccc+dddd", origin: "some other origin"}
+litewitness_vkey_log_keys: []
 
 # Populate one of:
 #
