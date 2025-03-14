@@ -17,7 +17,7 @@
     state: started
 
 - name: Reconfigure litewitness
-  ansible.builtin.command: "~/.local/bin/litewitness-configure {{ litewitness_database_file }} {{ litewitness_home }}/.config/litewitness/log-keys"
+  ansible.builtin.command: "~/.local/bin/litewitness-configure {{ litewitness_database_file }} {{ litewitness_home }}/.config/litewitness/log-keys {{ litewitness_home }}/.config/litewitness/non-sigsum-log-keys"
   changed_when: false  # silence ansible-lint
   become_user: "{{ litewitness_user }}"
   become: true

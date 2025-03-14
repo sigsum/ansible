@@ -49,3 +49,6 @@ litewitness_listen_endpoint: "127.0.0.1:2009"
 litewitness_sigsum_log_keys:
   - 6abd8c4051720ff8308b3c8c047cb69b8b5cd9dc03473f403a3dafd962add885
   - 6abd8c4051720ff8308b3c8c047cb69b8b5cd9dc03473f403a3dafd962add885
+
+litewitness_vkey_log_keys:
+  - {vkey: "sum.golang.org+033de0ae+Ac4zctda0e5eza+HJyk9SxEdh+s3Ux18htTTAD8OuAn8", origin: "go.sum database tree"}

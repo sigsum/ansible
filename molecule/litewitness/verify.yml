@@ -43,6 +43,25 @@
         cat req | curl -s -w '%{content_type}\n%{http_code}\n' --data-binary @- http://{{ litewitness_listen_endpoint }}/add-checkpoint > rsp
         [ "$(tail -n1 rsp)" = 409 ] || exit 1
 
+    - name: Test add-checkpoint request corresponding to a non-sigsum log
+      ansible.builtin.shell: |
+        cd /tmp
+        cat << EOF > req
+        old 0
+
+        go.sum database tree
+        35114470
+        UWz2OMJzM22grOfOODJ9dzeNSOFHb0ERL/oqLWE6JlQ=
+
+        — sum.golang.org Az3grmd4jdiw3WdxPYkhGehKbunc/owZ+BZG8uOYanUr9WoO631XJX4ibdWhA94imeZ8euyo9XfGvD5RHLfOfnXmjwg=
+        EOF
+
+        cat req | curl -s -w '%{content_type}\n%{http_code}\n' --data-binary @- http://{{ litewitness_listen_endpoint }}/add-checkpoint > rsp
+        [ "$(tail -n1 rsp)" = 200 ] || exit 1
+
+        cat req | curl -s -w '%{content_type}\n%{http_code}\n' --data-binary @- http://{{ litewitness_listen_endpoint }}/add-checkpoint > rsp
+        [ "$(tail -n1 rsp)" = 409 ] || exit 1
+
     - name: Restore initial database state
       ansible.builtin.shell: |
         systemctl stop litewitness@{{ litewitness_user }}

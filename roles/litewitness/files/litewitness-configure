@@ -8,6 +8,7 @@ set -eu
 
 db_file=$1; shift
 config_file=$1; shift
+config_file_non_sigsum_logs=$1; shift
 
 witnessctl=~/go/bin/witnessctl
 dup_str="sqlite.Exec: Stmt.Step: SQLITE_CONSTRAINT_PRIMARYKEY: UNIQUE constraint failed:"
@@ -18,6 +19,7 @@ function clean_up() {
     rm -f "$log_file"
 }
 
+# Add sigsum logs
 while IFS= read -r line; do
 	if [[ -z "$line" ]] || [[ "$line" =~ ^# ]]; then
 		continue # Skip empty lines and comments
@@ -27,3 +29,21 @@ while IFS= read -r line; do
 		grep -q "$dup_str" "$log_file" ||
 		(cat "$log_file"; exit 1)
 done < "$config_file"
+
+# Add non-sigsum logs
+while IFS= read -r line; do
+	if [[ -z "$line" ]] || [[ "$line" =~ ^# ]]; then
+		continue # Skip empty lines and comments
+	fi
+
+	# line is expected to contain a vkey followed by an origin string in quotes
+	vkey=`echo $line | gawk '{print $1}'`
+	origin=`echo $line | gawk -F\" '{print $2}'`
+	# Invoke witnessctl twice, first with add-log and then with add-key
+	"$witnessctl" add-log -db "$db_file" -origin "$origin" 2> "$log_file" ||
+		grep -q "$dup_str" "$log_file" ||
+		(cat "$log_file"; exit 1)
+	"$witnessctl" add-key -db "$db_file" -origin "$origin" -key $vkey 2> "$log_file" ||
+		grep -q "$dup_str" "$log_file" ||
+		(cat "$log_file"; exit 1)
+done < "$config_file_non_sigsum_logs"

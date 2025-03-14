@@ -2,6 +2,11 @@
 - name: Enforce constraints
   ansible.builtin.include_tasks: constraints.yml
 
+- name: Install dependencies from package manager
+  ansible.builtin.apt:
+    name: gawk # Needed by litewitness-configure script
+    state: present
+
 - name: Configure litewitness
   ansible.builtin.include_tasks: configure.yml
 

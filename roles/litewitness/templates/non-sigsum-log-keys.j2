@@ -1,0 +1,9 @@
+#
+# Managed by ansible -- do not edit.
+#
+# Empty lines and lines starting with "#" are ignored.
+# Every other line must list exactly one vkey followed by a space and then an origin, where the origin can contain spaces.
+#
+{% for k in litewitness_vkey_log_keys %}
+{{ k.vkey }} "{{ k.origin }}"
+{% endfor %}

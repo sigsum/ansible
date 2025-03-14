@@ -35,6 +35,15 @@
     mode: "0755"
   notify: Reconfigure litewitness
 
+- name: Add litewitness configuration (non-sigsum vkey log keys)
+  ansible.builtin.template:
+    src: "non-sigsum-log-keys.j2"
+    dest: "{{ litewitness_home }}/.config/litewitness/non-sigsum-log-keys"
+    owner: "{{ litewitness_user }}"
+    group: "{{ litewitness_user }}"
+    mode: "0755"
+  notify: Reconfigure litewitness
+
 - name: Add configuration script
   ansible.builtin.copy:
     src: "litewitness-configure"
