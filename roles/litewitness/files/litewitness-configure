@@ -36,9 +36,9 @@ while IFS= read -r line; do
 		continue # Skip empty lines and comments
 	fi
 
-	# line is expected to contain a vkey followed by an origin string in quotes
-	vkey=`echo $line | gawk '{print $1}'`
-	origin=`echo $line | gawk -F\" '{print $2}'`
+	# line is expected to contain a vkey followed by an origin string
+	vkey=`echo $line | cut -d' ' -f1`
+	origin=`echo $line | cut -d' ' -f2-`
 	# Invoke witnessctl twice, first with add-log and then with add-key
 	"$witnessctl" add-log -db "$db_file" -origin "$origin" 2> "$log_file" ||
 		grep -q "$dup_str" "$log_file" ||
