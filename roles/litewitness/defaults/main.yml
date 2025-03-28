@@ -49,3 +49,5 @@ litewitness_litetlog_version: "v0.4.3"  # default litetlog version
 litewitness_tools_from_litetlog:
   - {name: "litewitness"}
   - {name: "witnessctl"}
+
+litewitness_sigsum_agent_user: "sigsum-agent-{{ litewitness_user }}"
