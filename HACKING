@@ -90,28 +90,6 @@ section in the corresponding molecule.yml file, as in for example the
 molecule/litebastion/molecule.yml file. See
 https://ansible.readthedocs.io/projects/molecule/configuration/#scenario
 
----How to use several instances of a role
-
-It is possible to use several instances of a role. Here is an example
-of how that can be done in the molecule test for the litewitness role:
-Change in molecule/litewitness/converge.yml so that it looks like this
-under "roles":
-
-  roles:
-    - role: sigsum.ansible.litewitness
-      litewitness_user: "litewitness-foo"
-      litewitness_sigsum_agent_user: "sigsum-agent-shared"
-      litewitness_listen_endpoint: "127.0.0.1:2009"
-    - role: sigsum.ansible.litewitness
-      litewitness_user: "litewitness-bar"
-      litewitness_sigsum_agent_user: "sigsum-agent-shared"
-      litewitness_listen_endpoint: "127.0.0.1:2010"
-
-Then run "molecule converge -s litewitness". Then you can login to the
-resulting container using "molecule login -s litewitness" and you can
-check that there are two litewitness services running side by side,
-identical apart from the specified names and port numbers.
-
 ---How to make a release
 
 Ensure that all molecule tests pass.
