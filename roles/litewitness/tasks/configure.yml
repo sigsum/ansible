@@ -50,6 +50,10 @@
     mode: "0644"
   register: litewitness_systemd_service_file
 
+# Below are tasks doing things like reload and restart which would
+# normally be done using handlers. We do it this way to ensure things
+# work reliably for >1 instances.
+
 - name: Reload systemd
   ansible.builtin.systemd:
     daemon_reload: true
