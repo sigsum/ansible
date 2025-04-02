@@ -4,3 +4,15 @@
   become: true
   roles:
     - sigsum.ansible.litewitness
+
+# In case you want two instances of the litewitness role, that can be
+# achieved by changing under "roles:" above as follows:
+#  roles:
+#    - role: sigsum.ansible.litewitness
+#      litewitness_user: "litewitness-foo"
+#      litewitness_sigsum_agent_user: "sigsum-agent-shared"
+#      litewitness_listen_endpoint: "127.0.0.1:2009"
+#    - role: sigsum.ansible.litewitness
+#      litewitness_user: "litewitness-bar"
+#      litewitness_sigsum_agent_user: "sigsum-agent-shared"
+#      litewitness_listen_endpoint: "127.0.0.1:2010"
