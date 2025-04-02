@@ -64,9 +64,10 @@
     name: "litewitness@{{ litewitness_user }}"
     enabled: true
     state: started
+  register: litewitness_started
 
 - name: Restart litewitness
   ansible.builtin.systemd:
     name: "litewitness@{{ litewitness_user }}"
     state: restarted
-  when: litewitness_start_script.changed or litewitness_systemd_service_file.changed
+  when: (litewitness_start_script.changed or litewitness_systemd_service_file.changed) and not litewitness_started.changed
