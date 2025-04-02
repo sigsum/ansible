@@ -3,4 +3,9 @@
   hosts: all
   become: true
   roles:
-    - sigsum.ansible.litebastion
+    - role: sigsum.ansible.litebastion
+      litebastion_user: "litebastion-foo"
+      litebastion_listen: "127.0.0.1:9000"
+    - role: sigsum.ansible.litebastion
+      litebastion_user: "litebastion-bar"
+      litebastion_listen: "127.0.0.1:9001"

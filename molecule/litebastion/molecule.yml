@@ -30,8 +30,8 @@ provisioner:
 scenario:
   name: litebastion
   converge_sequence:
-    - prepare
     - create
+    - prepare
     - converge
   test_sequence:
     - destroy

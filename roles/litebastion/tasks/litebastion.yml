@@ -15,11 +15,7 @@
     mode: "0644"
     owner: "{{ litebastion_user }}"
     group: "{{ litebastion_user }}"
-  notify:
-    - Go install
-    - Restrict usage
-    - Set bind permissions
-    - Restart litebastion
+  register: record_program_version
 
 - name: Configure backends file
   ansible.builtin.template:
@@ -36,14 +32,51 @@
     dest: "/etc/systemd/system/litebastion@.service"
     mode: "0644"
   register: configure
-  notify:
-    - Reload systemd daemon
-    - Restart litebastion
-    - Enable litebastion
+  register: configure_systemd_service
 
-- name: Reload backends
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
+  when: configure_systemd_service is changed
+
+- name: Go install
   ansible.builtin.command:
-    cmd: "/bin/true"
-  notify: Reload litebastion
-  when: backends.changed and not configure.changed
+    cmd: "go install {{ litebastion_gomodule }}@{{ litebastion_goversion }}"
+  become_user: "{{ litebastion_user }}"
+  become: true
   changed_when: true  # silence ansible-lint
+  when: record_program_version is changed
+
+- name: Restrict usage
+  ansible.builtin.file:
+    path: "{{ litebastion_directory }}/go/bin/litebastion"
+    owner: "{{ litebastion_user }}"
+    group: "{{ litebastion_user }}"
+    mode: "0700"
+  when: record_program_version is changed
+
+- name: Set bind permissions
+  community.general.capabilities:
+    path: "{{ litebastion_directory }}/go/bin/litebastion"
+    capability: "cap_net_bind_service+ep"
+    state: present
+  when: record_program_version is changed
+
+- name: Restart litebastion
+  ansible.builtin.systemd:
+    name: "litebastion@{{ litebastion_user }}"
+    state: restarted
+  when: (record_program_version is changed) or (configure_systemd_service is changed)
+
+- name: Reload litebastion
+  ansible.builtin.systemd:
+    name: "litebastion@{{ litebastion_user }}"
+    state: reloaded
+  when: backends.changed and not configure_systemd_service.changed
+
+- name: Enable litebastion
+  ansible.builtin.systemd:
+    name: "litebastion@{{ litebastion_user }}.service"
+    state: started
+    enabled: true
+  when: configure_systemd_service is changed

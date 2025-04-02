@@ -2,7 +2,8 @@
 litebastion_gomodule: filippo.io/litetlog/cmd/litebastion
 litebastion_goversion: v0.1.1
 litebastion_user: litebastion
-litebastion_directory: /var/lib/litebastion
+litebastion_basedir: /var/lib
+litebastion_directory: "{{ litebastion_basedir }}/{{ litebastion_user }}"
 litebastion_debian_backports: false
 
 # ACME and listen options.  Note that it is essential to use port 443 because
