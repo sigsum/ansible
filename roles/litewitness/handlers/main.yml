@@ -1,23 +1,6 @@
 ---
-- name: Reload systemd
-  ansible.builtin.systemd:
-    daemon_reload: true
 
 - name: Restart litewitness
   ansible.builtin.systemd:
     name: "litewitness@{{ litewitness_user }}"
     state: restarted
-
-# Note: this handler must be after "Restart litewitness" to avoid a start
-# followed by a restart in case that the service was previously stopped.
-- name: Enable and start litewitness
-  ansible.builtin.systemd:
-    name: "litewitness@{{ litewitness_user }}"
-    enabled: true
-    state: started
-
-- name: Reconfigure litewitness
-  ansible.builtin.command: "~/.local/bin/litewitness-configure {{ litewitness_database_file }} {{ litewitness_home }}/.config/litewitness/log-keys {{ litewitness_home }}/.config/litewitness/non-sigsum-log-keys"
-  changed_when: false  # silence ansible-lint
-  become_user: "{{ litewitness_user }}"
-  become: true

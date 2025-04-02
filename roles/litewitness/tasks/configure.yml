@@ -1,30 +1,4 @@
 ---
-- name: Add user
-  ansible.builtin.user:
-    name: "{{ litewitness_user }}"
-    home: "{{ litewitness_home }}"
-    create_home: true
-    system: true
-    shell: "/bin/bash"
-    state: present
-
-- name: Add user to shared sigsum-agent group
-  ansible.builtin.user:
-    name: "{{ litewitness_user }}"
-    groups: "{{ litewitness_sigsum_agent_user }}"
-    append: true
-
-- name: Create user directories
-  ansible.builtin.file:
-    path: "{{ item }}"
-    owner: "{{ litewitness_user }}"
-    group: "{{ litewitness_user }}"
-    mode: "0755"
-    state: directory
-  loop:
-    - "{{ litewitness_home }}/.local/bin"
-    - "{{ litewitness_home }}/.local/share/litewitness"
-    - "{{ litewitness_home }}/.config/litewitness"
 
 - name: Add litewitness configuration (log keys)
   ansible.builtin.template:
@@ -33,7 +7,7 @@
     owner: "{{ litewitness_user }}"
     group: "{{ litewitness_user }}"
     mode: "0755"
-  notify: Reconfigure litewitness
+  register: litewitness_config_keys
 
 - name: Add litewitness configuration (non-sigsum vkey log keys)
   ansible.builtin.template:
@@ -42,7 +16,7 @@
     owner: "{{ litewitness_user }}"
     group: "{{ litewitness_user }}"
     mode: "0755"
-  notify: Reconfigure litewitness
+  register: litewitness_config_other_keys
 
 - name: Add configuration script
   ansible.builtin.copy:
@@ -51,7 +25,14 @@
     owner: "{{ litewitness_user }}"
     group: "{{ litewitness_user }}"
     mode: "0755"
-  notify: Reconfigure litewitness
+  register: litewitness_config_script
+
+- name: Reconfigure litewitness
+  ansible.builtin.command: "~/.local/bin/litewitness-configure {{ litewitness_database_file }} {{ litewitness_home }}/.config/litewitness/log-keys {{ litewitness_home }}/.config/litewitness/non-sigsum-log-keys"
+  changed_when: false  # silence ansible-lint
+  become_user: "{{ litewitness_user }}"
+  become: true
+  when: litewitness_config_keys.changed or litewitness_config_other_keys.changed or litewitness_config_script.changed
 
 - name: Add start script
   ansible.builtin.template:
@@ -60,14 +41,33 @@
     owner: "{{ litewitness_user }}"
     group: "{{ litewitness_user }}"
     mode: "0755"
-  notify: Restart litewitness
+  register: litewitness_start_script
 
 - name: Add systemd .service file
   ansible.builtin.template:
     src: litewitness@.service.j2
     dest: "/etc/systemd/system/litewitness@.service"
     mode: "0644"
-  notify:
-    - Reload systemd
-    - Enable and start litewitness
-    - Restart litewitness
+  register: litewitness_systemd_service_file
+
+# Below are tasks doing things like reload and restart which would
+# normally be done using handlers. We do it this way to ensure things
+# work reliably for >1 instances.
+
+- name: Reload systemd
+  ansible.builtin.systemd:
+    daemon_reload: true
+  when: litewitness_systemd_service_file.changed
+
+- name: Enable and start litewitness
+  ansible.builtin.systemd:
+    name: "litewitness@{{ litewitness_user }}"
+    enabled: true
+    state: started
+  register: litewitness_started
+
+- name: Restart litewitness
+  ansible.builtin.systemd:
+    name: "litewitness@{{ litewitness_user }}"
+    state: restarted
+  when: (litewitness_start_script.changed or litewitness_systemd_service_file.changed) and not litewitness_started.changed
