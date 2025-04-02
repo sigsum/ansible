@@ -37,5 +37,5 @@ that deploys this service with a soft key and a localhost listening-address.
 ## Using several instances of the litewitness role
 
 See [comment in the molecule-test converge.yml
-file](../../molecule/litewitness) for an example of how to use two
-instances of the litewitness role.
+file](../../molecule/litewitness/converge.yml) for an example of how
+to use two instances of the litewitness role.
