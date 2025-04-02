@@ -50,4 +50,8 @@ litewitness_tools_from_litetlog:
   - {name: "litewitness"}
   - {name: "witnessctl"}
 
+# Username to use for the sigsum_agent dependency. One possible usage
+# is that if you run several instances of the litewitness role, you
+# can make them share the same sigsum_agent by setting this variable
+# to the same value for all instances of the litewitness role.
 litewitness_sigsum_agent_user: "sigsum-agent-{{ litewitness_user }}"
