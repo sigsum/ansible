@@ -32,7 +32,7 @@
   changed_when: false  # silence ansible-lint
   become_user: "{{ litewitness_user }}"
   become: true
-  when: (litewitness_config_keys is changed) or (litewitness_config_other_keys is changed) or (litewitness_config_script is changed)
+  when: litewitness_config_keys.changed or litewitness_config_other_keys.changed or litewitness_config_script.changed
 
 - name: Add start script
   ansible.builtin.template:
@@ -53,7 +53,7 @@
 - name: Reload systemd
   ansible.builtin.systemd:
     daemon_reload: true
-  when: litewitness_systemd_service_file is changed
+  when: litewitness_systemd_service_file.changed
 
 - name: Enable and start litewitness
   ansible.builtin.systemd:
@@ -65,4 +65,4 @@
   ansible.builtin.systemd:
     name: "litewitness@{{ litewitness_user }}"
     state: restarted
-  when: (litewitness_start_script is changed) or (litewitness_systemd_service_file is changed)
+  when: litewitness_start_script.changed or litewitness_systemd_service_file.changed
