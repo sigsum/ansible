@@ -45,8 +45,9 @@ See [LICENSE](./LICENSE).
 
 ## Contact
 
-* IRC room `#sigsum`
-* Matrix room `#sigsum` which is bridged with IRC
+* Homepage https://www.sigsum.org/
+* IRC room `#sigsum` (at OFTC.net network)
+* Matrix room `#sigsum` (at matrix.org) which is bridged with IRC
 * The [sigsum-general][] mailing list
 
-[sigsum-general]: https://lists.sigsum.org/mailman3/postorius/lists/sigsum-general.lists.sigsum.org/
+[sigsum-general]: https://lists.sigsum.org/mailman3/hyperkitty/list/sigsum-general@lists.sigsum.org/
