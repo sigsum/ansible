@@ -1,8 +1,0 @@
----
-sections:
-  - title: Changelog
-    toctree:
-      - CHANGELOG
-  - title: Examples
-    toctree:
-      - example_sigsum
