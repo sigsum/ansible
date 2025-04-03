@@ -1,9 +1,11 @@
 sigsum
 ======
-An ansible role that deploys Sigsum log servers.  Please note that only a single
-primary log or a single secondary log can be operated on the same target system.
+An ansible role that deploys Sigsum transparency log servers.  Please
+note that only a single primary log or a single secondary log can be
+operated on the same target system.
 
-Read more about the Sigsum log server software and its configuration
+Read more about the Sigsum transparency log server software and its
+configuration
 [here](https://git.glasklar.is/sigsum/core/log-go/-/tree/main/doc#configuring-and-using-the-log-server-implementation).
 
 Requirements
