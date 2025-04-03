@@ -1,6 +1,7 @@
 ---
 
-# The mysql root username is not configurable, it is always "root"
+# The mysql root username
+mysql_root_user: root
 
 # Password for mysql root user
 mysql_root_password: ""
