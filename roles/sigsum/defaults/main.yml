@@ -83,8 +83,8 @@ sigsum_configdir_base: ".config/sigsum"
 # WARNING: The unencrypted value will end up in a world readable file on the
 # target system.
 #
-sigsum_db_pw: changeme
-sigsum_db_name: test
+sigsum_db_pw: changeme  # The sigsum database password
+sigsum_db_name: test    # The sigsum database name
 
 ################################################################################
 #                   Tune which Go dependencies are installed                   #
@@ -155,7 +155,7 @@ sigsum_key_file: ""
 
 # Ignored unless sigsum_role == "primary"
 sigsum_rate_limit_file: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/rate-limits.config"
-sigsum_allow_test_domain: false
+sigsum_allow_test_domain: false # Allow submit tokens from test.sigsum.org
 sigsum_secondary_url: ""  # where the secondary log's internal endpoint is served
 sigsum_secondary_pubkey_file: ""
 sigsum_max_range: 4096
