@@ -3,20 +3,3 @@
   ansible.builtin.apt:
     name: cron
     state: present
-
-- name: Install polkitd
-  ansible.builtin.apt:
-    name: polkitd
-    state: present
-  register: install_polkitd
-
-- name: Restart dbus if needed
-  ansible.builtin.systemd:
-    name: "dbus"
-    state: restarted
-  when: install_polkitd.changed
-
-- name: Ensure polkit is started
-  ansible.builtin.systemd:
-    name: "polkit"
-    state: started
