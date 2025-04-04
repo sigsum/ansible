@@ -132,8 +132,13 @@
   when: sigsum_role == "primary"
   notify: restart sigsum primary node
 
-# TODO: trigger a restart if the list changed.  This would be trivial to do in
-# the cronjob if we had a user-scoped .service file (unfortunately we don't).
+- name: Install sudoers file allowing sigsum user to restart log service
+  template:
+    src: "sudoers_sigsum_restart_log.j2"
+    dest: "/etc/sudoers.d/sigsum_restart_log"
+  become: true
+  when: sigsum_role == "primary"
+
 - name: Install weekly refreshing of the public suffix list
   ansible.builtin.cron:
     name: "Refresh the public suffix list on Mondays between 0200 and 0600"
@@ -144,6 +149,11 @@
       "{{ sigsum_suffix_list_url }}"
       "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/public-suffix-list.txt"
       14400
+      ;
+      sudo
+      /usr/bin/systemctl
+      restart
+      "sigsum-log-primary@{{ sigsum_logname }}"
     weekday: 1
     hour: 02
     minute: 00
