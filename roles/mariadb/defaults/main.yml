@@ -1,8 +1,12 @@
 ---
 
+# The mysql root username
 mysql_root_user: root
+
+# Password for mysql root user
 mysql_root_password: ""
 
+# Usernames, passwords and permissions for mysql users
 mysql_users:
   - user: "sigsum"
     password: "changeme"
