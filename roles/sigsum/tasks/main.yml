@@ -221,11 +221,11 @@
 - name: Install primary configuration file
   template:
     src: "config.toml.j2"
-    dest: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/config.toml"
+    dest: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/config-primary.toml"
   vars:
     primary: true
     sigsum_sth_file: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/sth"
-    sigsum_trillian_tree_id_file: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/tree-id"
+    sigsum_trillian_tree_id_file: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/tree-id-primary"
   become_user: "{{ sigsum_user }}"
   become: true
   when: sigsum_role == "primary"
@@ -234,11 +234,11 @@
 - name: Install secondary configuration file
   template:
     src: "config.toml.j2"
-    dest: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/config.toml"
+    dest: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/config-secondary.toml"
   vars:
     secondary: true
     sigsum_key_file: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/logkey"
-    sigsum_trillian_tree_id_file: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/tree-id"
+    sigsum_trillian_tree_id_file: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/tree-id-secondary"
   become_user: "{{ sigsum_user }}"
   become: true
   when: sigsum_role == "secondary"

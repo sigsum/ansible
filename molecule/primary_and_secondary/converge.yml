@@ -1,0 +1,16 @@
+---
+- name: Setup a log with primary-secondary database replication, with primary and secondary on same machine
+  hosts:
+    - sigsum-primary-and-secondary
+  roles:
+    - role: sigsum.ansible.mariadb
+    - role: sigsum.ansible.sigsum
+      sigsum_role: primary
+      sigsum_internal_endpoint: "0.0.0.0:10000"
+      sigsum_external_endpoint: "0.0.0.0:3000"
+      sigsum_secondary_url: "http://localhost:10001/{{ sigsum_url_prefix }}"
+    - role: sigsum.ansible.sigsum
+      sigsum_role: secondary
+      sigsum_internal_endpoint: "0.0.0.0:10001"
+      sigsum_external_endpoint: "0.0.0.0:3001"
+      sigsum_primary_url: "http://localhost:10000/{{ sigsum_url_prefix }}"
