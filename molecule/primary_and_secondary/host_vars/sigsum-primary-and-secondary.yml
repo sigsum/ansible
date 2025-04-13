@@ -28,6 +28,14 @@ sigsum_external_endpoint: "0.0.0.0:3000"
 sigsum_internal_endpoint: "0.0.0.0:10000"
 sigsum_trillian_rpc_server: "localhost:6962"
 
+# When running primary and secondary on same machine, need to set different config filenames
+sigsum_config_filename_primary: "config-primary.toml"
+sigsum_config_filename_secondary: "config-secondary.toml"
+
+# When running primary and secondary on same machine, need to set different tree-id filenames
+sigsum_tree_id_filename_primary: "tree-id-primary"
+sigsum_tree_id_filename_secondary: "tree-id-secondary"
+
 # Primary log-server options
 sigsum_secondary_url: "http://sigsum-secondary:{{ sigsum_internal_endpoint | split(':') | last }}/{{ sigsum_url_prefix }}"
 

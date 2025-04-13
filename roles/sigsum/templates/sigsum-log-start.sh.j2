@@ -5,7 +5,19 @@ role="$1"; shift
 logname="$1"; shift
 prefix=; [[ $# -gt 0 ]] && { prefix="$1"; shift; }
 trillian_rpc=localhost:6962; [[ $# -gt 0 ]] && { trillian_rpc="$1"; shift; }
-tree_id_filename=tree-id-$role
+# The tree_id_filename can be different for primary and secondary,
+# necessary if primary and secondary run on the same machine.
+case $role in
+	primary)
+	    tree_id_filename={{ sigsum_tree_id_filename_primary }}
+	    ;;
+	secondary)
+	    tree_id_filename={{ sigsum_tree_id_filename_secondary }}
+	    ;;
+	*)
+	    echo "$0: $role: invalid role"
+	    exit 1
+esac
 
 init_tree() {
     local args="--admin_server $trillian_rpc"
@@ -26,10 +38,10 @@ start_log() {
     [[ $# -gt 0 ]] && { local pref="$1"; shift; }
     case $role in
 	primary)
-	    SIGSUM_LOGSERVER_CONFIG="$dn/config-primary.toml" ~/go/bin/sigsum-log-primary
+	    SIGSUM_LOGSERVER_CONFIG="$dn/{{ sigsum_config_filename_primary }}" ~/go/bin/sigsum-log-primary
 	    ;;
 	secondary)
-	    SIGSUM_LOGSERVER_CONFIG="$dn/config-secondary.toml" ~/go/bin/sigsum-log-secondary
+	    SIGSUM_LOGSERVER_CONFIG="$dn/{{ sigsum_config_filename_secondary }}" ~/go/bin/sigsum-log-secondary
 	    ;;
 	*)
 	    echo "$0: $role: invalid role"
