@@ -162,3 +162,17 @@ sigsum_max_range: 4096
 
 # Ignored unless sigsum_role == "secondary"
 sigsum_primary_url: ""  # where the primary log's internal endpoint is served
+
+# By default both primary and secondary use the same config filename,
+# which works as long as primary and secondary run on different
+# machines. If primary and secondary are to run on the same machine,
+# then the config filenames need to be different.
+sigsum_config_filename_primary: "config.toml"
+sigsum_config_filename_secondary: "config.toml"
+
+# By default both primary and secondary use the same tree-id filename,
+# which works as long as primary and secondary run on different
+# machines. If primary and secondary are to run on the same machine,
+# then the tree-id filenames need to be different.
+sigsum_tree_id_filename_primary: "tree-id"
+sigsum_tree_id_filename_secondary: "tree-id"
