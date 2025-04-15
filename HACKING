@@ -94,7 +94,7 @@ https://ansible.readthedocs.io/projects/molecule/configuration/#scenario
 
 Ensure that all molecule tests pass.
 
-Update docs/docsite/rst/CHANGELOG.rst.
+Update NEWS file.
 
 Update galaxy.yml 'version'.
 
