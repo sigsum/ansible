@@ -16,7 +16,7 @@ set -eu
 [ -s /root/.config/mariasnap/vg ]
 
 VG="$(cat /root/.config/mariasnap/vg)"
-LV=$VG/db
+LV=${VG#/dev/}/db
 
 SNAPNAME=dbsnap
 BUPDIR=/var/backups/dbsnap
