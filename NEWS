@@ -10,6 +10,11 @@ NEWS for sigsum ansible v1.3.0
 
 	* Added molecule test scenario for litebastion.
 
+	* Changed the name litetlog to the new name of that repo which
+          is torchwood. (https://github.com/FiloSottile/litetlog
+          renamed to https://github.com/FiloSottile/torchwood) Using
+          torchwood v0.5.0 for both litewitness and litebastion.
+
 	* Changes to allow primary and secondary running on same
           machine. This involves the possibility of using different
           filenames for the config file and the tree-id file for
@@ -27,8 +32,6 @@ NEWS for sigsum ansible v1.3.0
           parallel.
 
 	* Added support for non-sigsum logs in litewitness role.
-
-	* Bumped default litewitness version from v0.3.0 to v0.4.3
 
 	* Cleanup and fixes to avoid red output from molecule tests.
 
