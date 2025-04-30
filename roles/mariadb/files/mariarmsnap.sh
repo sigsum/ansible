@@ -7,8 +7,9 @@ set -eu
 [ -s /root/.config/mariasnap/vg ]
 
 VG="$(cat /root/.config/mariasnap/vg)"
+VG=${VG#/dev/}
 SNAPNAME=dbsnap
 BUPDIR=/var/backups/dbsnap
 
 umount $BUPDIR || true          # Don't exit on failure
-lvremove -qq -y $VG/$SNAPNAME
+lvremove -qq -y "$VG"/$SNAPNAME

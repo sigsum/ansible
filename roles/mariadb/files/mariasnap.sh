@@ -33,8 +33,8 @@ BUPDIR=/var/backups/dbsnap
 
 env LVM_SUPPRESS_FD_WARNINGS=1 mariadb <<EOF
 flush tables with read lock;
-system lvcreate -qq -l 100%FREE --snapshot -n $SNAPNAME $LV;
+system lvcreate -qq -l 100%FREE --snapshot -n $SNAPNAME "$LV";
 EOF
 
 [ -d $BUPDIR ] || { mkdir -p $BUPDIR; chmod 700 $BUPDIR; }
-mount /dev/$VG/$SNAPNAME $BUPDIR
+mount /dev/"$VG"/$SNAPNAME $BUPDIR
