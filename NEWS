@@ -1,3 +1,49 @@
+NEWS for sigsum ansible v1.3.0
+
+	This release adds a litebastion role in roles/litebastion
+	based on the https://git.glasklar.is/sigsum/admin/litebastion
+	repository which has now been archived.
+
+	Changes:
+
+	* Merged litebastion repo into roles/litebastion/ directory.
+
+	* Added molecule test scenario for litebastion.
+
+	* Changed the name litetlog to the new name of that repo which
+          is torchwood. (https://github.com/FiloSottile/litetlog
+          renamed to https://github.com/FiloSottile/torchwood) Using
+          torchwood v0.5.0 for both litewitness and litebastion.
+
+	* Changes to allow primary and secondary running on same
+          machine. This involves the possibility of using different
+          filenames for the config file and the tree-id file for
+          primary and secondary, but the default filenames are the
+          same as before so the change is backwards-compatible.
+
+	* Added brief documentation in mariadb role.
+
+	* Removed unused docs/ and renamed CHANGELOG.rst to NEWS.
+
+	* Changes to automatically restart log after weekly
+          suffix-list update.
+
+	* Made it possible to run several litewitness instances in
+          parallel.
+
+	* Added support for non-sigsum logs in litewitness role.
+
+	* Cleanup and fixes to avoid red output from molecule tests.
+
+	* Changed debian repo url from ftp.acc.umu.se to
+          deb.debian.org.
+
+	* Bumped community.mysql version from 3.6.0 to 3.12.0
+
+	* Moved away from legacy /var/run to /run for
+          sigsum-agent.socket file. See
+          https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch05s13.html
+
 NEWS for sigsum ansible v1.2.0
 
 	This release adds support for deployment of transparency-log
