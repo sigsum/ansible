@@ -1,7 +1,13 @@
 #! /bin/sh
 
-# Run this script before taking an offline backup and make sure that
-# the offline backup includes $BUPDIR (set below).
+# Run before taking an offline backup and make sure that the offline
+# backup includes $BUPDIR (set below).
+
+# Configure by writing the name of the LVM vg to the file
+# /root/.config/mariasnap/vg. Example:
+#
+#     mkdir -p /root/.config/mariasnap
+#     echo vg_db > /root/.config/mariasnap/vg
 
 # Run the accompanying mariarmsnap.sh script after taking the offline
 # backup.
@@ -10,7 +16,8 @@ set -eu
 [ -s /root/.config/mariasnap/vg ]
 
 VG="$(cat /root/.config/mariasnap/vg)"
-LV=$VG/db
+VG=${VG#/dev/}
+LV="$VG"/db
 
 SNAPNAME=dbsnap
 BUPDIR=/var/backups/dbsnap
@@ -26,8 +33,8 @@ BUPDIR=/var/backups/dbsnap
 
 env LVM_SUPPRESS_FD_WARNINGS=1 mariadb <<EOF
 flush tables with read lock;
-system lvcreate -qq -l 100%FREE --snapshot -n $SNAPNAME $LV;
+system lvcreate -qq -l 100%FREE --snapshot -n $SNAPNAME "$LV";
 EOF
 
 [ -d $BUPDIR ] || { mkdir -p $BUPDIR; chmod 700 $BUPDIR; }
-mount $VG/$SNAPNAME $BUPDIR
+mount /dev/"$VG"/$SNAPNAME $BUPDIR
