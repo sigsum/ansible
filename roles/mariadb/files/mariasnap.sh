@@ -1,7 +1,13 @@
 #! /bin/sh
 
-# Run this script before taking an offline backup and make sure that
-# the offline backup includes $BUPDIR (set below).
+# Run before taking an offline backup and make sure that the offline
+# backup includes $BUPDIR (set below).
+
+# Configure by writing the name of the LVM vg to the file
+# /root/.config/mariasnap/vg. Example:
+#
+#     mkdir -p /root/.config/mariasnap
+#     echo vg_db > /root/.config/mariasnap/vg
 
 # Run the accompanying mariarmsnap.sh script after taking the offline
 # backup.
@@ -30,4 +36,4 @@ system lvcreate -qq -l 100%FREE --snapshot -n $SNAPNAME $LV;
 EOF
 
 [ -d $BUPDIR ] || { mkdir -p $BUPDIR; chmod 700 $BUPDIR; }
-mount $VG/$SNAPNAME $BUPDIR
+mount /dev/$VG/$SNAPNAME $BUPDIR
