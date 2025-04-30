@@ -5,9 +5,9 @@
 - name: Prepare litewitness user and directories
   ansible.builtin.include_tasks: prep.yml
 
-- name: Install litetlog Go binaries
+- name: Install torchwood Go binaries
   ansible.builtin.include_tasks: go.yml
-  loop: "{{ litewitness_install_tools_from_litetlog }}"
+  loop: "{{ litewitness_install_tools_from_torchwood }}"
 
 - name: Configure litewitness
   ansible.builtin.include_tasks: configure.yml

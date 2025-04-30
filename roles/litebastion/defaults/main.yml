@@ -1,6 +1,6 @@
 ---
-litebastion_gomodule: filippo.io/litetlog/cmd/litebastion
-litebastion_goversion: v0.4.3
+litebastion_gomodule: filippo.io/torchwood/cmd/litebastion
+litebastion_goversion: v0.5.0
 litebastion_user: litebastion
 litebastion_directory: /var/lib/litebastion
 litebastion_debian_backports: false

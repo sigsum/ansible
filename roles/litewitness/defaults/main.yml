@@ -41,12 +41,12 @@ litewitness_vkey_log_keys: []
 #
 # For example,
 #
-#  - {name: "litewitness", version: "v0.3.0", source: "example.org/litetlog"}
+#  - {name: "litewitness", version: "v0.3.0", source: "example.org/torchwood"}
 #
-# would result in "go install example.org/litetlog/cmd/litewitness@v0.3.0".
+# would result in "go install example.org/torchwood/cmd/litewitness@v0.3.0".
 #
-litewitness_litetlog_version: "v0.4.3"  # default litetlog version
-litewitness_tools_from_litetlog:
+litewitness_torchwood_version: "v0.5.0"  # default torchwood version
+litewitness_tools_from_torchwood:
   - {name: "litewitness"}
   - {name: "witnessctl"}
 

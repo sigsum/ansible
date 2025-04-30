@@ -9,7 +9,7 @@ The litebastion service is reloaded with SIGHUP if the list of backends change.
 
 Read [C2SP/https-bastion][] to learn more about what a bastion host is.
 
-[litebastion software]: https://github.com/FiloSottile/litetlog?tab=readme-ov-file#litebastion
+[litebastion software]: https://github.com/FiloSottile/torchwood/blob/main/cmd/litebastion/README.md
 [C2SP/https-bastion]: https://github.com/C2SP/C2SP/blob/main/https-bastion.md
 
 ## Requirements
