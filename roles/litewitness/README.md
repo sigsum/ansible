@@ -25,9 +25,9 @@ You will need to enable backports on Debian bookworm systems, see
 [roles/golang](../roles/golang).  You will also need to configure sigsum agent
 (preferably with an HSM), see [roles/sigsum_agent](../roles/sigsum_agent).
 
-For information on the Go-installed witness tools, see [litetlog][].
+For information on the Go-installed witness tools, see [torchwood][].
 
-[litetlog]: https://github.com/FiloSottile/litetlog
+[torchwood]: https://github.com/FiloSottile/torchwood
 
 ## Example playbook
 
