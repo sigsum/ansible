@@ -137,7 +137,6 @@
     src: "sudoers_sigsum_restart_log.j2"
     dest: "/etc/sudoers.d/sigsum_restart_log"
   become: true
-  when: sigsum_role == "primary"
 
 - name: Install weekly refreshing of the public suffix list
   ansible.builtin.cron:
@@ -153,7 +152,7 @@
       sudo
       /usr/bin/systemctl
       restart
-      "sigsum-log-primary@{{ sigsum_logname }}"
+      "sigsum-log-{{ sigsum_role }}@{{ sigsum_logname }}"
     weekday: 1
     hour: 02
     minute: 00

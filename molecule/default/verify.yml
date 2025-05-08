@@ -240,3 +240,18 @@
     - name: Assert correct tree size
       ansible.builtin.assert:
         that: (secondary_tree_size|int + test_num_messages) == new_secondary_tree_size|int
+
+- name: Verify that log can be restarted by {{ sigsum_user }} user
+  hosts:
+    - sigsum-primary
+    - sigsum-secondary
+  vars_files:
+    - ../../roles/sigsum/defaults/main.yml  # role defaults
+    - "host_vars/{{ inventory_hostname }}.yml"  # what converge used
+    - host_vars/test.yml  # what this verify playbook additionally uses
+  tasks:
+    - name: Restart log as {{ sigsum_user }} user
+      ansible.builtin.shell: |
+        sudo /usr/bin/systemctl restart "sigsum-log-{{ sigsum_role }}@{{ sigsum_logname }}"
+      become_user: "{{ sigsum_user }}"
+      become: true

@@ -1,4 +1,4 @@
 #
 # This file is managed by ansible -- do not edit.
 #
-{{ sigsum_user }} ALL = (root) NOPASSWD: /usr/bin/systemctl restart sigsum-log-primary@{{ sigsum_logname }}
+{{ sigsum_user }} ALL = (root) NOPASSWD: /usr/bin/systemctl restart sigsum-log-{{ sigsum_role }}@{{ sigsum_logname }}
