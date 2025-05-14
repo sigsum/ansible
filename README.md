@@ -37,9 +37,13 @@ Read more about the Sigsum log server software and its configuration
 
 The [HACKING](./HACKING) file describes how to run the tests.
 
-## Changelog
+## Releases
 
 See [NEWS](./NEWS).
+
+For release announcements, subscribe to the [sigsum-announce][] mailing list.
+
+[sigsum-announce]: https://lists.sigsum.org/mailman3/hyperkitty/list/sigsum-announce@lists.sigsum.org/
 
 ## Licensing
 See [LICENSE](./LICENSE).
@@ -50,7 +54,5 @@ See [LICENSE](./LICENSE).
 * IRC room `#sigsum` (at OFTC.net network)
 * Matrix room `#sigsum` (at matrix.org) which is bridged with IRC
 * The [sigsum-general][] mailing list
-* For release announcements, subscribe to the [sigsum-announce][] mailing list
 
 [sigsum-general]: https://lists.sigsum.org/mailman3/hyperkitty/list/sigsum-general@lists.sigsum.org/
-[sigsum-announce]: https://lists.sigsum.org/mailman3/hyperkitty/list/sigsum-announce@lists.sigsum.org/
