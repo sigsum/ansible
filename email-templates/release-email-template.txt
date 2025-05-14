@@ -1,0 +1,22 @@
+The Sigsum team is happy to release a new version of the sigsum
+ansible collection, version tag vX.Y.Z, succeeding the previous
+release vA.B.C. The release can be checked out from the git repository
+as
+
+git clone -b vX.Y.Z https://git.glasklar.is/sigsum/admin/ansible.git
+
+See the NEWS file for details on changes, excerpt below.
+
+If you find any bugs, please report them on the
+sigsum-general@lists.sigsum.org mailing list or open an issue on
+GitLab in the ansible repository:
+
+https://git.glasklar.is/sigsum/admin/ansible/
+
+See the README.md file for installation and usage instructions, and
+the HACKING file for information about how the molecule tests can be
+used.
+
+/ The Sigsum team
+
+<COPY-PASTE LATEST NEWS FILE ENTRY HERE>

@@ -102,3 +102,11 @@ Create a signed tag:
 
     $ git tag --sign v${VERSION} -m "Release ${VERSION}"
     $ git push --tags
+
+Send email to sigsum-announce mailing list with email subject line
+"ANNOUNCE: sigsum ansible v${VERSION}" and email body based on the
+template in the email-templates/release-email-template.txt file.
+
+Post a note about it in the sigsum matrix room, something like this:
+"Sent out announcement for the v${VERSION} release of the sigsum
+ansible collection: <LINK TO ANNOUNCEMENT EMAIL AT lists.sigsum.org>"
