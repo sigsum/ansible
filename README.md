@@ -1,7 +1,8 @@
 # Sigsum ansible collection
 
-This repository contains ansible roles for deploying sigsum transparency logs
-on Debian-bookworm systems.  Each role has a slightly more detailed README.
+This repository contains ansible roles for deploying sigsum
+transparency logs and witnesses on Debian-bookworm systems.  Each role
+has a slightly more detailed README.
 
 ## Install
 
@@ -38,7 +39,7 @@ The [HACKING](./HACKING) file describes how to run the tests.
 
 ## Changelog
 
-See [CHANGELOG](./docs/docsite/rst/CHANGELOG.rst).
+See [NEWS](./NEWS).
 
 ## Licensing
 See [LICENSE](./LICENSE).
@@ -49,5 +50,7 @@ See [LICENSE](./LICENSE).
 * IRC room `#sigsum` (at OFTC.net network)
 * Matrix room `#sigsum` (at matrix.org) which is bridged with IRC
 * The [sigsum-general][] mailing list
+* For release announcements, subscribe to the [sigsum-announce][] mailing list
 
 [sigsum-general]: https://lists.sigsum.org/mailman3/hyperkitty/list/sigsum-general@lists.sigsum.org/
+[sigsum-announce]: https://lists.sigsum.org/mailman3/hyperkitty/list/sigsum-announce@lists.sigsum.org/
