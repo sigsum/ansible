@@ -32,3 +32,4 @@ sigsum_agent_yubihsm_auth_id: "200"  # default auth id for logs in core/key-mgmt
 sigsum_agent_yubihsm_key_id: "500"  # default key id for logs in core/key-mgmt
 sigsum_agent_yubihsm_addr: "localhost"  # default yubihsm-connector value
 sigsum_agent_yubihsm_port: "12345"  # default yubihsm-connector value
+sigsum_agent_yubihsm_connector_retry: true
