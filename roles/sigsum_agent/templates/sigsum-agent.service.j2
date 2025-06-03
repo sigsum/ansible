@@ -2,6 +2,9 @@
 {% if sigsum_agent_soft_key is defined %}
 {% set args = args + '-k ' + sigsum_agent_home|string + '/.config/sigsum-agent/key' %}
 {% elif sigsum_agent_yubihsm_passphrase is defined %}
+{% if sigsum_agent_yubihsm_connector_retry %}
+  {% set args = args + '--retry ' %}
+{% endif %}
 {% set args = args + '-a ' + sigsum_agent_home|string + '/.config/sigsum-agent/credentials ' %}
 {% set args = args + '-i ' + sigsum_agent_yubihsm_key_id|string + ' ' %}
 {% set args = args + '-c ' + sigsum_agent_yubihsm_addr|string + ':' + sigsum_agent_yubihsm_port|string %}
