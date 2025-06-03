@@ -17,6 +17,7 @@ BindsTo=yubihsm-connector.service
 Type=exec
 User={{ sigsum_agent_user }}
 StandardInput=socket
+StandardError=journal
 ExecStart={{ sigsum_agent_home }}/go/bin/sigsum-agent {{ args }}
 KillSignal=SIGHUP
 
