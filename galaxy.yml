@@ -2,7 +2,7 @@ name: ansible
 namespace: sigsum
 readme: README.md
 repository: https://git.glasklar.is/sigsum/admin/ansible 
-version: 1.3.0
+version: 1.4.0-alpha-1
 authors:
   - Foxboron
   - ln5
