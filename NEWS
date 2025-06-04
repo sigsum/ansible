@@ -10,6 +10,19 @@ NEWS for sigsum ansible v1.x.x
           contains roles for not only transparency logs but also for
           witnesses.
 
+	* galaxy.yml was updated to clarify that this repo contains
+          roles for not only transparency logs but also for witnesses.
+
+	* A bug was fixed where a sigsum-agent using a YubiHSM wouldn't start
+	  if it was being started before the yubihsm-connector was properly
+	  ready (#73).
+
+	* The version of sigsum-agent used by default changed from v0.2.3
+	  to v0.2.4.
+
+	* A bug making log lines from sigsum-agent not show up in the
+          journal was fixed (#72).
+
 NEWS for sigsum ansible v1.3.0
 
 	This release adds a litebastion role in roles/litebastion

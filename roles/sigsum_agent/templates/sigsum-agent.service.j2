@@ -11,6 +11,7 @@
 {% endif %}
 [Unit]
 Description=implements Ed25519 signing for various backends using the ssh-agent protocol
+PartOf=sigsum-agent.socket
 {% if sigsum_agent_yubihsm_passphrase is defined %}
 After=yubihsm-connector.service
 BindsTo=yubihsm-connector.service
@@ -23,7 +24,3 @@ StandardInput=socket
 StandardError=journal
 ExecStart={{ sigsum_agent_home }}/go/bin/sigsum-agent {{ args }}
 KillSignal=SIGHUP
-
-[Install]
-WantedBy=multi-user.target
-
