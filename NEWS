@@ -6,11 +6,14 @@ NEWS for upcoming sigsum ansible v1.4.0
 	  if it was being started before the yubihsm-connector was properly
 	  ready (#73).
 
-	* The version of sigsum-agent used by default changed from v0.2.3
-	  to v0.2.4.
+	* The version of sigsum-agent used by default changed from
+          v0.2.3 to v0.2.5.
 
 	* A bug making log lines from sigsum-agent not show up in the
           journal was fixed (#72).
+
+	* Restarting the agent service was fixed, making restarts made
+          by Ansible work well too (#70).
 
 NEWS for sigsum ansible v1.3.0
 
