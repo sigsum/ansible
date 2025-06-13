@@ -1,3 +1,15 @@
+NEWS for sigsum ansible v1.x.x
+
+	Changes:
+
+	* In the sigsum role, changed the cronjob for weekly
+          refreshing of the public suffix list to make that work also
+          for the secondary node.
+
+	* Changed description in galaxy.yml to clarify that this repo
+          contains roles for not only transparency logs but also for
+          witnesses.
+
 NEWS for sigsum ansible v1.3.0
 
 	This release adds a litebastion role in roles/litebastion
