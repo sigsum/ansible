@@ -1,14 +1,26 @@
-NEWS for sigsum ansible v1.x.x
+NEWS for upcoming sigsum ansible v1.4.0
 
-	Changes:
+	Changes between v1.3.0 and v1.4.0:
 
-	* In the sigsum role, changed the cronjob for weekly
-          refreshing of the public suffix list to make that work also
-          for the secondary node.
+	* The sigsum role had its cronjob for weekly refreshing of the
+          public suffix list changed to make it work also for the
+          secondary node.
 
-	* Changed description in galaxy.yml to clarify that this repo
-          contains roles for not only transparency logs but also for
-          witnesses.
+	* galaxy.yml was updated to clarify that this repo contains
+          roles for not only transparency logs but also for witnesses.
+
+	* The version of sigsum-agent used by default changed from
+          v0.2.3 to v0.2.5.
+
+	* A bug was fixed where a sigsum-agent using a YubiHSM wouldn't start
+	  if it was being started before the yubihsm-connector was properly
+	  ready (#73).
+
+	* A bug making log lines from sigsum-agent not show up in the
+          journal was fixed (#72).
+
+	* Restarting the agent service was fixed, making restarts made
+          by Ansible work well too (#70).
 
 NEWS for sigsum ansible v1.3.0
 
