@@ -96,6 +96,9 @@ Ensure that all molecule tests pass.
 
 Update NEWS file.
 
+Pay extra attention to any breaking changes and ensure they are
+clearly described in the NEWS file.
+
 Update galaxy.yml 'version'.
 
 Create a signed tag:
