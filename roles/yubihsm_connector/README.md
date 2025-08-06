@@ -4,9 +4,6 @@ An ansible role that installs Yubico's [yubihsm-connector][] from the system's
 package manager.  Expect the `yubihsm-connector` user and systemd service to be
 added.  The yubihsm-connector will be listening on `localhost:12345`.
 
-The role also optionally sets up monitoring of a specific YubiHSM USB
-device being present.
-
 [yubihsm-connector]: https://developers.yubico.com/yubihsm-connector/
 
 Requirements

@@ -12,9 +12,9 @@ while read -r _ bus _ dev _; do
 	break
     fi
 done <<< "$(lsusb -d "$VENDOR":"$PRODUCT")"
-{% if yubihsm_connector_monitor_email is defined %}
+{% if sigsum_agent_yubihsm_monitor_email is defined %}
 if [[ $rc -ne 0 ]]; then
-    echo "YubiHSM device $SERIAL not found" | mail -s "YubiHSM device $SERIAL not found" {{ yubihsm_connector_monitor_email }}
+    echo "YubiHSM device $SERIAL not found" | mail -s "YubiHSM device $SERIAL not found" {{ sigsum_agent_yubihsm_monitor_email }}
 fi
 {% endif %}
 exit $rc

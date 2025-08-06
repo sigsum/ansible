@@ -1,7 +1,7 @@
 ---
 
 - name: Install mailutils
-  when: yubihsm_connector_monitor_email is defined
+  when: sigsum_agent_yubihsm_monitor_email is defined
   ansible.builtin.apt:
     pkg: mailutils
 
@@ -22,7 +22,7 @@
       Type=oneshot
       User=nobody
       Group=nogroup
-      ExecStart=/usr/bin/yubihsm-present-p {{ yubihsm_connector_monitor_device }}
+      ExecStart=/usr/bin/yubihsm-present-p {{ sigsum_agent_yubihsm_monitor_device }}
 
       # Sandboxing
       ProtectSystem=full
@@ -42,7 +42,7 @@
       RestrictRealtime=true
       RestrictSUIDSGID=true
       RemoveIPC=true
-  notify: systemd daemon-reload
+  notify: Reload systemd daemon
 
 - name: Create timer for yubihsm-present-p
   ansible.builtin.copy:
@@ -57,7 +57,7 @@
 
       [Install]
       WantedBy=multi-user.target
-  notify: systemd daemon-reload
+  notify: Reload systemd daemon
 
 - name: Enable timer for yubihsm-present-p
   ansible.builtin.systemd_service:
