@@ -7,8 +7,8 @@
 
 - name: Install script verifying the presence of a YubiHSM device
   ansible.builtin.template:
-    dest: /usr/bin/yubishm-present-p
-    src: usr/bin/yubishm-present-p.j2
+    dest: /usr/bin/yubihsm-present-p
+    src: usr/bin/yubihsm-present-p.j2
 
 - name: Create service verifying the presence of a YubiHSM device
   ansible.builtin.copy:
