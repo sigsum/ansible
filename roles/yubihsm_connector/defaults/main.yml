@@ -2,3 +2,10 @@
 # Debian options.  Note that backports will be configured if the target system
 # runs Debian bookworm.  Earlier Debian distributions are not supported.
 yubihsm_connector_debian_deb_source: https://deb.debian.org/debian
+
+# If defined, specifies the YubiHSM USB device to monitor for being
+# available. Syntax: serial number as per lsusb(1) output.
+# yubihsm_connector_monitor_device: 0018952892
+
+# If defined, email is being sent if USB device is not being present.
+# yubihsm_connector_monitor_email: sysadmin@domain

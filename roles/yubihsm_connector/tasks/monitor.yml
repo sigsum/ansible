@@ -1,0 +1,65 @@
+---
+
+- name: Install mailutils
+  when: yubihsm_connector_monitor_email is defined
+  ansible.builtin.apt:
+    pkg: mailutils
+
+- name: Install script verifying the presence of a YubiHSM device
+  ansible.builtin.template:
+    dest: /usr/bin/yubishm-present-p
+    src: usr/bin/yubishm-present-p.j2
+
+- name: Create service verifying the presence of a YubiHSM device
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/yubihsm-present-p.service
+    content: |
+      [Unit]
+      Description=Check if a YubiHSM device is present
+
+      [Service]
+      Type=oneshot
+      User=nobody
+      Group=nogroup
+      ExecStart=/usr/bin/yubihsm-present-p {{ yubihsm_connector_monitor_device }}
+
+      # Sandboxing
+      ProtectSystem=full
+      ProtectHome=true
+      PrivateTmp=true
+      PrivateDevices=true
+      PrivateIPC=true
+      ProtectHostname=true
+      ProtectClock=true
+      ProtectKernelTunables=true
+      ProtectKernelModules=true
+      ProtectKernelLogs=true
+      ProtectControlGroups=true
+      RestrictNamespaces=true
+      LockPersonality=true
+      NoNewPrivileges=yes
+      RestrictRealtime=true
+      RestrictSUIDSGID=true
+      RemoveIPC=true
+  notify: systemd daemon-reload
+
+- name: Create timer for yubihsm-present-p
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/yubihsm-present-p.timer
+    content: |
+      [Unit]
+      Description=Check if a YubiHSM device is present
+
+      [Timer]
+      OnCalendar=hourly
+      Persistent=true
+
+      [Install]
+      WantedBy=multi-user.target
+  notify: systemd daemon-reload
+
+- name: Enable timer for yubihsm-present-p
+  ansible.builtin.systemd_service:
+    name: yubihsm-present-p.timer
+    state: started
+    enabled: true

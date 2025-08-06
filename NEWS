@@ -1,3 +1,8 @@
+NEWS for sigsum ansible v1.x.y
+
+	* Support for monitoring the presence of a YubiHSM device with
+          a particular serial number was added.
+
 NEWS for sigsum ansible v1.4.0
 
 	Changes between v1.3.0 and v1.4.0:

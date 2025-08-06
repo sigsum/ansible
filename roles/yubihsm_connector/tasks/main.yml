@@ -1,3 +1,6 @@
 ---
 - name: Install yubihsm-connector
   ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
+
+- ansible.builtin.include_tasks: monitor.yml
+  when: yubihsm_connector_monitor_device is defined

@@ -1,0 +1,20 @@
+#! /bin/bash
+set -eu
+
+SERIAL="$1"; shift
+VENDOR=1050
+PRODUCT=0030
+
+declare -i rc=1			# Default fail
+while read -r _ bus _ dev _; do
+    if [[ $(lsusb -v -s "$bus":"$dev" 2>/dev/null) =~ iSerial\ +.*"$SERIAL" ]]; then
+	rc=0			# Success
+	break
+    fi
+done <<< "$(lsusb -d "$VENDOR":"$PRODUCT")"
+{% if yubihsm_connector_monitor_email is defined %}
+if [[ $rc -ne 0 ]]; then
+    echo "YubiHSM device $SERIAL not found" | mail -s "YubiHSM device $SERIAL not found" {{ yubihsm_connector_monitor_email }}
+fi
+{% endif %}
+exit $rc
