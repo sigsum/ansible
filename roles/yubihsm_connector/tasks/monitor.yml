@@ -9,6 +9,7 @@
   ansible.builtin.template:
     dest: /usr/bin/yubihsm-present-p
     src: usr/bin/yubihsm-present-p.j2
+    mode: '0755'
 
 - name: Create service verifying the presence of a YubiHSM device
   ansible.builtin.copy:
