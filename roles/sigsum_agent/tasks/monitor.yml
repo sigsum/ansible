@@ -28,20 +28,22 @@
       ProtectSystem=full
       ProtectHome=true
       PrivateTmp=true
-      PrivateDevices=true
       PrivateIPC=true
-      ProtectHostname=true
-      ProtectClock=true
-      ProtectKernelTunables=true
-      ProtectKernelModules=true
-      ProtectKernelLogs=true
       ProtectControlGroups=true
-      RestrictNamespaces=true
-      LockPersonality=true
-      NoNewPrivileges=yes
-      RestrictRealtime=true
-      RestrictSUIDSGID=true
       RemoveIPC=true
+      # NOTE: Enabling any of the following makes /usr/bin/mail.mailutils fail with "postdrop: warning: mail_queue_enter: create file maildrop/X.Y: Permission denied":
+      # PrivateDevices=true
+      # ProtectHostname=true
+      # ProtectClock=true
+      # ProtectKernelTunables=true
+      # ProtectKernelModules=true
+      # ProtectKernelLogs=true
+      # RestrictNamespaces=true
+      # LockPersonality=true
+      # NoNewPrivileges=true
+      # RestrictRealtime=true
+      # RestrictSUIDSGID=true
+
   notify: Reload systemd daemon
 
 - name: Create timer for yubihsm-present-p
