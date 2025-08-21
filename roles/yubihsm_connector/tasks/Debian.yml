@@ -10,7 +10,7 @@
 - name: Update apt cache
   ansible.builtin.apt:
     update_cache: true
-  when: add_backports
+  when: add_backports.changed
 
 - name: Install yubihsm_connector
   ansible.builtin.apt:
