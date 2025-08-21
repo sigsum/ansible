@@ -46,9 +46,20 @@ litewitness_vkey_log_keys: []
 # would result in "go install example.org/torchwood/cmd/litewitness@v0.3.0".
 #
 litewitness_torchwood_version: "v0.5.0"  # default torchwood version
-litewitness_tools_from_torchwood:
-  - {name: "litewitness"}
-  - {name: "witnessctl"}
+litewitness_torchwood_source: "filippo.io/torchwood"
+litewitness_install_tools_from_torchwood:
+  - {
+     name: "litewitness",
+     'source': "{{ litewitness_torchwood_source }}",
+     'version': "{{ litewitness_torchwood_version }}",
+     'handlers': ['Restart litewitness'],
+    }
+  - {
+     name: "witnessctl",
+     'source': "{{ litewitness_torchwood_source }}",
+     'version': "{{ litewitness_torchwood_version }}",
+     'handlers': ['Restart litewitness'],
+    }
 
 # Username to use for the sigsum_agent dependency. One possible usage
 # is that if you run several instances of the litewitness role, you
