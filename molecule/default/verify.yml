@@ -161,7 +161,7 @@
       ansible.builtin.copy:
         content: "test message {{ item }}"
         dest: "{{ test_home }}/msg-{{ item }}"
-      loop: "{{ range(0, test_num_messages) }}"
+      with_sequence: start=0 count="{{ test_num_messages }}"
       become_user: "{{ test_user }}"
       become: true
 
@@ -169,7 +169,7 @@
       ansible.builtin.file:
         path: "{{ test_home }}/msg-{{item }}.proof"
         state: absent
-      loop: "{{ range(0, test_num_messages) }}"
+      with_sequence: start=0 count="{{ test_num_messages }}"
 
     - name: Log test messages
       ansible.builtin.command: |
@@ -177,7 +177,7 @@
           -k "{{ test_home }}/.config/sigsum/key" \
           -p "{{ test_home }}/.config/sigsum/policy" \
           "{{ test_home }}/msg-{{ item }}"
-      loop: "{{ range(0, test_num_messages) }}"
+      with_sequence: start=0 count="{{ test_num_messages }}"
       become_user: "{{ test_user }}"
       become: true
 
@@ -187,7 +187,7 @@
           -k "{{ test_home }}/.config/sigsum/key.pub" \
           -p "{{ test_home }}/.config/sigsum/policy" \
           "{{ test_home }}/msg-{{ item }}.proof" <"{{ test_home }}/msg-{{ item }}"
-      loop: "{{ range(0, test_num_messages) }}"
+      with_sequence: start=0 count="{{ test_num_messages }}"
       become_user: "{{ test_user }}"
       become: true
 
@@ -195,7 +195,7 @@
       ansible.builtin.file:
         path: "{{ test_home }}/msg-{{ item }}.proof"
         state: absent
-      loop: "{{ range(0, test_num_messages) }}"
+      with_sequence: start=0 count="{{ test_num_messages }}"
 
     # Note: this will not result in new log entries, but the proofs will be
     # based on the same latest tree head.  Which means we will be getting some
@@ -206,7 +206,7 @@
           -k "{{ test_home }}/.config/sigsum/key" \
           -p "{{ test_home }}/.config/sigsum/policy" \
           "{{ test_home }}/msg-{{ item }}"
-      loop: "{{ range(0, test_num_messages) }}"
+      with_sequence: start=0 count="{{ test_num_messages }}"
       become_user: "{{ test_user }}"
       become: true
 
@@ -216,7 +216,7 @@
           -k "{{ test_home }}/.config/sigsum/key.pub" \
           -p "{{ test_home }}/.config/sigsum/policy" \
           "{{ test_home }}/msg-{{ item }}.proof" <"{{ test_home }}/msg-{{ item }}"
-      loop: "{{ range(0, test_num_messages) }}"
+      with_sequence: start=0 count="{{ test_num_messages }}"
       become_user: "{{ test_user }}"
       become: true
 

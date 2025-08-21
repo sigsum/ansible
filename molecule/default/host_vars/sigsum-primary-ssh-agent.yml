@@ -47,10 +47,25 @@ sigsum_internal_endpoint: "0.0.0.0:10000"
 sigsum_trillian_rpc_server: "localhost:6962"
 
 # Go tooling
-sigsum_tools_from_sigsum_go:
-  - { name: "sigsum-key" }  # needed by sigsum role
-  - { name: "sigsum-submit" }  # needed by verify.yml
-  - { name: "sigsum-verify" }  # needed by verify.yml
+sigsum_install_tools_from_sigsum_go:
+  - {
+     name: "sigsum-key",
+     'source': "{{ sigsum_lib_source }}",
+     'version': "{{ sigsum_lib_version }}",
+     'handlers': [],
+    }
+  - {
+     name: "sigsum-submit",
+     'source': "{{ sigsum_lib_source }}",
+     'version': "{{ sigsum_lib_version }}",
+     'handlers': [],
+    }
+  - {
+     name: "sigsum-verify",
+     'source': "{{ sigsum_lib_source }}",
+     'version': "{{ sigsum_lib_version }}",
+     'handlers': [],
+    }
 
 # Go compiler settings
 golang_ensure_min_version: true

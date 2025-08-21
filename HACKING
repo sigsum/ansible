@@ -9,7 +9,7 @@ Then install molecule using pip in a Python virtual environment
 
     $ python3 -m venv venv
     $ source venv/bin/activate
-    $ pip install molecule molecule-podman
+    $ pip install molecule molecule-plugins
 
 Using a Python virtual environment in this way means that venv/bin is
 added to your PATH environment variable (the "activate" script does
