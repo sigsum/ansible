@@ -10,3 +10,8 @@ platforms:
     image: docker.io/library/debian:bookworm  # the golang role will configure backports
   - name: trixie
     image: docker.io/library/debian:trixie
+
+provisioner:
+  name: ansible
+  playbooks:
+    prepare: ../common/prepare_debian.yml
