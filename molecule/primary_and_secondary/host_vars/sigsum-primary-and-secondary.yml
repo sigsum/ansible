@@ -43,7 +43,22 @@ sigsum_secondary_url: "http://sigsum-secondary:{{ sigsum_internal_endpoint | spl
 sigsum_primary_url: "http://sigsum-primary:{{ sigsum_internal_endpoint | split(':') | last }}/{{ sigsum_url_prefix }}"
 
 # Go tooling
-sigsum_tools_from_sigsum_go:
-  - { name: "sigsum-key" }  # needed by sigsum role
-  - { name: "sigsum-submit" }  # needed by verify.yml
-  - { name: "sigsum-verify" }  # needed by verify.yml
+sigsum_install_tools_from_sigsum_go:
+  - {
+     name: "sigsum-key",
+     'source': 'sigsum.org/sigsum-go',
+     'version': "{{ sigsum_lib_version }}",
+     'handlers': [],
+    }
+  - {
+     name: "sigsum-submit",
+     'source': 'sigsum.org/sigsum-go',
+     'version': "{{ sigsum_lib_version }}",
+     'handlers': [],
+    }
+  - {
+     name: "sigsum-verify",
+     'source': 'sigsum.org/sigsum-go',
+     'version': "{{ sigsum_lib_version }}",
+     'handlers': [],
+    }

@@ -99,10 +99,11 @@ sigsum_db_name: test    # The sigsum database name
 # ensure to only extend the list of tools if you override the defaults.
 #
 sigsum_lib_version: "v0.6.1"  # default version for tools from sigsum-go
+sigsum_lib_source: "sigsum.org/sigsum-go"
 sigsum_install_tools_from_sigsum_go:
   - {
      name: "sigsum-key",
-     'source': 'sigsum.org/sigsum-go',
+     'source': "{{ sigsum_lib_source }}",
      'version': "{{ sigsum_lib_version }}",
      'handlers': [],
     }
