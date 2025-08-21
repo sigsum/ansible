@@ -99,20 +99,57 @@ sigsum_db_name: test    # The sigsum database name
 # ensure to only extend the list of tools if you override the defaults.
 #
 sigsum_lib_version: "v0.6.1"  # default version for tools from sigsum-go
-sigsum_tools_from_sigsum_go:
-  - { name: "sigsum-key" }
+sigsum_install_tools_from_sigsum_go:
+  - {
+     name: "sigsum-key",
+     'source': 'sigsum.org/sigsum-go',
+     'version': "{{ sigsum_lib_version }}",
+     'handlers': [],
+    }
 
 sigsum_log_version: "v0.14.1"  # default version for tools from log-go
-sigsum_tools_from_log_go:
-  - { name: "sigsum-mktree" }
-  - { name: "sigsum-log-primary" }
-  - { name: "sigsum-log-secondary" }
+sigsum_log_source: "sigsum.org/log-go"
+sigsum_install_tools_from_log_go:
+  - {
+     name: "sigsum-mktree",
+     'source': "{{ sigsum_log_source }}",
+     'version': "{{ sigsum_log_version }}",
+     'handlers': ['restart sigsum {{ sigsum_role }} node'],
+    }
+  - {
+     name: "sigsum-log-primary",
+     'source': "{{ sigsum_log_source }}",
+     'version': "{{ sigsum_log_version }}",
+     'handlers': ['restart sigsum {{ sigsum_role }} node'],
+    }
+  - {
+     name: "sigsum-log-secondary",
+     'source': "{{ sigsum_log_source }}",
+     'version': "{{ sigsum_log_version }}",
+     'handlers': ['restart sigsum {{ sigsum_role }} node'],
+    }
 
 sigsum_trillian_version: "v1.5.2"  # default version for tools from Trillian
-sigsum_tools_from_trillian_go:
-  - { name: "createtree" }
-  - { name: "trillian_log_signer" }
-  - { name: "trillian_log_server" }
+sigsum_trillian_source: "github.com/google/trillian"
+sigsum_install_tools_from_trillian_go:
+  - {
+     name: "createtree",
+     'source': "{{ sigsum_trillian_source }}",
+     'version': "{{ sigsum_trillian_version }}",
+     'handlers': ['restart trillian',],
+    }
+  - {
+     name: "trillian_log_signer",
+     'source': "{{ sigsum_trillian_source }}",
+     'version': "{{ sigsum_trillian_version }}",
+     'handlers': ['restart trillian',],
+    }
+  - {
+     name: "trillian_log_server",
+     'source': "{{ sigsum_trillian_source }}",
+     'version': "{{ sigsum_trillian_version }}",
+     'handlers': ['restart trillian',],
+    }
 
 ################################################################################
 #                        Configure Trillian options                            #

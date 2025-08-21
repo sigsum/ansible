@@ -5,15 +5,3 @@ litewitness_database_file: "{{ litewitness_home }}/.local/share/litewitness/data
 
 litewitness_sigsum_agent_run: "/run/{{ litewitness_sigsum_agent_user }}"
 litewitness_sigsum_agent_socket: "{{ litewitness_sigsum_agent_run }}/sigsum-agent.socket"
-
-litewitness_install_tools_from_torchwood: >
-  [{% for tool in litewitness_tools_from_torchwood %}
-    {{
-      {
-        'name': tool.name,
-        'source': tool.source | default('filippo.io/torchwood'),
-        'version': tool.version | default(litewitness_torchwood_version),
-        'handlers': ['Restart litewitness'],
-      }
-    }},
-  {% endfor %}]
