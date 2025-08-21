@@ -15,10 +15,6 @@ platforms:
     override_command: false
     volume_mounts:
        - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
-    tmpfs:
-      - /run
-      - /run/lock
-      - /tmp
     network: internal-testnet
 provisioner:
   name: ansible
