@@ -135,12 +135,12 @@
 - name: Install sudoers file allowing sigsum user to restart log service
   template:
     src: "sudoers_sigsum_restart_log.j2"
-    dest: "/etc/sudoers.d/sigsum_restart_log"
+    dest: "/etc/sudoers.d/sigsum_restart_log_{{ sigsum_role }}"
   become: true
 
 - name: Install weekly refreshing of the public suffix list
   ansible.builtin.cron:
-    name: "Refresh the public suffix list on Mondays between 0200 and 0600"
+    name: "Refresh the public suffix list for {{ sigsum_role }} log on Mondays between 0200 and 0600"
     user: "{{ sigsum_user }}"
     job: >
       /bin/bash
