@@ -1,8 +1,10 @@
 yubihsm-connector
 =================
-An ansible role that installs Yubico's [yubihsm-connector][] from the system's
-package manager.  Expect the `yubihsm-connector` user and systemd service to be
-added.  The yubihsm-connector will be listening on `localhost:12345`.
+An ansible role that first installs Yubico's [yubihsm-connector][] from the
+system's package manager and then builds the yubihsm-connector binary from
+source and installs it over it.
+Expect the `yubihsm-connector` user and systemd service to be added.
+The yubihsm-connector will be listening on `localhost:12345`.
 
 [yubihsm-connector]: https://developers.yubico.com/yubihsm-connector/
 

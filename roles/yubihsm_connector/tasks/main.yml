@@ -1,3 +1,23 @@
 ---
-- name: Install yubihsm-connector
+- name: Install yubihsm-connector from package manager
   ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
+
+- name: Install build dependencies
+  ansible.builtin.apt:
+    pkg: make
+
+- name: Clone yubihsm-connector source code
+  ansible.builting.git:
+    repo: "{{ yubihsm_connector_source_repo }}"
+    version: "{{ yubihsm_connector_source_version|default(HEAD) }}"
+    dest: /usr/src/yubihsm-connector
+
+- name: Build yubihsm-connector binary from source
+  ansible.builtin.command:
+    chdir: /usr/src/yubihsm-connector
+    cmd: make build
+
+- name: Install yubihsm-connectory binary over package manager version
+  ansible.builtin.command:
+    chdir: /usr/src/yubihsm-connector
+    cmd: install ./bin/yubihsm-connector /usr/bin/
