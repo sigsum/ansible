@@ -7,7 +7,7 @@
     pkg: make
 
 - name: Clone yubihsm-connector source code
-  ansible.builting.git:
+  ansible.builtin.git:
     repo: "{{ yubihsm_connector_source_repo }}"
     version: "{{ yubihsm_connector_source_version|default(HEAD) }}"
     dest: /usr/src/yubihsm-connector
