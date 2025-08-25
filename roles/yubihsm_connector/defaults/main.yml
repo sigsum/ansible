@@ -2,3 +2,6 @@
 # Debian options.  Note that backports will be configured if the target system
 # runs Debian bookworm.  Earlier Debian distributions are not supported.
 yubihsm_connector_debian_deb_source: https://deb.debian.org/debian
+
+yubihsm_connector_source_repo: https://git.glasklar.is/linus/yubihsm-connector
+#yubihsm_connector_source_version: HEAD
