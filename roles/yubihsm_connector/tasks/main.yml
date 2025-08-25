@@ -4,14 +4,18 @@
 
 - name: Install build dependencies
   ansible.builtin.apt:
-    pkg: make
+    pkg:
+      - make
+      - libusb-1.0-0-dev
 
+# TODO: Don't clone as root
 - name: Clone yubihsm-connector source code
   ansible.builtin.git:
     repo: "{{ yubihsm_connector_source_repo }}"
     version: "{{ yubihsm_connector_source_version|default(HEAD) }}"
     dest: /usr/src/yubihsm-connector
 
+# TODO: Don't build as root
 - name: Build yubihsm-connector binary from source
   ansible.builtin.command:
     chdir: /usr/src/yubihsm-connector
