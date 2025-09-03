@@ -19,7 +19,7 @@ done <<< "$(lsusb -d "$VENDOR":"$PRODUCT")"
 
 msg="YubiHSM device $SERIAL not found"
 if [[ $rc -ne 0 ]]; then
-    echo "$msg"
+    >&2 echo "<3>$msg"
     if [[ -v yhsm_present_email ]]; then
 	echo "$msg" | mail -s "$msg" "$yhsm_present_email"
 	rc=0	  # We got the message out, so don't exit with failure
