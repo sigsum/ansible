@@ -17,9 +17,13 @@ while read -r _ bus _ dev _; do
     fi
 done <<< "$(lsusb -d "$VENDOR":"$PRODUCT")"
 
-if [[ $rc -ne 0 && -v yhsm_present_email ]]; then
-    echo "YubiHSM device $SERIAL not found" | mail -s "YubiHSM device $SERIAL not found" "$yhsm_present_email"
-    exit 0		       # We got the message out, so don't fail
+msg="YubiHSM device $SERIAL not found"
+if [[ $rc -ne 0 ]]; then
+    echo "$msg"
+    if [[ -v yhsm_present_email ]]; then
+	echo "$msg" | mail -s "$msg" "$yhsm_present_email"
+	rc=0	  # We got the message out, so don't exit with failure
+    fi
 fi
 
 exit $rc
