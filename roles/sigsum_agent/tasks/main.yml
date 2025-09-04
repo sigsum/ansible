@@ -110,6 +110,12 @@
     - Restart sigsum-agent service
     - Enable sigsum-agent service
 
+###
+# Enable YubiHSM device monitoring
+###
+- ansible.builtin.include_tasks: monitor.yml
+  when: sigsum_agent_yubihsm_monitor_device is defined
+
 # Handlers are run at the end of the play, not at the end of the role.
 # When other roles depend on the agent being started we need to make
 # the handlers run before that.

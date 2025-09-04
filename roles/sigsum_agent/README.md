@@ -15,6 +15,9 @@ I.e., the sigsum-agent service is started by systemd when an allowed signer
 connects to a well-known UNIX socket using the ssh-agent protocol.  For such a
 connection to succeed, the signer must be a member of the sigsum-agent's group.
 
+This role also optionally sets up monitoring of a specific YubiHSM USB
+device being present.
+
 [sigsum-agent software]: https://git.glasklar.is/sigsum/core/key-mgmt/
 [YubiHSM2]: https://developers.yubico.com/YubiHSM2/
 
