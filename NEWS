@@ -1,7 +1,22 @@
 NEWS for sigsum ansible v1.5.0
 
+	Changes between v1.4.0 and v1.5.0:
+
 	* Support for monitoring the presence of a YubiHSM device with
           a particular serial number was added.
+
+	* Refactoring regarding lists of go tools in sigsum and
+          litewitness roles, avoiding problems when running ansible in
+          debian trixie.
+
+	* Fix in when clause in golang and yubihsm_connector roles,
+          avoiding problems when running ansible in debian trixie.
+
+	* Changed naming of cronjob for weekly public suffix list
+          update, to handle the special case when primary and
+          secondary are on the same machine.
+
+	* Cleanup and fixes in molecule tests.
 
 NEWS for sigsum ansible v1.4.0
 
