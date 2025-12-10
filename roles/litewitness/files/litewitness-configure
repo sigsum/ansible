@@ -6,9 +6,23 @@
 
 set -eu
 
+next_line() {
+    while IFS= read -r line; do
+		if [[ -z "$line" ]] || [[ "$line" =~ ^# ]]; then
+			continue # Skip empty lines and comments
+		fi
+
+		echo $line
+		return 0  # non-empty line
+    done
+
+	return 1  # EOF
+}
+
 db_file=$1; shift
 config_file=$1; shift
 config_file_non_sigsum_logs=$1; shift
+config_file_per_log_bastions=$1; shift
 
 witnessctl=~/go/bin/witnessctl
 dup_str="sqlite.Exec: Stmt.Step: SQLITE_CONSTRAINT_PRIMARYKEY: UNIQUE constraint failed:"
@@ -47,3 +61,45 @@ while IFS= read -r line; do
 		grep -q "$dup_str" "$log_file" ||
 		(cat "$log_file"; exit 1)
 done < "$config_file_non_sigsum_logs"
+
+
+# Update per-log bastions
+changed=no
+while true; do
+	if ! origin=$(next_line); then
+		break  # EOF
+	fi
+	if ! witnessctl list-logs -db database | jq -s --arg o "$origin" 'any(.[]; .origin == $o)' >/dev/null; then
+	    echo "fatal: origin \"$origin\" not found in database" >&2
+	    exit 1
+	fi
+
+	if ! bastions=$(next_line); then
+		echo "fatal: expected per-log bastion host(s) for log with origin \"$origin\""
+		exit 1
+	fi
+	read -a desired_bastions <<< "$bastions"
+	witnessctl list-logs -db "$db_file" | jq -r --arg o "$origin" 'select(.origin == $o) | .bastions[]?'
+
+	for ab in ${actual_bastions[@]}; do
+		found=false
+		for db in ${desired_bastions[@]}; do
+			if [[ $ab == $db ]]; then
+				found=true
+				break
+			fi
+		done
+
+		if [[ $found == false ]]; then
+			echo "Removing extra bastion \"$ab\" from origin \"$origin\""
+			witnessctl del-bastion -db database -origin "$origin" -bastion "$ab"
+			changed=yes
+		fi
+    done
+
+	for db in "${desired_bastions[@]}"; do
+        if ! printf "%s\n" "${actual_bastions[@]}" | grep -Fxq "$db"; then
+			witnessctl add-bastion -db database -origin "$origin" -bastion "$db"
+			changed=yes
+        fi
+done < "$config_file_per_log_bastions"
