@@ -1,0 +1,15 @@
+#
+# Managed by ansible -- do not edit.
+#
+# Empty lines and lines starting with "#" are ignored.
+# All other lines must list exactly one origin line, followed by a following
+# non-empty line with one or more bastion URLs (space separated).
+#
+
+{% for log in litewitness_logs %}
+{% if log.bastions is defined %}
+{{ log.origin }}
+{{ log.bastions | join(' ') }}
+
+{% endif %}
+{% endfor %}

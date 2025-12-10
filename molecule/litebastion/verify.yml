@@ -12,3 +12,10 @@
         host: "{{ litebastion_testonly_addr }}"
         port: "{{ litebastion_testonly_port }}"
         state: started
+
+    - name: Assert litebastion http port is open
+      ansible.builtin.wait_for:
+        host: "localhost"
+        port: "{{ litebastion_http_port }}"
+        state: started
+      when: litebastion_http_port != ""
