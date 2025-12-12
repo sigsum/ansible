@@ -19,14 +19,29 @@ next_line() {
 	return 1 # EOF
 }
 
+version_ge() { [[ "$(printf '%s\n' "$2" "$1" | sort -V | head -n1)" == "$2" ]]; }
+
 db_file=$1; shift
 config_file=$1; shift
 config_file_non_sigsum_logs=$1; shift
 config_file_per_log_bastions=$1; shift
 
 witnessctl=~/go/bin/witnessctl
-dup_str="sqlite.Exec: Stmt.Step: SQLITE_CONSTRAINT_PRIMARYKEY: UNIQUE constraint failed:"
 log_file=$(dirname "$db_file")/.litewitness-configure.tmp
+
+witnessctl_version=$(go version -m "$witnessctl" |
+	awk '$1=="mod" { sub(/^v/, "", $3); print $3; exit }')
+
+if [[ -z "$witnessctl_version" ]]; then
+	echo "fatal: could not get witnessctl version" >&2
+	exit 1
+fi
+
+dup_str="sqlite.Exec: Stmt.Step: SQLITE_CONSTRAINT_PRIMARYKEY: UNIQUE constraint failed:"
+
+if version_ge "$witnessctl_version" "0.6.0"; then
+	dup_str="sqlite: step: constraint failed: UNIQUE constraint failed:"
+fi
 
 trap clean_up EXIT
 function clean_up() {
