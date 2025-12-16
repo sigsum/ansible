@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 User={{ litebastion_user }}
 Restart=always
-ExecStart={{ litebastion_directory }}/go/bin/litebastion {% if litebastion_h2v == true %}-h2v {% endif %} \
+ExecStart={{ litebastion_directory }}/go/bin/litebastion \
     -backends "{{ litebastion_directory }}/backends.conf" \
     -listen "{{ litebastion_listen }}" \
     -email "{{ litebastion_email }}" \
