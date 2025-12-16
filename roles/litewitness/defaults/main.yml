@@ -61,6 +61,17 @@ litewitness_logs: []
 #
 litewitness_pull_logs: []
 
+# Schedule for the job that pulls logs from a centrally managed list, specified
+# using the crontab(5) format.  By default, the job runs every 15 minutes.
+#
+# ---Example
+# litewitness_pull_logs_schedule:
+#   minute: "0"
+#   hour: "*/2"
+#
+litewitness_pull_logs_schedule:
+  minute: "*/15"
+
 litewitness_torchwood_version: "v0.7.0"  # default torchwood version
 litewitness_torchwood_source: "filippo.io/torchwood"
 litewitness_install_tools_from_torchwood:
