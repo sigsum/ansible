@@ -1,0 +1,9 @@
+#
+# Managed by ansible -- do not edit.
+#
+# Empty lines and lines starting with "#" are ignored.
+# Every other line must list exactly one log list URL.
+#
+{% for log_list in litewitness_pull_logs %}
+{{ log_list }}
+{% endfor %}

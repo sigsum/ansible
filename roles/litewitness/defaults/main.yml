@@ -51,6 +51,27 @@ litewitness_logs: []
 #
 # would result in "go install example.org/torchwood/cmd/litewitness@v0.3.0".
 #
+
+# Optionally discover logs to witness from a centrally managed list.  The
+# expected list format is defined by <https://witness-network.org/>.
+#
+# ---Example
+# litewitness_pull_logs:
+#   - https://testing.witness-network.org/log-list.1
+#
+litewitness_pull_logs: []
+
+# Schedule for the job that pulls logs from a centrally managed list, specified
+# using the crontab(5) format.  By default, the job runs every 15 minutes.
+#
+# ---Example
+# litewitness_pull_logs_schedule:
+#   minute: "0"
+#   hour: "*/2"
+#
+litewitness_pull_logs_schedule:
+  minute: "*/15"
+
 litewitness_torchwood_version: "v0.7.0"  # default torchwood version
 litewitness_torchwood_source: "filippo.io/torchwood"
 litewitness_install_tools_from_torchwood:
