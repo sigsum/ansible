@@ -2,17 +2,20 @@
 - name: Enforce constraints
   ansible.builtin.include_tasks: constraints.yml
 
+- name: Install dependencies
+  ansible.builtin.apt:
+    name:
+      - cron
+      - jq
+    state: present
+    install_recommends: false
+
 - name: Prepare litewitness user and directories
   ansible.builtin.include_tasks: prep.yml
 
 - name: Install torchwood Go binaries
   ansible.builtin.include_tasks: go.yml
   loop: "{{ litewitness_install_tools_from_torchwood }}"
-
-- name: Install jq
-  ansible.builtin.apt:
-    name: jq
-    state: present
 
 - name: Configure litewitness
   ansible.builtin.include_tasks: configure.yml

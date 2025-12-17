@@ -1,6 +1,14 @@
 ---
-
 - name: Restart litewitness
   ansible.builtin.systemd:
     name: "litewitness@{{ litewitness_user }}"
     state: restarted
+
+- name: Pull log lists
+  ansible.builtin.command: >
+    "{{ litewitness_home }}/.local/bin/litewitness-pull-logs"
+    "{{ litewitness_database_file }}"
+    "{{ litewitness_home }}/.config/litewitness/log-lists"
+  become_user: "{{ litewitness_user }}"
+  become: true
+  listen: litewitness pull log lists

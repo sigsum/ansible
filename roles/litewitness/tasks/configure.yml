@@ -1,4 +1,42 @@
 ---
+- name: Add litewitness configuration (log lists)
+  ansible.builtin.template:
+    src: "log-lists.j2"
+    dest: "{{ litewitness_home }}/.config/litewitness/log-lists"
+    owner: "{{ litewitness_user }}"
+    group: "{{ litewitness_user }}"
+    mode: "0644"
+
+- name: Add script for pulling log lists
+  ansible.builtin.copy:
+    src: "litewitness-pull-logs"
+    dest: "{{ litewitness_home }}/.local/bin/litewitness-pull-logs"
+    owner: "{{ litewitness_user }}"
+    group: "{{ litewitness_user }}"
+    mode: "0755"
+
+- name: Ensure cron job for pulling log lists is present
+  ansible.builtin.cron:
+    name: "Pull log lists for litewitness to witness"
+    user: "{{ litewitness_user }}"
+    minute: "{{ litewitness_pull_logs_schedule['minute'] | default('*') }}"
+    hour: "{{ litewitness_pull_logs_schedule['hour'] | default('*') }}"
+    day: "{{ litewitness_pull_logs_schedule['day'] | default('*') }}"
+    month: "{{ litewitness_pull_logs_schedule['month'] | default('*') }}"
+    weekday: "{{ litewitness_pull_logs_schedule['weekday'] | default('*') }}"
+    job: >
+      {{ litewitness_home }}/.local/bin/litewitness-pull-logs
+      {{ litewitness_database_file }}
+      {{ litewitness_home }}/.config/litewitness/log-lists
+    disabled: "{{ litewitness_pull_logs | length == 0 }}"
+    state: present
+  notify: litewitness pull log lists
+
+- name: Ensure cron is started and enabled
+  ansible.builtin.systemd:
+    name: cron
+    state: started
+    enabled: true
 
 - name: Add litewitness configuration (log keys)
   ansible.builtin.template:
