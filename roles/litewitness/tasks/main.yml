@@ -9,5 +9,10 @@
   ansible.builtin.include_tasks: go.yml
   loop: "{{ litewitness_install_tools_from_torchwood }}"
 
+- name: Install jq
+  ansible.builtin.apt:
+    name: jq
+    state: present
+
 - name: Configure litewitness
   ansible.builtin.include_tasks: configure.yml

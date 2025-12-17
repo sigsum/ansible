@@ -12,26 +12,32 @@ litewitness_name: example.org/witness  # Does not need to be network reachable
 # accessing the private key via the SSH agent protocol (using sigsum-agent).
 litewitness_keygrip: "to be added"   # sigsum-key hash -k /path/to/pubkey
 
-# Ed25519 public keys of sigsum logs you're willing to witness
-litewitness_sigsum_log_keys: []  # one hex-encoded key per item
-
-# Public keys of non-sigsum logs you're willing to witness, in vkey format
-# Example:
-# litewitness_vkey_log_keys:
-#   - {vkey: "sum.golang.org+033de0ae+Ac4zctda0e5eza+HJyk9SxEdh+s3Ux18htTTAD8OuAn8", origin: "go.sum database tree"}
-#   - {vkey: "other.example.org+aaaa+bbbb+cccc+dddd", origin: "some other origin"}
-litewitness_vkey_log_keys: []
-
-# Populate one of:
+# Define which logs to be witnessed and whether they have their own bastion
+# host(s).  It is required to supply `vkey`.  It is optional to supply `origin`
+# and `bastions`.  The default value for `origin` is the `vkey` key name.
 #
-#   * litewitness_bastion_endpoint
-#   * litewitness_listen_endpoint
+# ---Example
+# litewitness_logs:
+#   - vkey: "sum.golang.org+033de0ae+Ac4zctda0e5eza+HJyk9SxEdh+s3Ux18htTTAD8OuAn8"
+#     origin: "go.sum database tree"
+#     bastions:
+#       - "b1.example.org:443"
+#       - "b2.example.org:443"
 #
-# If you decide to run without a bastion host (https://c2sp.org/https-bastion),
+litewitness_logs: []
+
+# Optionally populate one of:
+#
+#   * litewitness_bastion_endpoint (use to specify a bastion host for all logs)
+#   * litewitness_listen_endpoint (use to run without bastion hosts)
+#
+# If you decide to run without bastion hosts (https://c2sp.org/https-bastion),
 # then you need to sort out your own HTTPS reverse proxy for the witness.
 #
+# ---Example
 # litewitness_bastion_endpoint: "bastion.example.org:443"
 # litewitness_listen_endpoint: "127.0.0.1:2009"
+#
 
 #
 # Go dependencies.  For each of the listed tools it is possible to override the
@@ -45,7 +51,7 @@ litewitness_vkey_log_keys: []
 #
 # would result in "go install example.org/torchwood/cmd/litewitness@v0.3.0".
 #
-litewitness_torchwood_version: "v0.5.0"  # default torchwood version
+litewitness_torchwood_version: "v0.7.0"  # default torchwood version
 litewitness_torchwood_source: "filippo.io/torchwood"
 litewitness_install_tools_from_torchwood:
   - {

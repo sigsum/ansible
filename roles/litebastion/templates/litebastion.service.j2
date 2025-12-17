@@ -9,6 +9,9 @@ Restart=always
 ExecStart={{ litebastion_directory }}/go/bin/litebastion \
     -backends "{{ litebastion_directory }}/backends.conf" \
     -listen "{{ litebastion_listen }}" \
+{% if litebastion_http_port != "" %}
+    -listen-http "{{ litebastion_http_port }}" \
+{% endif %}
     -email "{{ litebastion_email }}" \
     -host "{{ litebastion_host }}" \
     -cache "{{ litebastion_directory }}/acme"

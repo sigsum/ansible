@@ -4,6 +4,8 @@
 # Empty lines and lines starting with "#" are ignored.
 # Every other line must list exactly one log key in hex.
 #
+{% if litewitness_sigsum_log_keys is defined %}
 {% for hex_key in litewitness_sigsum_log_keys %}
 {{ hex_key }}
 {% endfor %}
+{% endif %}

@@ -4,6 +4,11 @@
 # Empty lines and lines starting with "#" are ignored.
 # Every other line must list exactly one vkey followed by a space and then an origin
 #
+{% if litewitness_vkey_log_keys is defined %}
 {% for k in litewitness_vkey_log_keys %}
 {{ k.vkey }} {{ k.origin }}
+{% endfor %}
+{% endif %}
+{% for log in litewitness_logs %}
+{{ log.vkey }} {{ log.origin }}
 {% endfor %}

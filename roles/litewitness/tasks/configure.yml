@@ -18,6 +18,15 @@
     mode: "0755"
   register: litewitness_config_other_keys
 
+- name: Add litewitness configuration (per-log bastions)
+  ansible.builtin.template:
+    src: "per-log-bastions.j2"
+    dest: "{{ litewitness_home }}/.config/litewitness/per-log-bastions"
+    owner: "{{ litewitness_user }}"
+    group: "{{ litewitness_user }}"
+    mode: "0644"
+  register: litewitness_config_per_log_bastions
+
 - name: Add configuration script
   ansible.builtin.copy:
     src: "litewitness-configure"
@@ -28,11 +37,19 @@
   register: litewitness_config_script
 
 - name: Reconfigure litewitness
-  ansible.builtin.command: "~/.local/bin/litewitness-configure {{ litewitness_database_file }} {{ litewitness_home }}/.config/litewitness/log-keys {{ litewitness_home }}/.config/litewitness/non-sigsum-log-keys"
+  ansible.builtin.command: >
+    ~/.local/bin/litewitness-configure {{ litewitness_database_file }}
+    {{ litewitness_home }}/.config/litewitness/log-keys
+    {{ litewitness_home }}/.config/litewitness/non-sigsum-log-keys
+    {{ litewitness_home }}/.config/litewitness/per-log-bastions
   changed_when: false  # silence ansible-lint
   become_user: "{{ litewitness_user }}"
   become: true
-  when: litewitness_config_keys.changed or litewitness_config_other_keys.changed or litewitness_config_script.changed
+  when: >
+    litewitness_config_keys.changed
+    or litewitness_config_other_keys.changed
+    or litewitness_config_per_log_bastions.changed
+    or litewitness_config_script.changed
 
 - name: Add start script
   ansible.builtin.template:

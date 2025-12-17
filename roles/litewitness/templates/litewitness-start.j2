@@ -14,4 +14,4 @@
 {% set args = args + '-listen ' + litewitness_listen_endpoint|string %}
 {% endif %}
 
-~/go/bin/litewitness {{ args }}
+exec ~/go/bin/litewitness {{ args }}

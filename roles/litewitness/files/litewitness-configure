@@ -6,13 +6,42 @@
 
 set -eu
 
+next_line() {
+	while IFS= read -r line; do
+		if [[ -z "$line" ]] || [[ "$line" =~ ^# ]]; then
+			continue # Skip empty lines and comments
+		fi
+
+		echo "$line"
+		return 0 # non-empty line
+	done
+
+	return 1 # EOF
+}
+
+version_ge() { [[ "$(printf '%s\n' "$2" "$1" | sort -V | head -n1)" == "$2" ]]; }
+
 db_file=$1; shift
 config_file=$1; shift
 config_file_non_sigsum_logs=$1; shift
+config_file_per_log_bastions=$1; shift
 
 witnessctl=~/go/bin/witnessctl
-dup_str="sqlite.Exec: Stmt.Step: SQLITE_CONSTRAINT_PRIMARYKEY: UNIQUE constraint failed:"
 log_file=$(dirname "$db_file")/.litewitness-configure.tmp
+
+witnessctl_version=$(go version -m "$witnessctl" |
+	awk '$1=="mod" { sub(/^v/, "", $3); print $3; exit }')
+
+if [[ -z "$witnessctl_version" ]]; then
+	echo "fatal: could not get witnessctl version" >&2
+	exit 1
+fi
+
+dup_str="sqlite.Exec: Stmt.Step: SQLITE_CONSTRAINT_PRIMARYKEY: UNIQUE constraint failed:"
+
+if version_ge "$witnessctl_version" "0.6.0"; then
+	dup_str="sqlite: step: constraint failed: UNIQUE constraint failed:"
+fi
 
 trap clean_up EXIT
 function clean_up() {
@@ -47,3 +76,55 @@ while IFS= read -r line; do
 		grep -q "$dup_str" "$log_file" ||
 		(cat "$log_file"; exit 1)
 done < "$config_file_non_sigsum_logs"
+
+# Update per-log bastions
+changed=false
+while true; do
+	if ! origin=$(next_line); then
+		break # EOF
+	fi
+	if ! bastions=$(next_line); then
+		echo "fatal: expected per-log bastion host(s) for log with origin \"$origin\"" >&2
+		exit 1
+	fi
+
+	logs_json=$("$witnessctl" list-logs -db "$db_file")
+
+	if ! jq -e -s --arg o "$origin" 'any(.[]; .origin == $o)' >/dev/null <<< "$logs_json"; then
+		echo "fatal: origin \"$origin\" not found in database" >&2
+		exit 1
+	fi
+
+	read -a desired_bastions <<< "$bastions"
+	mapfile -t actual_bastions < <(
+		jq -r --arg o "$origin" 'select(.origin == $o) | .bastions[]?' <<< "$logs_json"
+	)
+
+	for ab in "${actual_bastions[@]}"; do
+		found=false
+		for db in "${desired_bastions[@]}"; do
+			if [[ "$ab" == "$db" ]]; then
+				found=true
+				break
+			fi
+		done
+
+		if [[ $found == false ]]; then
+			"$witnessctl" del-bastion -db "$db_file" -origin "$origin" -bastion "$ab"
+			changed=true
+		fi
+	done
+
+	for db in "${desired_bastions[@]}"; do
+		if ! printf "%s\n" "${actual_bastions[@]}" | grep -Fxq "$db"; then
+			"$witnessctl" add-bastion -db "$db_file" -origin "$origin" -bastion "$db"
+			changed=true
+		fi
+	done
+done < "$config_file_per_log_bastions"
+
+if [[ $changed == true ]]; then
+	# systemctl reload requires root; send SIGHUP directly.
+	pid=$(/usr/bin/systemctl show --property MainPID --value "litewitness@$(id -un).service")
+	[[ "$pid" -gt 0 ]] && /bin/kill -SIGHUP "$pid"
+fi
