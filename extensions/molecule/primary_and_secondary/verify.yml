@@ -1,9 +1,9 @@
 ---
 - name: Ensure secondary log is up and running
   hosts:
-    - sigsum-secondary
+    - sigsum-primary-and-secondary
   vars_files:
-    - ../../roles/sigsum/defaults/main.yml  # role defaults
+    - ../../../roles/sigsum/defaults/main.yml  # role defaults
     - "host_vars/{{ inventory_hostname }}.yml"  # what converge used
     - host_vars/test.yml  # what this verify playbook additionally uses
   tasks:
@@ -20,18 +20,10 @@
       register: services
       failed_when: services.changed
 
-    - name: Check that primary log is disabled and not running
-      ansible.builtin.systemd:
-        name: "sigsum-log-primary@{{ sigsum_logname }}"
-        state: stopped
-        enabled: false
-      register: service
-      failed_when: service.changed == true
-
     # TODO: consider using ansible.builtin.uri or ensure curl is installed
     - name: Get tree head
       ansible.builtin.command: |
-        curl http://localhost:{{ sigsum_internal_endpoint | split(':') | last }}/{{ sigsum_url_prefix }}/get-secondary-tree-head
+        curl http://localhost:10001/{{ sigsum_url_prefix }}/get-secondary-tree-head
       register: secondary_tree_head
 
     - name: Parse tree size
@@ -40,10 +32,9 @@
 
 - name: Verify that primary log seems to work
   hosts:
-    - sigsum-primary
-    - sigsum-primary-ssh-agent
+    - sigsum-primary-and-secondary
   vars_files:
-    - ../../roles/sigsum/defaults/main.yml  # role defaults
+    - ../../../roles/sigsum/defaults/main.yml  # role defaults
     - "host_vars/{{ inventory_hostname }}.yml"  # what converge used
     - host_vars/test.yml  # what this verify playbook additionally uses
   tasks:
@@ -59,14 +50,6 @@
         - cron
       register: services
       failed_when: services.changed
-
-    - name: Check that secondary log is disabled and not running
-      ansible.builtin.systemd:
-        name: "sigsum-log-secondary@{{ sigsum_logname }}"
-        state: stopped
-        enabled: false
-      register: service
-      failed_when: service.changed == true
 
     - name: "Add test user {{ test_user }}"
       ansible.builtin.user:
@@ -222,15 +205,15 @@
 
 - name: Ensure secondary log has the expected tree size
   hosts:
-    - sigsum-secondary
+    - sigsum-primary-and-secondary
   vars_files:
-    - ../../roles/sigsum/defaults/main.yml  # role defaults
+    - ../../../roles/sigsum/defaults/main.yml  # role defaults
     - "host_vars/{{ inventory_hostname }}.yml"  # what converge used
     - host_vars/test.yml  # what this verify playbook additionally uses
   tasks:
     - name: Get tree head
       ansible.builtin.command: |
-        curl http://localhost:{{ sigsum_internal_endpoint | split(':') | last }}/{{ sigsum_url_prefix }}/get-secondary-tree-head
+        curl http://localhost:10001/{{ sigsum_url_prefix }}/get-secondary-tree-head
       register: secondary_tree_head
 
     - name: Parse tree size
@@ -240,18 +223,3 @@
     - name: Assert correct tree size
       ansible.builtin.assert:
         that: (secondary_tree_size|int + test_num_messages) == new_secondary_tree_size|int
-
-- name: Verify that log can be restarted by {{ sigsum_user }} user
-  hosts:
-    - sigsum-primary
-    - sigsum-secondary
-  vars_files:
-    - ../../roles/sigsum/defaults/main.yml  # role defaults
-    - "host_vars/{{ inventory_hostname }}.yml"  # what converge used
-    - host_vars/test.yml  # what this verify playbook additionally uses
-  tasks:
-    - name: Restart log as {{ sigsum_user }} user
-      ansible.builtin.shell: |
-        sudo /usr/bin/systemctl restart "sigsum-log-{{ sigsum_role }}@{{ sigsum_logname }}"
-      become_user: "{{ sigsum_user }}"
-      become: true
