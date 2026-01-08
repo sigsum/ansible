@@ -2,8 +2,8 @@
 - name: Verify
   hosts: all
   vars_files:
-    - ../../roles/litewitness/defaults/main.yml  # role defaults
-    - ../../roles/litewitness/vars/main.yml  # role defaults
+    - ../../../roles/litewitness/defaults/main.yml  # role defaults
+    - ../../../roles/litewitness/vars/main.yml  # role defaults
     - "host_vars/{{ inventory_hostname }}.yml"  # what converge used
   tasks:
     - name: Check litewitness systemd service
