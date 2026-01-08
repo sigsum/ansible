@@ -1,10 +1,10 @@
 ---
 - name: Add package source for backports
   ansible.builtin.copy:
-    content: "deb {{ yubihsm_connector_debian_deb_source }} {{ ansible_distribution_release }}-backports main"
-    dest: "/etc/apt/sources.list.d/{{ ansible_distribution_release }}-backports.list"
+    content: "deb {{ yubihsm_connector_debian_deb_source }} {{ ansible_facts['distribution_release'] }}-backports main"
+    dest: "/etc/apt/sources.list.d/{{ ansible_facts['distribution_release'] }}-backports.list"
     mode: '0644'
-  when: ansible_distribution_release == "bookworm"
+  when: ansible_facts['distribution_release'] == "bookworm"
   register: add_backports
 
 - name: Update apt cache
@@ -14,7 +14,7 @@
 
 - name: Install yubihsm_connector
   ansible.builtin.apt:
-    default_release: "{{ (ansible_distribution_release == 'bookworm') | ternary(ansible_distribution_release + '-backports', omit) }}"
+    default_release: "{{ (ansible_facts['distribution_release'] == 'bookworm') | ternary(ansible_facts['distribution_release'] + '-backports', omit) }}"
     pkg: yubihsm-connector
     state: present
     update_cache: true

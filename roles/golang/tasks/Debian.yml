@@ -1,8 +1,8 @@
 ---
 - name: Add package source for backports
   ansible.builtin.copy:
-    content: "deb {{ golang_debian_deb_source }} {{ ansible_distribution_release }}-backports main"
-    dest: "/etc/apt/sources.list.d/{{ ansible_distribution_release }}-backports.list"
+    content: "deb {{ golang_debian_deb_source }} {{ ansible_facts['distribution_release'] }}-backports main"
+    dest: "/etc/apt/sources.list.d/{{ ansible_facts['distribution_release'] }}-backports.list"
     mode: '0644'
   when: golang_debian_use_backports
   register: add_backports
@@ -14,7 +14,7 @@
 
 - name: Install golang
   ansible.builtin.apt:
-    default_release: "{{ golang_debian_use_backports | ternary(ansible_distribution_release + '-backports', omit) }}"
+    default_release: "{{ golang_debian_use_backports | ternary(ansible_facts['distribution_release'] + '-backports', omit) }}"
     pkg: golang-go
     state: present
     update_cache: true

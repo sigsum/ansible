@@ -5,7 +5,7 @@
 # WIP: just need make systemd into user-scope now as well.
 
 - name: Include distribution-dependent tasks
-  ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
+  ansible.builtin.include_tasks: "{{ ansible_facts['os_family'] }}.yml"
 
 - name: Add sigsum user ({{ sigsum_user }})
   user:
