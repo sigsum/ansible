@@ -4,15 +4,19 @@
   vars_files:
     - ../../../roles/litewitness/defaults/main.yml  # role defaults
     - ../../../roles/litewitness/vars/main.yml  # role defaults
-    - "host_vars/{{ inventory_hostname }}.yml"  # what converge used
+    - vars/vars_for_verify.yml
+  vars:
+    litewitness_user: "testonly"
   tasks:
+
     - name: Check litewitness systemd service
       ansible.builtin.systemd:
         name: "litewitness@{{ litewitness_user }}"
-        state: started
-        enabled: true
-      register: services
-      failed_when: services.changed
+      register: litewitness_service_status
+
+    - name: Assert that litewitness systemd service is running
+      ansible.builtin.assert:
+        that: litewitness_service_status.status.ActiveState == 'active'
 
     - name: Check litewitness listening addr
       ansible.builtin.wait_for:
