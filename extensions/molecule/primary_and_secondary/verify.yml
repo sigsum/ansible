@@ -4,8 +4,8 @@
     - sigsum-primary-and-secondary
   vars_files:
     - ../../../roles/sigsum/defaults/main.yml  # role defaults
-    - "host_vars/{{ inventory_hostname }}.yml"  # what converge used
     - host_vars/test.yml  # what this verify playbook additionally uses
+    - host_vars/sigsum-primary-and-secondary.yml # what converge used
   tasks:
     - name: Check that systemd services are running
       ansible.builtin.systemd:
@@ -35,8 +35,8 @@
     - sigsum-primary-and-secondary
   vars_files:
     - ../../../roles/sigsum/defaults/main.yml  # role defaults
-    - "host_vars/{{ inventory_hostname }}.yml"  # what converge used
     - host_vars/test.yml  # what this verify playbook additionally uses
+    - host_vars/sigsum-primary-and-secondary.yml # what converge used
   tasks:
     - name: Check that systemd services are running
       ansible.builtin.systemd:
@@ -208,8 +208,8 @@
     - sigsum-primary-and-secondary
   vars_files:
     - ../../../roles/sigsum/defaults/main.yml  # role defaults
-    - "host_vars/{{ inventory_hostname }}.yml"  # what converge used
     - host_vars/test.yml  # what this verify playbook additionally uses
+    - host_vars/sigsum-primary-and-secondary.yml # what converge used
   tasks:
     - name: Get tree head
       ansible.builtin.command: |

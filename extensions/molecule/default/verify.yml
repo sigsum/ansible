@@ -4,7 +4,7 @@
     - sigsum-secondary
   vars_files:
     - ../../../roles/sigsum/defaults/main.yml  # role defaults
-    - "host_vars/{{ inventory_hostname }}.yml"  # what converge used
+    - host_vars/sigsum-secondary.yml  # what converge used
     - host_vars/test.yml  # what this verify playbook additionally uses
   tasks:
     - name: Check that systemd services are running
@@ -44,7 +44,7 @@
     - sigsum-primary-ssh-agent
   vars_files:
     - ../../../roles/sigsum/defaults/main.yml  # role defaults
-    - "host_vars/{{ inventory_hostname }}.yml"  # what converge used
+    - vars/vars_for_verify.yml
     - host_vars/test.yml  # what this verify playbook additionally uses
   tasks:
     - name: Check that systemd services are running
@@ -157,9 +157,16 @@
       no_log: true  # don't bloat output with test keys
       when: sigsum_allowlist_limit != -1
 
+    # We include a time string in the test messages to get unique
+    # messages if this verify.yml playbook runs multiple times.
+    - name: Get time string to include in test messages
+      ansible.builtin.command: |
+        date
+      register: time_string_to_include_in_test_messages
+
     - name: Create test messages
       ansible.builtin.copy:
-        content: "test message {{ item }}"
+        content: "test message {{ item }} {{ time_string_to_include_in_test_messages }}"
         dest: "{{ test_home }}/msg-{{ item }}"
       with_sequence: start=0 count="{{ test_num_messages }}"
       become_user: "{{ test_user }}"
@@ -225,7 +232,7 @@
     - sigsum-secondary
   vars_files:
     - ../../../roles/sigsum/defaults/main.yml  # role defaults
-    - "host_vars/{{ inventory_hostname }}.yml"  # what converge used
+    - host_vars/sigsum-secondary.yml  # what converge used
     - host_vars/test.yml  # what this verify playbook additionally uses
   tasks:
     - name: Get tree head
@@ -241,13 +248,26 @@
       ansible.builtin.assert:
         that: (secondary_tree_size|int + test_num_messages) == new_secondary_tree_size|int
 
-- name: Verify that log can be restarted by {{ sigsum_user }} user
+- name: Verify that primary log can be restarted by {{ sigsum_user }} user
   hosts:
     - sigsum-primary
+  vars_files:
+    - ../../../roles/sigsum/defaults/main.yml  # role defaults
+    - host_vars/sigsum-primary.yml  # what converge used
+    - host_vars/test.yml  # what this verify playbook additionally uses
+  tasks:
+    - name: Restart log as {{ sigsum_user }} user
+      ansible.builtin.shell: |
+        sudo /usr/bin/systemctl restart "sigsum-log-{{ sigsum_role }}@{{ sigsum_logname }}"
+      become_user: "{{ sigsum_user }}"
+      become: true
+
+- name: Verify that secondary log can be restarted by {{ sigsum_user }} user
+  hosts:
     - sigsum-secondary
   vars_files:
     - ../../../roles/sigsum/defaults/main.yml  # role defaults
-    - "host_vars/{{ inventory_hostname }}.yml"  # what converge used
+    - host_vars/sigsum-secondary.yml  # what converge used
     - host_vars/test.yml  # what this verify playbook additionally uses
   tasks:
     - name: Restart log as {{ sigsum_user }} user
