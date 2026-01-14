@@ -1,0 +1,4 @@
+sigsum_logname: molecule-test
+sigsum_url_prefix: "{{ sigsum_logname }}"
+sigsum_external_endpoint: "0.0.0.0:3000"
+sigsum_allowlist_limit: 1024
