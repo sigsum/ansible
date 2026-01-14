@@ -46,6 +46,7 @@
         login_user: root
         login_unix_socket: "/run/mysqld/mysqld.sock"
         state: present
+        column_case_sensitive: false
       no_log: True
       with_items:
         - 127.0.0.1
