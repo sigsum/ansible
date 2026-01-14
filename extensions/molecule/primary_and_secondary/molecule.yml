@@ -15,7 +15,6 @@ platforms:
     override_command: false
     volume_mounts:
        - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
-    network: internal-testnet
 provisioner:
   name: ansible
   playbooks:
