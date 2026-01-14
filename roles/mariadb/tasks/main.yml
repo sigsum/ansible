@@ -61,6 +61,7 @@
     login_password: "{{ mysql_root_password }}"
     login_unix_socket: "/run/mysqld/mysqld.sock"
     state: present
+    column_case_sensitive: false
   no_log: True
   with_items: '{{ mysql_users }}'
 
@@ -72,6 +73,7 @@
     name: '{{ item.0.user}}'
     append_privs: yes
     priv: '{{item.1}}'
+    column_case_sensitive: false
   no_log: True
   with_subelements:
     - "{{ mysql_users }}"
