@@ -7,7 +7,7 @@
 #
 
 {% for log in litewitness_logs %}
-{% if log.bastions is defined %}
+{% if log.bastions is defined and log.bastions | length > 0 %}
 {{ log.origin }}
 {{ log.bastions | join(' ') }}
 
