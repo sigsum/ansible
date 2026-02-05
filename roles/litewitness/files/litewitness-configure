@@ -60,6 +60,7 @@ while IFS= read -r line; do
 		(cat "$log_file"; exit 1)
 	"$witnessctl" add-key -db "$db_file" -origin "$origin" -key "$vkey" 2> "$log_file" ||
 		grep -q "$dup_str" "$log_file" ||
+		grep -q "already exists for log" "$log_file" ||
 		(cat "$log_file"; exit 1)
 done < "$config_file_non_sigsum_logs"
 
@@ -112,5 +113,7 @@ done < "$config_file_per_log_bastions"
 if [[ $changed == true ]]; then
 	# systemctl reload requires root; send SIGHUP directly.
 	pid=$(/usr/bin/systemctl show --property MainPID --value "litewitness@$(id -un).service")
-	[[ "$pid" -gt 0 ]] && /bin/kill -SIGHUP "$pid"
+	if [[ "$pid" -gt 0 ]]; then
+		/bin/kill -SIGHUP "$pid"
+	fi
 fi
