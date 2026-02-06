@@ -1,0 +1,3 @@
+---
+litebastion_tls_enabled: "{{ litebastion_tls_cert_path != '' and litebastion_tls_key_path != '' }}"
+litebastion_acme_enabled: "{{ litebastion_acme_host != '' and litebastion_acme_email != '' and litebastion_acme_cache != '' }}"

@@ -1,3 +1,17 @@
+{% set args = [] %}
+{% set _ = args.append('-backends=' ~ litebastion_directory ~ '/backends.conf') %}
+{% set _ = args.append('-listen=' ~ litebastion_listen) %}
+{% if litebastion_http_port != "" %}
+{% set _ = args.append('-listen-http=' ~ litebastion_http_port) %}
+{% endif %}
+{% if litebastion_acme_enabled %}
+{% set _ = args.append('-host=' ~ litebastion_acme_host) %}
+{% set _ = args.append('-email=' ~ litebastion_acme_email) %}
+{% set _ = args.append('-cache=' ~ litebastion_acme_cache) %}
+{% else %}
+{% set _ = args.append('-tls-cert=' ~ litebastion_tls_cert_path) %}
+{% set _ = args.append('-tls-key=' ~ litebastion_tls_key_path) %}
+{% endif %}
 [Unit]
 Description=litebastion service
 After=network.target
@@ -7,14 +21,7 @@ Type=simple
 User={{ litebastion_user }}
 Restart=always
 ExecStart={{ litebastion_directory }}/go/bin/litebastion \
-    -backends "{{ litebastion_directory }}/backends.conf" \
-    -listen "{{ litebastion_listen }}" \
-{% if litebastion_http_port != "" %}
-    -listen-http "{{ litebastion_http_port }}" \
-{% endif %}
-    -email "{{ litebastion_email }}" \
-    -host "{{ litebastion_host }}" \
-    -cache "{{ litebastion_directory }}/acme"
+    {{ args | join(' \\\n    ') }}
 ExecReload=/bin/kill -HUP $MAINPID
 
 [Install]
