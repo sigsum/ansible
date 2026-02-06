@@ -36,9 +36,16 @@ litebastion_acme_host: ""
 litebastion_acme_email: ""
 litebastion_acme_cache: "{{ litebastion_directory }}/acme"
 
-# Allowed witness backends (key hashes, hint: sigsum-key hash -k key.pub).
-# Note: litebastion will be reloaded with SIGHUP on changes to this list, and
-# already connected backends will not be affected by such reloading.
-litebastion_backends:
-  - 2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae  # sha256("foo")
-  - fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9  # sha256("bar")
+# List of allowed witness backends, identified by their key hash (hint:
+# sigsum-key to-hash -k key.pub).
+#
+# litebastion reloads the backends when it receives a SIGHUP signal. Existing
+# connections remain unaffected unless the corresponding backends are removed
+# from the list. In that case, those connections will be terminated.
+#
+# ---Example
+# litebastion_backends:
+#   - 2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae
+#   - fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9
+#
+litebastion_backends: []
