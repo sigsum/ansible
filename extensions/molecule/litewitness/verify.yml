@@ -5,8 +5,6 @@
     - ../../../roles/litewitness/defaults/main.yml  # role defaults
     - ../../../roles/litewitness/vars/main.yml  # role defaults
     - vars/vars_for_verify.yml
-  vars:
-    litewitness_user: "testonly"
   tasks:
 
     - name: Check litewitness systemd service
