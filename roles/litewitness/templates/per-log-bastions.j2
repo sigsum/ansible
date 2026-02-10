@@ -8,7 +8,11 @@
 
 {% for log in litewitness_logs %}
 {% if log.bastions is defined and log.bastions | length > 0 %}
+{% if log.origin is defined and log.origin != "" %}
 {{ log.origin }}
+{% else %}
+{{ log.vkey | split('+') | first }}
+{% endif %}
 {{ log.bastions | join(' ') }}
 
 {% endif %}

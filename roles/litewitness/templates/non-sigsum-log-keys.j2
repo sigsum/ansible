@@ -10,5 +10,9 @@
 {% endfor %}
 {% endif %}
 {% for log in litewitness_logs %}
+{% if log.origin is defined and log.origin != "" %}
 {{ log.vkey }} {{ log.origin }}
+{% else %}
+{{ log.vkey }} {{ log.vkey | split('+') | first }}
+{% endif %}
 {% endfor %}
