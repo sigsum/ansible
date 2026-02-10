@@ -1,4 +1,14 @@
 ---
+- name: Assert that litewitness_name is not empty
+  ansible.builtin.assert:
+    that: litewitness_name != ""
+    fail_msg: "litewitness_name must not be empty"
+
+- name: Assert that litewitness_keygrip is not empty
+  ansible.builtin.assert:
+    that: litewitness_keygrip != ""
+    fail_msg: "litewitness_keygrip must not be empty"
+
 - name: Enforce valid endpoint configuration
   ansible.builtin.assert:
     that: not (litewitness_listen_endpoint != "" and litewitness_bastion_endpoint != "")
