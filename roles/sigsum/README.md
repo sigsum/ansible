@@ -25,7 +25,7 @@ Dependencies
 
 Example playbook
 ----------------
-See the [molecule converge playbook](../../molecule/default/converge.yml) for
+See the [molecule converge playbook](../../extensions/molecule/default/converge.yml) for
 examples that deploy a primary-secondary log setup for database replication, as
 well as a standalone primary where the key is accessed using the ssh-agent
 protocol.  If you want to use sigsum-agent with the YubiHSM backend, you might

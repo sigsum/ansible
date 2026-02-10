@@ -23,4 +23,4 @@ otherwise the old Go package stays and the backported Go will not be installed.
 
 Example playbook
 ----------------
-See the [molecule converge playbook](../../molecule/golang/converge.yml).
+See the [molecule converge playbook](../../extensions/molecule/golang/converge.yml).

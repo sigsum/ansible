@@ -22,4 +22,4 @@ None.
 
 Example playbook
 ----------------
-See the [molecule converge playbook](../../molecule/yubihsm_connector/converge.yml).
+See the [molecule converge playbook](../../extensions/molecule/yubihsm_connector/converge.yml).

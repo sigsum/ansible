@@ -39,7 +39,7 @@ You will need to enable backports on Debian bookworm systems, see
 
 ## Example playbook
 
-See the litebastion [molecule-test](../../molecule/litebastion) for an
+See the litebastion [molecule-test](../../extensions/molecule/litebastion) for an
 example.
 
 Hints:
