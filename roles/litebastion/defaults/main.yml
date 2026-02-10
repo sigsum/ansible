@@ -1,19 +1,40 @@
 ---
 litebastion_gomodule: filippo.io/torchwood/cmd/litebastion
-litebastion_goversion: v0.7.0
+litebastion_goversion: v0.9.0
 litebastion_user: litebastion
 litebastion_directory: /var/lib/litebastion
 litebastion_debian_backports: false
 
-# ACME and listen options.  Note that it is essential to use port 443 because
-# certificates are acquired with Let's Encrypt.  It is of course possible to run
-# on an address like localhost:8443 if SRV_ADDR:443 is somehow redirected to it.
-litebastion_email: sysadmin@example.org
-litebastion_host: bastion.example.org
+# Host and port to listen for backend connections.
 litebastion_listen: localhost:8443
 
 # Localhost port to listen for HTTP requests from the log.
 litebastion_http_port: ""
+
+# TLS configuration. This allows the certificate to be externally managed using
+# any challenge method (e.g., DNS-01). Note: this is mutually exclusive with
+# ACME.
+#
+# ---Example
+# litebastion_tls_cert_path: /etc/litebastion/tls/server.crt
+# litebastion_tls_key_path: /etc/litebastion/tls/server.key
+#
+litebastion_tls_cert_path: ""
+litebastion_tls_key_path: ""
+
+# ACME configuration. This requires litebastion to be accessible on port 443 so
+# it can respond to the TLS-ALPN-01 validation requests from Let's Encrypt.
+# Note: it only needs to be accessible on port 443, so it is perfectly valid to
+# listen on a different port and redirect to it.
+#
+# ---Example
+# litebastion_acme_host: bastion.example.org
+# litebastion_acme_email: sysadmin@example.org
+# litebastion_acme_cache: /var/lib/litebastion/acme
+#
+litebastion_acme_host: ""
+litebastion_acme_email: ""
+litebastion_acme_cache: "{{ litebastion_directory }}/acme"
 
 # Allowed witness backends (key hashes, hint: sigsum-key hash -k key.pub).
 # Note: litebastion will be reloaded with SIGHUP on changes to this list, and

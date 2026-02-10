@@ -9,3 +9,5 @@ litebastion_testonly_port: "9000"
 
 litebastion_listen: "{{ litebastion_testonly_addr }}:{{ litebastion_testonly_port }}"
 litebastion_http_port: "8443"
+litebastion_acme_host: bastion.example.org
+litebastion_acme_email: sysadmin@example.org

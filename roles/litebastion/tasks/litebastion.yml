@@ -21,6 +21,15 @@
     - Set bind permissions
     - Restart litebastion
 
+- name: Ensure ACME cache directory exists
+  ansible.builtin.file:
+    path: "{{ litebastion_acme_cache }}"
+    state: directory
+    mode: "0700"
+    owner: "{{ litebastion_user }}"
+    group: "{{ litebastion_user }}"
+  when: litebastion_acme_enabled
+
 - name: Configure backends file
   ansible.builtin.template:
     src: backends.j2

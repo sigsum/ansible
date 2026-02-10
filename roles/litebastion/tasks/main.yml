@@ -2,5 +2,31 @@
 - name: Include distribution-dependent variables
   ansible.builtin.include_vars: "{{ ansible_facts['os_family'] }}.yml"
 
+- name: Backwards compatibility - rename variables
+  ansible.builtin.set_fact:
+    "{{ item.new }}": "{{ lookup('ansible.builtin.vars', item.old) }}"
+  when: lookup('ansible.builtin.vars', item.old, default='') != ''
+  loop:
+    - { old: litebastion_host, new: litebastion_acme_host }
+    - { old: litebastion_email, new: litebastion_acme_email }
+
+- name: Warn about deprecated variables
+  ansible.builtin.debug:
+    msg: "DEPRECATED: '{{ item.old }}' has been renamed to '{{ item.new }}'. Please update your vars."
+  when: lookup('ansible.builtin.vars', item.old, default='') != ''
+  loop:
+    - { old: litebastion_host, new: litebastion_acme_host }
+    - { old: litebastion_email, new: litebastion_acme_email }
+
+- name: Assert TLS configuration
+  ansible.builtin.assert:
+    that:
+      - litebastion_tls_enabled or litebastion_acme_enabled
+      - litebastion_tls_enabled != litebastion_acme_enabled
+    fail_msg: >
+      You must either provide litebastion_tls_cert_path and
+      litebastion_tls_key_path, or configure ACME with litebastion_acme_host,
+      litebastion_acme_email, and litebastion_acme_cache.
+
 - name: Install and configure the litebastion service
   ansible.builtin.include_tasks: litebastion.yml
