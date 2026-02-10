@@ -3,15 +3,18 @@
 #
 # Managed by ansible -- do not edit.
 #
-{% set args = '\\\n    ' %}
-{% set args = args + '-db ~/.local/share/litewitness/database \\\n    ' %}
-{% set args = args + '-name ' + litewitness_name|string + ' \\\n    ' %}
-{% set args = args + '-key ' + litewitness_keygrip|string + ' \\\n    ' %}
-{% set args = args + '-ssh-agent ' + litewitness_sigsum_agent_socket|string + ' \\\n    ' %}
-{% if litewitness_bastion_endpoint is defined %}
-{% set args = args + '-bastion ' + litewitness_bastion_endpoint|string %}
+{% set args = [] %}
+{% set _ = args.append('-db=' ~ litewitness_database_file) %}
+{% set _ = args.append('-name=' ~ litewitness_name) %}
+{% set _ = args.append('-key=' ~ litewitness_keygrip) %}
+{% set _ = args.append('-ssh-agent=' ~ litewitness_sigsum_agent_socket) %}
+{% if litewitness_bastion_endpoint != "" %}
+{% set _ = args.append('-bastion=' ~ litewitness_bastion_endpoint) %}
+{% elif litewitness_listen_endpoint != "" %}
+{% set _ = args.append('-listen=' ~ litewitness_listen_endpoint) %}
 {% else %}
-{% set args = args + '-listen ' + litewitness_listen_endpoint|string %}
+{% set _ = args.append('-no-listen') %}
 {% endif %}
 
-exec ~/go/bin/litewitness {{ args }}
+exec ~/go/bin/litewitness \
+    {{ args | join(' \\\n    ') }}
