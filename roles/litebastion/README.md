@@ -23,8 +23,8 @@ fail).  On Debian stable, you may set `litebastion_debian_backports: true`.
 You will likely want to set the following variables:
 
 * `litebastion_goversion`
-* `litebastion_email`
-* `litebastion_host`
+* `litebastion_acme_host`
+* `litebastion_acme_email`
 * `litebastion_listen`
 * `litebastion_backends`
 
