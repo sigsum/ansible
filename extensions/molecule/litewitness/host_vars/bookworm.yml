@@ -43,6 +43,7 @@ sigsum_agent_soft_key: |
 # The duplicate key below ensures we regression-check witnessctl-configure,
 # which should ignore errors when configuring a log that was already added.
 #
+litewitness_name: test.example.org/testwitness
 litewitness_user: testonly
 litewitness_keygrip: 74f4c44e9025398a061683189a3eb86559a3bd2f231393c5212dd8d6c524ad02
 litewitness_listen_endpoint: "127.0.0.1:2009"
