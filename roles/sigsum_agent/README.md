@@ -32,7 +32,7 @@ It is assumed that the system already contains:
 
 Provided that the above requirements are satisfied, the role should work on most
 Linux system.  Please note that we only test on Debian distributions though, see
-[molecule/sigsum_agent](../../molecule/sigsum_agent/molecule.yml).
+[molecule/sigsum_agent](../../extensions/molecule/sigsum_agent/molecule.yml).
 
 It is also assumed that a backend key has already been generated before using
 this role.  In other words, this role does not help with any key generation.
@@ -57,4 +57,4 @@ None.
 
 Example playbook
 ----------------
-See the [molecule converge playbook](../../molecule/sigsum_agent/converge.yml).
+See the [molecule converge playbook](../../extensions/molecule/sigsum_agent/converge.yml).

@@ -31,7 +31,7 @@ For information on the Go-installed witness tools, see [torchwood][].
 
 ## Example playbook
 
-See the litewitness [molecule-test](../../molecule/litewitness) for an example
+See the litewitness [molecule-test](../../extensions/molecule/litewitness) for an example
 that deploys this service with a soft key and a localhost listening-address.
 
 ## Using several instances of the litewitness role

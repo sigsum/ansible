@@ -17,4 +17,4 @@ Uses the mariadb-server Debian package.
 
 Example usage
 -------------
-See the [molecule converge playbook](../../molecule/default/converge.yml).
+See the [molecule converge playbook](../../extensions/molecule/default/converge.yml).

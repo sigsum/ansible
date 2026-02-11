@@ -19,8 +19,8 @@ Show the installed sigsum collection version using:
 
 ## Usage
 
-See [example playbook](./molecule/default/converge.yml) and its
-[configuration](./molecule/default/host_vars/) for two examples:
+See [example playbook](./extensions/molecule/default/converge.yml) and its
+[configuration](./extensions/molecule/default/host_vars/) for two examples:
 - Deploy a primary-secondary log setup for database replication
 - Deploy a primary log where the key is accessed using the ssh-agent protocol
 

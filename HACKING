@@ -83,7 +83,8 @@ Interactive deploy, debug, deploy again, verify, and clean-up session:
     $ molecule verify
     $ molecule destroy
 
-To work with a different scenario like ./molecule/golang, use "-s golang".
+To work with a different scenario like ./extensions/molecule/golang, use "-s
+golang".
 
 Each test scenario can have its own configuration in a "scenario:"
 section in the corresponding molecule.yml file, as in for example the
