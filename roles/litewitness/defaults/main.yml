@@ -5,12 +5,22 @@
 litewitness_user: litewitness
 
 # The name of the witness.  Use a schema-less URL for a domain name that you
-# control.  This helps avoid accidental naming collisions for witnesses.
-litewitness_name: example.org/witness  # Does not need to be network reachable
+# control.  This helps avoid accidental naming collisions for witnesses.  The
+# URL does not need to be network reachable.
+#
+# ---Example
+# litewitness_name: example.org/witness
+#
+litewitness_name: ""
 
-# Keyhash of the public Ed25519 witness key.  This is used as a handle when
-# accessing the private key via the SSH agent protocol (using sigsum-agent).
-litewitness_keygrip: "to be added"   # sigsum-key hash -k /path/to/pubkey
+# Keyhash of the public Ed25519 witness key (hint: sigsum-key to-hash -k
+# /path/to/pubkey).  This is used as a handle when accessing the private key
+# via the SSH agent protocol (using sigsum-agent).
+#
+# ---Example
+# litewitness_keygrip: 70ef4421b0ff38436855c2650988da6b03309d2105d6280fbb30dd1e635954ae
+#
+litewitness_keygrip: ""
 
 # Define which logs to be witnessed and whether they have their own bastion
 # host(s).  It is required to supply `vkey`.  It is optional to supply `origin`
