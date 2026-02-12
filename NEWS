@@ -2,7 +2,7 @@ NEWS for sigsum ansible v1.6.0
 
 	Changes between v1.5.0 and v1.6.0:
 
-	* Bump default version of torchwood for litewitness and
+	* Bumped the default version of torchwood for litewitness and
           litebastion from v0.7.0 to v0.9.0. All users should upgrade
           to v0.9.0 due to bugs in earlier versions of witnessctl and
           litebastion.
