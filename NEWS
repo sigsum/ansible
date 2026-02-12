@@ -1,3 +1,44 @@
+NEWS for sigsum ansible v1.6.0
+
+	Changes between v1.5.0 and v1.6.0:
+
+	* Bump default version of torchwood for litewitness and
+          litebastion from v0.7.0 to v0.9.0. All users should upgrade
+          to v0.9.0 due to bugs in earlier versions of witnessctl and
+          litebastion.
+
+	* Added support for per-log bastions.
+
+	* Added support for periodically pulling logs to witness from
+          a centrally managed list (e.g.,
+          https://testing.witness-network.org/log-list.1).
+
+	* Added support for using externally managed TLS certificates
+          for litebastion.  This is useful when using challenge
+          methods other than TLS-ALPN-01, such as DNS-01.
+
+	* Added support for litewitness -no-listen flag, which
+          prevents litewitness from opening any listening
+          sockets. This should only be used when relying solely on
+          per-log bastions.
+
+	* Deprecated the variables litewitness_sigsum_log_keys and
+          litewitness_vkey_log_keys in favor of litewitness_logs.  The
+          old variables will remain supported for now but will be
+          removed in a future release.
+
+	* Deprecated the variables litebastion_host and
+          litebastion_email in favor of litebastion_acme_host and
+          litebastion_acme_email.  The old variables will remain
+          supported for now but will be removed in a future release.
+
+	* Removed the litebastion_h2v variable as the corresponding
+          flag was removed in litebastion v0.4.0.
+
+	* Moved molecule tests to extensions directory.
+
+	* Fixed various warnings in molecule tests.
+
 NEWS for sigsum ansible v1.5.0
 
 	Changes between v1.4.0 and v1.5.0:
