@@ -13,4 +13,4 @@ tags:
 license_file: LICENSE
 description: Roles and modules for installing and setting up Sigsum transparency logs and witnesses
 dependencies:
-  "community.mysql": "3.12.0"
+  "community.mysql": "4.0.1"
