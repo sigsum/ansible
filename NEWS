@@ -1,11 +1,10 @@
 NEWS for sigsum ansible v1.6.0
 
-	Changes between v1.5.0 and v1.6.0:
+	With this release, all users should upgrade to torchwood
+	v0.9.0 due to bugs in earlier versions of witnessctl and
+	litebastion.
 
-	* Bumped the default version of torchwood for litewitness and
-          litebastion from v0.7.0 to v0.9.0. All users should upgrade
-          to v0.9.0 due to bugs in earlier versions of witnessctl and
-          litebastion.
+	Changes between v1.5.0 and v1.6.0:
 
 	* Added support for per-log bastions.
 
@@ -34,6 +33,9 @@ NEWS for sigsum ansible v1.6.0
 
 	* Removed the litebastion_h2v variable as the corresponding
           flag was removed in litebastion v0.4.0.
+
+	* Bumped the default version of torchwood for litewitness and
+          litebastion from v0.7.0 to v0.9.0.
 
 	* Bumped community.mysql version from 3.12.0 to 4.0.1
 
