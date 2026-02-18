@@ -15,6 +15,9 @@
 {% else %}
 {% set _ = args.append('-no-listen') %}
 {% endif %}
+{% if litewitness_obscurity_mode %}
+{% set _ = args.append('-obscurity') %}
+{% endif %}
 
 exec ~/go/bin/litewitness \
     {{ args | join(' \\\n    ') }}

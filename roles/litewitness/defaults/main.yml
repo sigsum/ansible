@@ -73,6 +73,11 @@ litewitness_pull_logs_schedule:
 litewitness_bastion_endpoint: ""
 litewitness_listen_endpoint: ""
 
+# Toggle obscurity mode. When enabled, the / and /logz endpoints are disabled
+# to prevent log enumeration and leakage of potentially sensitive information.
+# See https://github.com/FiloSottile/torchwood/issues/54.
+litewitness_obscurity_mode: true
+
 # Go dependencies.  For each of the listed tools it is possible to override the
 # default version and Go repository by also specifying "version" and "source" as
 # additional dict members alongside "name".  Note that the listed tools are

@@ -49,3 +49,8 @@ litebastion_acme_cache: "{{ litebastion_directory }}/acme"
 #   - fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9
 #
 litebastion_backends: []
+
+# Toggle obscurity mode. When enabled, the /logz endpoint is disabled to
+# prevent leakage of potentially sensitive information. See
+# https://github.com/FiloSottile/torchwood/issues/54.
+litebastion_obscurity_mode: true
