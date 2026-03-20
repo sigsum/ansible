@@ -12,7 +12,7 @@
 {% set _ = args.append('-tls-cert=' ~ litebastion_tls_cert_path) %}
 {% set _ = args.append('-tls-key=' ~ litebastion_tls_key_path) %}
 {% endif %}
-{% if litebastion_obscurity_mode %}
+{% if not litebastion_debug_endpoints_enabled %}
 {% set _ = args.append('-obscurity') %}
 {% endif %}
 [Unit]

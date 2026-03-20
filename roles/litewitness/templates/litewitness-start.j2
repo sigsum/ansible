@@ -15,7 +15,7 @@
 {% else %}
 {% set _ = args.append('-no-listen') %}
 {% endif %}
-{% if litewitness_obscurity_mode %}
+{% if not litewitness_debug_endpoints_enabled %}
 {% set _ = args.append('-obscurity') %}
 {% endif %}
 
