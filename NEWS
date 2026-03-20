@@ -21,10 +21,9 @@ NEWS for sigsum ansible v1.6.0
           sockets.  This should only be used when relying solely on
           per-log bastions.
 
-	* Added support for toggling obscurity mode for litewitness and
-          litebastion.  When enabled, endpoints such as /logz are
-          disabled to prevent potential information leakage.  See
-          https://github.com/FiloSottile/torchwood/issues/54.
+	* Added support for toggling debug endpoints such as /logz for
+          litewitness and litebastion. Debug endpoints are disabled by
+          default.
 
 	* Deprecated the variables litewitness_sigsum_log_keys and
           litewitness_vkey_log_keys in favor of litewitness_logs.  The
