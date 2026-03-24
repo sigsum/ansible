@@ -1,4 +1,7 @@
 ---
+# Log level.
+yubihsm_connector_log_level: warn
+
 # Debian options.  Note that backports will be configured if the target system
 # runs Debian bookworm.  Earlier Debian distributions are not supported.
 yubihsm_connector_debian_deb_source: https://deb.debian.org/debian
