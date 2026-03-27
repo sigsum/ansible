@@ -1,3 +1,8 @@
 ---
 - name: Install yubihsm-connector
   ansible.builtin.include_tasks: "{{ ansible_facts['os_family'] }}.yml"
+
+- name: Configure yubihsm-connector
+  ansible.builtin.template:
+    dest: /etc/yubihsm-connector.yaml
+    src: etc/yubihsm-connector.yaml.j2
