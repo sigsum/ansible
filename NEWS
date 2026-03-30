@@ -1,6 +1,6 @@
-NEWS for upcoming sigsum ansible vX.Y.Z
+NEWS for upcoming sigsum ansible v1.7.0
 
-	Changes between v1.6.0 and vX.Y.Z:
+	Changes between v1.6.0 and v1.7.0:
 
 	* Support for installing yubihsm-connector through a .deb file
           was added.
@@ -8,6 +8,8 @@ NEWS for upcoming sigsum ansible vX.Y.Z
 	* /etc/yubihsm-connector.yaml is now under Ansible
           control. Those with local changes to this file will have to
           adapt the Ansible template to meet their needs.
+
+	* Bumped community.mysql version from 4.0.1 to 4.2.0
 
 NEWS for sigsum ansible v1.6.0
 
