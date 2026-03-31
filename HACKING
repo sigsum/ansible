@@ -95,7 +95,9 @@ https://ansible.readthedocs.io/projects/molecule/configuration/#scenario
 
 Ensure that all molecule tests pass.
 
-Update NEWS file.
+Update NEWS file. Check wording of NEWS file entry, it should say
+"NEWS for sigsum ansible v${VERSION}:" and otherwise follow the format
+of previous entries.
 
 Pay extra attention to any breaking changes and ensure they are
 clearly described in the NEWS file.
