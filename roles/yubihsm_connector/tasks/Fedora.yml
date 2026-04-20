@@ -6,6 +6,6 @@
 
 - name: Enable yubihsm_connector service
   ansible.builtin.systemd_service:
-    name: yubihsm_connector
+    name: yubihsm-connector
     enabled: true
     state: started
