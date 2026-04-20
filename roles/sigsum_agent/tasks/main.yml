@@ -40,6 +40,13 @@
   become_user: "{{ sigsum_agent_user }}"
   become: true
 
+# When sigsum_agent_home is under /var/lib, the sigsum-agent binary
+# ends up with SELinux type var_lib_t, which systemd will not be able
+# to run.
+- name: Set sigsum-agent SELinux context
+  when: ansible_facts['distribution'] == 'Fedora'
+  ansible.builtin.command: "chcon -t bin_t {{ sigsum_agent_home }}/go/bin/sigsum-agent"
+
 - name: Get sigsum-agent install info
   ansible.builtin.stat:
     path: "{{ sigsum_agent_home }}/go/bin/sigsum-agent"
