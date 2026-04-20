@@ -1,0 +1,5 @@
+---
+- name: Install golang
+  ansible.builtin.dnf:
+    name:
+      - golang
