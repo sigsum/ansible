@@ -7,8 +7,39 @@
         default({}) }}"
   when: yubihsm_connector_pkg is defined
 
-- ansible.builtin.include_tasks: Debian.backports.yml
+- name: Install yubihsm_connector from repo
   when: local_yhsmcon_pkg | default({}) == {}
+  block:
+    - name: Add package source for backports
+      when: ansible_distribution_release == "bookworm"
+      ansible.builtin.copy:
+        content: "deb {{ yubihsm_connector_debian_deb_source }} {{ ansible_distribution_release }}-backports main"
+        dest: "/etc/apt/sources.list.d/{{ ansible_distribution_release }}-backports.list"
+        mode: '0644'
+      register: add_backports
 
-- ansible.builtin.include_tasks: Debian.specific.yml
+    - name: Update apt cache
+      when: add_backports.changed
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Install from repo
+      ansible.builtin.apt:
+        default_release: "{{ (ansible_distribution_release == 'bookworm') | ternary(ansible_distribution_release + '-backports', omit) }}"
+        pkg: yubihsm-connector
+        state: present
+        update_cache: true
+        cache_valid_time: 10800
+
+- name: Install yubihsm_connector from packet
   when: local_yhsmcon_pkg | default({}) != {}
+  block:
+    - name: Download yubihsm_connector package
+      ansible.builtin.get_url:
+        url: "{{ local_yhsmcon_pkg.url }}"
+        dest: "/usr/local/share/{{ local_yhsmcon_pkg.name }}"
+        checksum: "{{ local_yhsmcon_pkg.checksum }}"
+
+    - name: Install package
+      ansible.builtin.apt:
+        deb: "/usr/local/share/{{ local_yhsmcon_pkg.name }}"
