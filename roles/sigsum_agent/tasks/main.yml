@@ -8,6 +8,7 @@
     home: "{{ sigsum_agent_home }}"
     create_home: true
     system: true
+    seuser: 'user_u'
     state: present
 
 - name: Setup configuration directories
