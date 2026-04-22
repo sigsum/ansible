@@ -11,16 +11,21 @@
     seuser: 'user_u'
     state: present
 
-- name: Setup configuration directories
+- name: Setup directories
   ansible.builtin.file:
-    path: "{{ item }}"
+    path: "{{ item.path }}"
+    setype: "{{ item.setype }}"
     owner: "{{ sigsum_agent_user }}"
     group: "{{ sigsum_agent_user }}"
     mode: '0700'
     state: directory
   loop:
-    - "{{ sigsum_agent_home }}"  # ensures this is not group and world readable
-    - "{{ sigsum_agent_home }}/.config/sigsum-agent"
+    - path: "{{ sigsum_agent_home }}"  # ensures this is not group and world readable
+      setype: user_home_t
+    - path: "{{ sigsum_agent_home }}/.config/sigsum-agent"
+      setype: config_home_t
+    - path: "{{ sigsum_agent_home }}/go/bin"
+      setype: home_bin_t
 
 ###
 # (Re)install sigsum-agent if the program version or compiler changed

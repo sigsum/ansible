@@ -17,12 +17,18 @@
 
 - name: Create user directories
   ansible.builtin.file:
-    path: "{{ item }}"
+    path: "{{ item.path }}"
+    setype: "{{ item.setype }}"
     owner: "{{ litewitness_user }}"
     group: "{{ litewitness_user }}"
     mode: "0755"
     state: directory
   loop:
-    - "{{ litewitness_home }}/.local/bin"
-    - "{{ litewitness_home }}/.local/share/litewitness"
-    - "{{ litewitness_home }}/.config/litewitness"
+    - path: "{{ litewitness_home }}/.local/bin"
+      setype: home_bin_t
+    - path: "{{ litewitness_home }}/.local/share"
+      setype: data_home_t
+    - path: "{{ litewitness_home }}/.local/share/litewitness"
+      setype: data_home_t
+    - path: "{{ litewitness_home }}/.config/litewitness"
+      setype: config_home_t
