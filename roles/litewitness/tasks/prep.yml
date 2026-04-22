@@ -25,7 +25,8 @@
     state: directory
   loop:
     - path: "{{ litewitness_home }}/.local/bin"
-      setype: home_bin_t
+      # TODO: would home_bin_t do?
+      setype: bin_t
     - path: "{{ litewitness_home }}/.local/share"
       setype: data_home_t
     - path: "{{ litewitness_home }}/.local/share/litewitness"

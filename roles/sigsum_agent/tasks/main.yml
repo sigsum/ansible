@@ -25,7 +25,8 @@
     - path: "{{ sigsum_agent_home }}/.config/sigsum-agent"
       setype: config_home_t
     - path: "{{ sigsum_agent_home }}/go/bin"
-      setype: home_bin_t
+      # TODO: would home_bin_t do?
+      setype: bin_t
 
 ###
 # (Re)install sigsum-agent if the program version or compiler changed
