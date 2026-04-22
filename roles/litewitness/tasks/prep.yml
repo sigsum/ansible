@@ -5,6 +5,7 @@
     home: "{{ litewitness_home }}"
     create_home: true
     system: true
+    seuser: "user_u"
     shell: "/bin/bash"
     state: present
 
