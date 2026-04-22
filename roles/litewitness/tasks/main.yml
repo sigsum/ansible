@@ -2,13 +2,7 @@
 - name: Enforce constraints
   ansible.builtin.include_tasks: constraints.yml
 
-- name: Install dependencies
-  ansible.builtin.apt:
-    name:
-      - cron
-      - jq
-    state: present
-    install_recommends: false
+- ansible.builtin.include_tasks: "install.{{ ansible_facts['distribution'] }}.yml"
 
 - name: Prepare litewitness user and directories
   ansible.builtin.include_tasks: prep.yml
