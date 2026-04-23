@@ -25,7 +25,7 @@
     state: directory
   loop:
     - path: "{{ litewitness_home }}/.local/bin"
-      # TODO: would home_bin_t do?
+      # TODO: Install binary to /usr/bin instead
       setype: bin_t
     - path: "{{ litewitness_home }}/.local/share"
       setype: data_home_t

@@ -25,7 +25,7 @@
     - path: "{{ sigsum_agent_home }}/.config/sigsum-agent"
       setype: config_home_t
     - path: "{{ sigsum_agent_home }}/go/bin"
-      # TODO: would home_bin_t do?
+      # TODO: Install binary to /usr/bin instead
       setype: bin_t
 
 ###
