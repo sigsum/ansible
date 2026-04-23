@@ -2,7 +2,7 @@
 - name: Enforce constraints
   ansible.builtin.include_tasks: constraints.yml
 
-- ansible.builtin.include_tasks: "install.{{ ansible_facts['distribution'] }}.yml"
+- ansible.builtin.include_tasks: "deps.{{ ansible_facts['distribution'] }}.yml"
 
 - name: Prepare litewitness user and directories
   ansible.builtin.include_tasks: prep.yml
