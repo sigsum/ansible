@@ -1,6 +1,5 @@
 ---
-golang_ensure_min_version: true
-golang_debian_use_backports: true
+sigsum_agent_debian_repo_deb_url: "http://deb.glasklarteknik.se/glasklar-archive-keyring.deb"
 
 # ssh-keygen -t ed25519 -f /tmp/key -C "molecule:testonly"
 sigsum_agent_soft_key: |

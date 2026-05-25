@@ -3,5 +3,4 @@
   hosts: all
   become: true
   roles:
-    - sigsum.ansible.golang
     - sigsum.ansible.sigsum_agent

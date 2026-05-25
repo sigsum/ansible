@@ -1,0 +1,17 @@
+---
+- name: Install sigsum apt repository
+  ansible.builtin.apt:
+    deb: "{{ sigsum_agent_debian_repo_deb_url }}"
+    state: present
+  changed_when: false  # not relevant for idempotence
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+  changed_when: false  # not relevant for idempotence
+
+- name: INstall sigsum-agent package
+  ansible.builtin.apt:
+    name: "{{ 'sigsum-agent-selinux' if sigsum_agent_selinux else 'sigsum-agent' }}"
+    state: present
+  changed_when: false  # not relevant for idempotence

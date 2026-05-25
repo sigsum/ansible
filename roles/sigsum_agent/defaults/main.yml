@@ -40,3 +40,5 @@ sigsum_agent_yubihsm_connector_retry: true
 
 # If defined, email is being sent if USB device is not being present.
 # sigsum_agent_yubihsm_monitor_email: sysadmin@domain
+#
+sigsum_agent_selinux: false

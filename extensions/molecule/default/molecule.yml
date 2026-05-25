@@ -25,6 +25,16 @@ platforms:
     volume_mounts:
        - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
     network: internal-testnet
+
+  - name: sigsum-agent
+    image: docker.io/library/debian:trixie
+    dockerfile: ../Dockerfile.debian.bookworm.j2
+    privileged: true
+    cgroupns_mode: private
+    override_command: false
+    volume_mounts:
+       - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
+    network: internal-testnet
   ####
   # With key accessed using ssh-agent
   ####
