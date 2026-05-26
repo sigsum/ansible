@@ -36,7 +36,7 @@
 - name: Add sigsum-agent soft key
   ansible.builtin.copy:
     content: "{{ sigsum_agent_soft_key }}"
-    dest: "{{ sigsum_agent_home }}/.config/sigsum-agent/key"
+    dest: "/etc/sigsum-agent/key"
     owner: "{{ sigsum_agent_user }}"
     group: "{{ sigsum_agent_user }}"
     mode: '0600'
