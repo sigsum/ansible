@@ -22,3 +22,8 @@
   ansible.builtin.systemd:
     name: sigsum-agent.service
     enabled: true
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+  changed_when: false

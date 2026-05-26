@@ -6,6 +6,27 @@
     test_home: "/home/{{ test_user }}"
     test_grp: svc-sigsum-agent  # must match converge.yml
   tasks:
+    # TODO (mw): this is a gross hack, should be replaced with some configuration
+    #            option which allows passing the path to the private key that way.
+    - name: Patch configuration to append -k flag with private key
+      ansible.builtin.lineinfile:
+        regexp: "^RETRY="
+        line: "RETRY= -k /var/lib/{{ test_grp }}/.config/sigsum-agent/key --retry"
+        path: "/etc/sigsum-agent/sigsum-agent.conf"
+      when: sigsum_agent_soft_key is defined
+
+    - name: cat the patched file
+      ansible.builtin.command: "cat /etc/sigsum-agent/sigsum-agent.conf"
+
+    - name: restart sigsum-agent (to pick up the patched config)
+      systemd:
+        name: "sigsum-agent"
+        state: restarted
+
+    - name: stat sigsum-socket
+      ansible.builtin.command: |
+        sh -c "stat /usr/lib/systemd/system/sigsum-agent.socket"
+
     - name: "Add test user ({{ test_user }})"
       ansible.builtin.user:
         user: "{{ test_user }}"
@@ -21,6 +42,10 @@
       ansible.builtin.command: |
         sh -c "echo ssh-ed25519 $(ssh-keygen -ef /var/lib/{{ test_grp }}/.config/sigsum-agent/key | grep ^AAAA) > {{ test_home }}/key.pub"
 
+    - name: Is it even there?
+      ansible.builtin.command: |
+        sh -c "stat {{ test_home }}/key.pub"
+
     - name: Create test message
       ansible.builtin.copy:
         content: "test message"
@@ -31,7 +56,7 @@
 
     - name: Sign message and fail because of group permissions
       ansible.builtin.shell: |
-        export SSH_AUTH_SOCK="/run/{{ test_grp }}/sigsum-agent.socket"
+        export SSH_AUTH_SOCK="/usr/lib/systemd/system/sigsum-agent.socket"
         ssh-keygen -Y sign -n testonly -f "{{ test_home }}/key.pub" "{{ test_home }}/msg"
       become_user: "{{ test_user }}"
       become: true
@@ -53,7 +78,7 @@
 
     - name: Sign message
       ansible.builtin.shell: |
-        export SSH_AUTH_SOCK="/run/{{ test_grp }}/sigsum-agent.socket"
+        export SSH_AUTH_SOCK="/usr/lib/systemd/system/sigsum-agent.socket"
         ssh-keygen -Y sign -n testonly -f "{{ test_home }}/key.pub" "{{ test_home }}/msg"
       become_user: "{{ test_user }}"
       become: true
