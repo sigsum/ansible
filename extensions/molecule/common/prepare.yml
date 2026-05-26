@@ -1,0 +1,6 @@
+---
+- name: prepare
+  hosts: all
+  gather_facts: true
+  pre_tasks:
+    - ansible.builtin.include_tasks: "prepare_{{ ansible_facts['distribution'] }}.yml"

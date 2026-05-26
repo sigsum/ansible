@@ -1,13 +1,12 @@
-FROM {{ item.image }}
+#FROM {{ item.image }}
+FROM registry.fedoraproject.org/fedora:43
 
 ENV container podman
 STOPSIGNAL SIGRTMIN+3
 
-RUN \
-    apt-get --quiet update \
-    && apt-get --quiet --yes --verbose-versions install systemd systemd-sysv python3
+RUN dnf -y install systemd systemctl python3
 
-VOLUME [ "/tmp", "/run", "/run/lock" ]
+VOLUME [ "/tmp", "/run", "/run/lock" "/sys/fs/cgroup" ]
 
 RUN rm -f /lib/systemd/system/multi-user.target.wants/* \
   /etc/systemd/system/*.wants/* \

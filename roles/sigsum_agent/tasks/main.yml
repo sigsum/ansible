@@ -1,54 +1,17 @@
 ---
-###
-# Setup users and directories
-###
-- name: "Add sigsum-agent user ({{ sigsum_agent_user }})"
-  ansible.builtin.user:
-    name: "{{ sigsum_agent_user }}"
-    home: "{{ sigsum_agent_home }}"
-    create_home: true
-    system: true
-    state: present
+- name: Ensure sigsum-agent is installed (Debian)
+  when: ansible_facts['distribution'] == "Debian"
+  ansible.builtin.apt:
+    name:
+      - sigsum-agent
+      - sigsum-agent-selinux
 
-- name: Setup configuration directories
-  ansible.builtin.file:
-    path: "{{ item }}"
-    owner: "{{ sigsum_agent_user }}"
-    group: "{{ sigsum_agent_user }}"
-    mode: '0700'
-    state: directory
-  loop:
-    - "{{ sigsum_agent_home }}"  # ensures this is not group and world readable
-    - "{{ sigsum_agent_home }}/.config/sigsum-agent"
-
-###
-# (Re)install sigsum-agent if the program version or compiler changed
-###
-- name: Get sigsum-agent install info
-  ansible.builtin.stat:
-    path: "{{ sigsum_agent_home }}/go/bin/sigsum-agent"
-  register: sigsum_agent_bininfo
-  ignore_errors: true
-
-- name: Get sigsum-agent old checksum
-  ansible.builtin.set_fact:
-    sigsum_agent_binchecksum: "{{ sigsum_agent_bininfo.stat.checksum if sigsum_agent_bininfo.stat.exists else 'uninstalled' }}"
-
-- name: Ensure sigsum-agent is installed
-  ansible.builtin.command: "go install {{ sigsum_agent_gosource}}@{{ sigsum_agent_goversion}}"
-  changed_when: false  # not relevant for idempotence
-  become_user: "{{ sigsum_agent_user }}"
-  become: true
-
-- name: Get sigsum-agent install info
-  ansible.builtin.stat:
-    path: "{{ sigsum_agent_home }}/go/bin/sigsum-agent"
-  register: sigsum_agent_bininfo
-
-- name: Trigger handlers
-  ansible.builtin.command: "/bin/true"
-  notify: Restart sigsum-agent service
-  when: sigsum_agent_binchecksum != sigsum_agent_bininfo.stat.checksum
+- name: Ensure sigsum-agent is installed (Fedora)
+  when: ansible_facts['distribution'] == "Fedora"
+  ansible.builtin.dnf:
+    name:
+      - sigsum-agent
+      - sigsum-agent-selinux
 
 ###
 # Configure sigsum-agent
@@ -62,7 +25,7 @@
 - name: Add sigsum-agent soft key
   ansible.builtin.copy:
     content: "{{ sigsum_agent_soft_key }}"
-    dest: "{{ sigsum_agent_home }}/.config/sigsum-agent/key"
+    dest: "/etc/sigsum-agent/key"
     owner: "{{ sigsum_agent_user }}"
     group: "{{ sigsum_agent_user }}"
     mode: '0600'
@@ -72,43 +35,12 @@
 - name: Add sigsum-agent yubihsm credentials
   ansible.builtin.copy:
     content: "{{ sigsum_agent_yubihsm_auth_id }}:{{ sigsum_agent_yubihsm_passphrase }}"
-    dest: "{{ sigsum_agent_home }}/.config/sigsum-agent/credentials"
+    dest: "/etc/sigsum-agent/credentials"
     owner: "{{ sigsum_agent_user }}"
     group: "{{ sigsum_agent_user }}"
     mode: '0600'
   when: sigsum_agent_yubihsm_passphrase is defined
   notify: Restart sigsum-agent service
-
-###
-# Configure systemd
-###
-- name: Check the user's lingering status
-  ansible.builtin.stat:
-    path: "/var/lib/systemd/linger/{{ sigsum_agent_user }}"
-  register: lingering
-
-- name: Enable systemd lingering
-  ansible.builtin.command: "loginctl enable-linger {{ sigsum_agent_user }}"
-  when: not lingering.stat.exists
-  changed_when: true  # silence ansible-lint
-
-- name: Configure systemd socket activation for sigsum-agent
-  ansible.builtin.template:
-    src: sigsum-agent.socket.j2
-    dest: "/etc/systemd/system/sigsum-agent.socket"
-  notify:
-    - Reload systemd daemon
-    - Restart sigsum-agent socket
-    - Enable sigsum-agent socket
-
-- name: Configure systemd sigsum-agent service
-  ansible.builtin.template:
-    src: sigsum-agent.service.j2
-    dest: "/etc/systemd/system/sigsum-agent.service"
-  notify:
-    - Reload systemd daemon
-    - Restart sigsum-agent service
-    - Enable sigsum-agent service
 
 ###
 # Enable YubiHSM device monitoring

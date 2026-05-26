@@ -1,9 +1,16 @@
 ---
 
-- name: Install mailutils
+- block:
   when: sigsum_agent_yubihsm_monitor_email is defined
-  ansible.builtin.apt:
-    pkg: mailutils
+  - name: Install a mail program (Debian)
+    when: ansible_facts['distribution'] == "Debian"
+    ansible.builtin.apt:
+      name: mailutils
+
+  - name: Install a mail program (Fedora)
+    when: ansible_facts['distribution'] == "Fedora"
+    ansible.builtin.dnf:
+      name: s-nail
 
 - name: Install script verifying the presence of a YubiHSM device
   ansible.builtin.copy:

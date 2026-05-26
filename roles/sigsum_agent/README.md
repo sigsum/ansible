@@ -1,6 +1,6 @@
 sigsum-agent
 ============
-A role that installs the [sigsum-agent software][].  For overview, sigsum-agent
+Ansible role that installs the [sigsum-agent software][].  For overview, sigsum-agent
 is a tiny ssh-agent signing oracle that only works for a few Ed25519 backends:
 
 * Soft key
@@ -23,15 +23,15 @@ device being present.
 
 Requirements
 ------------
-It is assumed that the system already contains:
+It is assumed that there are packages available for both litewitness
+and sigsum-agent and that the system already contains:
 
 * systemd
-* Go (you may want to use [roles/golang](../golang) for this)
 * yubihsm-connector (only required if [YubiHSM2][] is used as backend -- you may
   want to use [roles/yubihsm_connector](../yubihsm_connector) for this)
 
 Provided that the above requirements are satisfied, the role should work on most
-Linux system.  Please note that we only test on Debian distributions though, see
+Linux system.  Please note that we only test on Debian and Fedora though, see
 [molecule/sigsum_agent](../../extensions/molecule/sigsum_agent/molecule.yml).
 
 It is also assumed that a backend key has already been generated before using
@@ -48,8 +48,6 @@ configure access to the private key by defining *one* of these backends:
 
 * Soft key: `sigsum_agent_soft_key`
 * YubiHSM: `sigsum_agent_yubihsm_passphrase`
-
-The `sigsum_agent_socket` variable determines where the UNIX socket is located.
 
 Dependencies
 ------------

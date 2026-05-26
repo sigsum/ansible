@@ -1,0 +1,46 @@
+---
+- name: Install basic dependencies
+  ansible.builtin.dnf:
+    name:
+      - sudo
+      - util-linux-core # kill command, needed for service reload (litebastion)
+      - systemd
+      - sqlite3  # litewitness
+    state: present
+
+- name: Install debug tooling
+  ansible.builtin.dnf:
+    name:
+      - less
+      - vim
+      - curl
+      - ldns-utils
+      - iputils
+      - netcat
+    state: present
+
+- name: Install Glasklar package archive keys
+  ansible.builtin.copy:
+    dest: "/etc/pki/rpm-gpg/{{ item }}"
+    src: "etc/pki/rpm-gpg/{{ item }}"
+  loop:
+    - glasklar-ln5.asc
+
+- name: Configure Glasklar package archive
+  ansible.builtin.copy:
+    dest: /etc/yum.repos.d/glasklar.repo
+    content: |
+      [glasklar]
+      name=Glasklar Teknik
+      baseurl=http://rpm.glasklarteknik.se/
+      metadata_expire=10m
+      priority=10
+      enabled=1
+      type=rpm
+      repo_gpgcheck=1
+      gpgcheck=1
+      gpgkey=file:///etc/pki/rpm-gpg/glasklar-ln5.asc
+
+- name: Update DNF metadata cache
+  ansible.builtin.dnf:
+    update_cache: true

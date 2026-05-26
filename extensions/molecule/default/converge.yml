@@ -14,5 +14,5 @@
     - role: sigsum.ansible.golang  # Go is assumed for sigsum_agent
     - role: sigsum.ansible.sigsum_agent
     - role: sigsum.ansible.sigsum
-      sigsum_ssh_auth_sock: "{{ sigsum_agent_socket }}"
-      sigsum_ssh_auth_group: "{{ sigsum_agent_user }}"
+      sigsum_ssh_auth_sock: /run/sigsum-agent/sigsum-agent.socket
+      sigsum_ssh_auth_group: sigsum-agent

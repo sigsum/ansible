@@ -34,7 +34,6 @@ The variables that match the above provisioning would be:
     - hosts: example.org
       roles:
         - role: sigsum.ansible.sigsum_agent
-          sigsum_agent_user: "svc-test-sigsum-agent"
           sigsum_agent_yubihsm_passphrase: "password"
           sigsum_agent_yubihsm_auth_id: "1"
           sigsum_agent_yubihsm_key_id: "4711"
@@ -46,9 +45,9 @@ The variables that match the above provisioning would be:
 
 ---Try signing with user alice
 
-    alice # usermod -aG svc-test-sigsum-agent alice
-    alice $ ls -l /run/svc-test-sigsum-agent/sigsum-agent.socket
-    alice $ export SSH_AUTH_SOCK=/run/svc-test-sigsum-agent/sigsum-agent.socket
+    alice # usermod -aG sigsum-agent alice
+    alice $ ls -l /run/sigsum-agent/sigsum-agent.socket
+    alice $ export SSH_AUTH_SOCK=/run/sigsum-agent/sigsum-agent.socket
     alice $ ssh-add -L > key.pub
     alice $ echo "test message" > msg
     alice $ ssh-keygen -Y sign -n test -f key.pub msg
@@ -56,9 +55,9 @@ The variables that match the above provisioning would be:
 
 ---Clean-up what ansible installed
 
-    # gpasswd -d alice svc-test-sigsum-agent
-    # loginctl disable-linger svc-test-sigsum-agent
-    # userdel -r svc-test-sigsum-agent
+    # gpasswd -d alice sigsum-agent
+    # loginctl disable-linger sigsum-agent
+    # userdel -r sigsum-agent
 
 ---Clean-up the generated key
 

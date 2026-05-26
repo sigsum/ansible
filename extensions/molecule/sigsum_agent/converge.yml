@@ -3,5 +3,6 @@
   hosts: all
   become: true
   roles:
-    - sigsum.ansible.golang
     - sigsum.ansible.sigsum_agent
+  vars:
+    sigsum_agent_yubihsm_passphrase: "allan tar kakan i 1200 baud"

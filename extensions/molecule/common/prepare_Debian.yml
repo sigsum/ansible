@@ -1,0 +1,30 @@
+---
+- name: Install python3
+  raw: 'apt update && apt install -y python3'
+  args:
+    executable: /bin/bash
+
+- name: Install basic dependencies
+  ansible.builtin.apt:
+    name:
+      - sudo
+      - procps # kill command, needed for service reload (litebastion)
+      - systemd
+      - sqlite3  # litewitness
+    state: present
+
+- name: Install debug tooling
+  ansible.builtin.apt:
+    name:
+      - less
+      - vim
+      - curl
+      - iproute2
+      - ldnsutils
+      - iputils-ping
+      - netcat-traditional
+    state: present
+
+- name: Configure Glasklar package archive
+  debug:
+    msg: "TODO"
