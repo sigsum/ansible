@@ -26,5 +26,9 @@
     state: present
 
 - name: Configure Glasklar package archive
-  debug:
-    msg: "TODO"
+  ansible.builtin.apt:
+    deb: http://deb.glasklarteknik.se/glasklar-archive-keyring.deb
+
+- name: Update apt metadata cache
+  ansible.builtin.apt:
+    update_cache: true

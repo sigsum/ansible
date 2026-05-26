@@ -4,7 +4,7 @@
   ansible.builtin.apt:
     name:
       - sigsum-agent
-      - sigsum-agent-selinux
+      - selinux-policy-sigsum-agent
 
 - name: Ensure sigsum-agent is installed (Fedora)
   when: ansible_facts['distribution'] == "Fedora"

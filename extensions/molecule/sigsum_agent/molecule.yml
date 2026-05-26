@@ -4,8 +4,8 @@ dependency:
 driver:
   name: podman
 platforms:
-  - name: bookworm
-    image: docker.io/library/debian:bookworm
+  - name: trixie
+    image: docker.io/library/debian:trixie
     dockerfile: ../Dockerfile.debian.bookworm.j2
     privileged: true
     cgroupns_mode: private
