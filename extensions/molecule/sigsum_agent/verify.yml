@@ -11,7 +11,7 @@
         path: /etc/systemd/system/sigsum-agent.service.d
         state: directory
         mode: '0755'
-  
+
     - name: Override sigsum-agent service for soft-key testing
       ansible.builtin.copy:
         dest: /etc/systemd/system/sigsum-agent.service.d/soft-key.conf
@@ -19,7 +19,7 @@
         content: |
           [Unit]
           BindsTo=
-  
+
           [Service]
           ExecStart=
           ExecStart=/usr/bin/sigsum-agent -k /etc/sigsum-agent/key --retry
@@ -45,7 +45,7 @@
       ansible.builtin.command:
         cmd: systemctl show sigsum-agent.socket --property=Listen --value
       register: _socket_listen
-  
+
     - name: Set socket path fact
       ansible.builtin.set_fact:
         test_socket: "{{ _socket_listen.stdout.split() | select('match', '^/') | first }}"
@@ -55,7 +55,7 @@
       become_user: sigsum-agent
       become: true
       register: pubkey_b64
-   
+
     - name: Save public key
       ansible.builtin.copy:
         content: "ssh-ed25519 {{ pubkey_b64.stdout }}\n"
