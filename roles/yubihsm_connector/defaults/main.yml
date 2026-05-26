@@ -2,6 +2,9 @@
 # Log level.
 yubihsm_connector_log_level: warn
 
+# Listen address and port.
+yubishm_connector_listen: 127.0.0.1:12345
+
 # Debian options.  Note that backports will be configured if the target system
 # runs Debian bookworm.  Earlier Debian distributions are not supported.
 yubihsm_connector_debian_deb_source: https://deb.debian.org/debian

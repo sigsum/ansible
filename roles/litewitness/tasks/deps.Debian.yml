@@ -1,0 +1,8 @@
+---
+- name: Install dependencies
+  ansible.builtin.apt:
+    name:
+      - cron
+      - jq
+    state: present
+    install_recommends: false
