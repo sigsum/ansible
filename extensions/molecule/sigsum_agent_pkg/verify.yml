@@ -1,0 +1,131 @@
+---
+- name: Verify
+  hosts: all
+  vars:
+    test_user: alice
+    test_home: "/home/{{ test_user }}"
+    test_grp: sigsum-agent  # must match converge.yml
+  tasks:
+    - name: Create systemd override directory for sigsum-agent
+      ansible.builtin.file:
+        path: /etc/systemd/system/sigsum-agent.service.d
+        state: directory
+        mode: '0755'
+  
+    - name: Override sigsum-agent service for soft-key testing
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/sigsum-agent.service.d/soft-key.conf
+        mode: '0644'
+        content: |
+          [Unit]
+          BindsTo=
+  
+          [Service]
+          ExecStart=
+          ExecStart=/usr/bin/sigsum-agent -k /etc/sigsum-agent/key --retry
+
+    - name: Reload systemd and restart sigsum-agent with drop-in config
+      ansible.builtin.systemd:
+        name: sigsum-agent
+        state: restarted
+        daemon_reload: true
+
+    - name: "Add test user ({{ test_user }})"
+      ansible.builtin.user:
+        user: "{{ test_user }}"
+        home: "{{ test_home }}"
+        state: present
+
+    - name: Install ssh-keygen
+      ansible.builtin.apt:
+        name: openssh-client
+        state: present
+
+    - name: Get socket path from systemd
+      ansible.builtin.command:
+        cmd: systemctl show sigsum-agent.socket --property=Listen --value
+      register: _socket_listen
+  
+    - name: Set socket path fact
+      ansible.builtin.set_fact:
+        test_socket: "{{ _socket_listen.stdout.split() | select('match', '^/') | first }}"
+
+    - name: Extract public key
+      ansible.builtin.shell: "ssh-keygen -ef /etc/sigsum-agent/key | grep ^AAAA"
+      become_user: sigsum-agent
+      become: true
+      register: pubkey_b64
+   
+    - name: Save public key
+      ansible.builtin.copy:
+        content: "ssh-ed25519 {{ pubkey_b64.stdout }}\n"
+        dest: "{{ test_home }}/key.pub"
+        owner: "{{ test_user }}"
+        mode: '0644'
+
+    # - name: Extract and save public key
+    #   ansible.builtin.command: |
+    #     sh -c "echo ssh-ed25519 $(ssh-keygen -ef /etc/sigsum-agent/key | grep ^AAAA) > {{ test_home }}/key.pub"
+    #   become_user: "{{ test_user }}"
+    #   become: true
+
+    - name: Is it even there?
+      ansible.builtin.command: |
+        sh -c "stat {{ test_home }}/key.pub"
+
+    - name: Create test message
+      ansible.builtin.copy:
+        content: "test message"
+        dest: "{{ test_home }}/msg"
+        owner: "{{ test_user }}"
+        group: "{{ test_user }}"
+        mode: '0644'
+
+    - name: Sign message and fail because of group permissions
+      ansible.builtin.shell: |
+        export SSH_AUTH_SOCK="{{ _socket_listen.stdout.split()[0] }}"
+        ssh-keygen -Y sign -n testonly -f "{{ test_home }}/key.pub" "{{ test_home }}/msg"
+      become_user: "{{ test_user }}"
+      become: true
+      register: sign
+      failed_when: >
+        (sign.rc != 0) and
+        ("No private key found" not in sign.stderr)
+
+    - name: Assert that signing failed
+      ansible.builtin.assert:
+        that: sign.rc != 0
+        fail_msg: "Signing succeeded without {{ test_user }} being part of sigsum-agent group"
+
+    - name: "Add {{ test_user }} to the first sigsum-agent group"
+      ansible.builtin.user:
+        user: "{{ test_user }}"
+        groups: "{{ test_grp }}"
+        append: yes
+
+    - name: Sign message
+      ansible.builtin.shell: |
+        export SSH_AUTH_SOCK="{{ _socket_listen.stdout.split()[0] }}"
+        ssh-keygen -Y sign -n testonly -f "{{ test_home }}/key.pub" "{{ test_home }}/msg"
+      become_user: "{{ test_user }}"
+      become: true
+      register: sign
+
+    - name: Verify message
+      ansible.builtin.shell: ssh-keygen -Y check-novalidate -n testonly -f "{{ test_home }}/key.pub" -s "{{ test_home }}/msg.sig" <"{{ test_home }}/msg"
+      become_user: "{{ test_user }}"
+      become: true
+
+    - name: Try to read the private key and fail
+      ansible.builtin.shell: "cat /etc/sigsum-agent/key"
+      become_user: "{{ test_user }}"
+      become: true
+      register: keyread
+      failed_when: >
+        (keyread.rc != 0) and
+        ("Permission denied" not in keyread.stderr)
+
+    - name: Assert that private key reading failed
+      ansible.builtin.assert:
+        that: keyread.rc != 0
+        fail_msg: "Private key leaked to {{ test_user }}: {{ keyread.stdout }}"

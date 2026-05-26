@@ -1,0 +1,23 @@
+---
+
+- name: Install prerequisites for Ansible to install .deb via apt module
+  apt:
+    name:
+    - xz-utils
+
+- name: Install sigsum apt repository keyring
+  ansible.builtin.apt:
+    deb: "{{ sigsum_agent_debian_repo_deb_url }}"
+  changed_when: false
+
+- name: Configure sigsum apt repository source
+  ansible.builtin.apt:
+    deb: http://deb.glasklarteknik.se/glasklar-archive-keyring.deb
+  notify: Update apt cache
+
+- name: Install sigsum-agent package
+  ansible.builtin.apt:
+    name: "{{ 'sigsum-agent-selinux' if sigsum_agent_selinux else 'sigsum-agent' }}"
+    state: present
+    update_cache: true
+  changed_when: false

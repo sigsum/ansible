@@ -1,0 +1,29 @@
+---
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Restart sigsum-agent socket
+  ansible.builtin.systemd:
+    name: sigsum-agent.socket
+    state: restarted
+
+- name: Restart sigsum-agent service
+  ansible.builtin.systemd:
+    name: sigsum-agent.service
+    state: restarted
+
+- name: Enable sigsum-agent socket
+  ansible.builtin.systemd:
+    name: sigsum-agent.socket
+    enabled: true
+
+- name: Enable sigsum-agent service
+  ansible.builtin.systemd:
+    name: sigsum-agent.service
+    enabled: true
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+  changed_when: false

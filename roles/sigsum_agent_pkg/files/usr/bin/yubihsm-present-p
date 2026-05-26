@@ -1,0 +1,29 @@
+#! /bin/bash
+set -eu
+
+SERIAL="$1"; shift
+[[ $# -gt 0 ]] && { yhsm_present_email="$1"; shift; }
+VENDOR=1050
+PRODUCT=0030
+
+declare -i rc=1			# Default fail
+
+# Implementation note: Use a Bash "here string" rather than a pipe,
+# which would run the while loop in a subshell unable to update rc.
+while read -r _ bus _ dev _; do
+    if [[ $(lsusb -v -s "$bus":"$dev" 2>/dev/null) =~ iSerial\ +.*"$SERIAL" ]]; then
+	rc=0			# Success
+	break
+    fi
+done <<< "$(lsusb -d "$VENDOR":"$PRODUCT")"
+
+msg="YubiHSM device $SERIAL not found"
+if [[ $rc -ne 0 ]]; then
+    >&2 echo "<3>$msg"
+    if [[ -v yhsm_present_email ]]; then
+	echo "$msg" | mail -s "$msg" "$yhsm_present_email"
+	rc=0	  # We got the message out, so don't exit with failure
+    fi
+fi
+
+exit $rc

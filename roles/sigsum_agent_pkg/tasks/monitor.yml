@@ -1,0 +1,68 @@
+---
+
+- name: Install mailutils
+  when: sigsum_agent_yubihsm_monitor_email is defined
+  ansible.builtin.apt:
+    pkg: mailutils
+
+- name: Install script verifying the presence of a YubiHSM device
+  ansible.builtin.copy:
+    dest: /usr/bin/yubihsm-present-p
+    src: usr/bin/yubihsm-present-p
+    mode: '0755'
+
+- name: Create service verifying the presence of a YubiHSM device
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/yubihsm-present-p.service
+    content: |
+      [Unit]
+      Description=Check if a YubiHSM device is present
+
+      [Service]
+      Type=oneshot
+      User={{ sigsum_agent_user }}
+      Group={{ sigsum_agent_user }}
+      ExecStart=/usr/bin/yubihsm-present-p {{ sigsum_agent_yubihsm_monitor_device }} {{ sigsum_agent_yubihsm_monitor_email|default("") }}
+
+      # Sandboxing
+      ProtectSystem=full
+      ProtectHome=true
+      PrivateTmp=true
+      PrivateIPC=true
+      ProtectControlGroups=true
+      RemoveIPC=true
+      # NOTE: Enabling any of the following makes /usr/bin/mail.mailutils fail with "postdrop: warning: mail_queue_enter: create file maildrop/X.Y: Permission denied":
+      # PrivateDevices=true
+      # ProtectHostname=true
+      # ProtectClock=true
+      # ProtectKernelTunables=true
+      # ProtectKernelModules=true
+      # ProtectKernelLogs=true
+      # RestrictNamespaces=true
+      # LockPersonality=true
+      # NoNewPrivileges=true
+      # RestrictRealtime=true
+      # RestrictSUIDSGID=true
+
+  notify: Reload systemd daemon
+
+- name: Create timer for yubihsm-present-p
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/yubihsm-present-p.timer
+    content: |
+      [Unit]
+      Description=Check if a YubiHSM device is present
+
+      [Timer]
+      OnCalendar=hourly
+      Persistent=true
+
+      [Install]
+      WantedBy=multi-user.target
+  notify: Reload systemd daemon
+
+- name: Enable timer for yubihsm-present-p
+  ansible.builtin.systemd_service:
+    name: yubihsm-present-p.timer
+    state: started
+    enabled: true

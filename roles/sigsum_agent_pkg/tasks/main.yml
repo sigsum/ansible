@@ -1,0 +1,66 @@
+---
+###
+# Setup users and directories
+###
+- name: "Add sigsum-agent user ({{ sigsum_agent_user }})"
+  ansible.builtin.user:
+    name: "{{ sigsum_agent_user }}"
+    home: "{{ sigsum_agent_home }}"
+    create_home: true
+    system: true
+    state: present
+
+- name: Setup configuration directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: "{{ sigsum_agent_user }}"
+    group: "{{ sigsum_agent_user }}"
+    mode: '0700'
+    state: directory
+  loop:
+    - "{{ sigsum_agent_home }}"  # ensures this is not group and world readable
+    - "{{ sigsum_agent_home }}/.config/sigsum-agent"
+
+- name: Install sigsum-agent package
+  ansible.builtin.include_tasks: "install.{{ ansible_facts['distribution'] }}.yml"
+
+###
+# Configure sigsum-agent
+###
+- name: Die unless soft key or yubihsm credentials are provided
+  ansible.builtin.assert:
+    that:
+      - (sigsum_agent_soft_key is defined) != (sigsum_agent_yubihsm_passphrase is defined)
+    fail_msg: "Either a soft key or yubihsm credentials are required"
+
+- name: Add sigsum-agent soft key
+  ansible.builtin.copy:
+    content: "{{ sigsum_agent_soft_key }}"
+    dest: "/etc/sigsum-agent/key"
+    owner: "{{ sigsum_agent_user }}"
+    group: "{{ sigsum_agent_user }}"
+    mode: '0600'
+  when: sigsum_agent_soft_key is defined
+  notify: Restart sigsum-agent service
+
+- name: Add sigsum-agent yubihsm credentials
+  ansible.builtin.copy:
+    content: "{{ sigsum_agent_yubihsm_auth_id }}:{{ sigsum_agent_yubihsm_passphrase }}"
+    dest: "{{ sigsum_agent_home }}/.config/sigsum-agent/credentials"
+    owner: "{{ sigsum_agent_user }}"
+    group: "{{ sigsum_agent_user }}"
+    mode: '0600'
+  when: sigsum_agent_yubihsm_passphrase is defined
+  notify: Restart sigsum-agent service
+
+###
+# Enable YubiHSM device monitoring
+###
+- ansible.builtin.include_tasks: monitor.yml
+  when: sigsum_agent_yubihsm_monitor_device is defined
+
+# Handlers are run at the end of the play, not at the end of the role.
+# When other roles depend on the agent being started we need to make
+# the handlers run before that.
+- name: Force notified handlers to run
+  ansible.builtin.meta: flush_handlers
