@@ -75,10 +75,6 @@
         owner: "{{ test_user }}"
         mode: '0644'
 
-    - name: Is it even there?
-      ansible.builtin.command: |
-        sh -c "stat {{ test_home }}/key.pub"
-
     - name: Create test message
       ansible.builtin.copy:
         content: "test message"
@@ -89,7 +85,7 @@
 
     - name: Sign message and fail because of group permissions
       ansible.builtin.shell: |
-        export SSH_AUTH_SOCK="{{ _socket_listen.stdout.split()[0] }}"
+        export SSH_AUTH_SOCK="{{ test_socket }}"
         ssh-keygen -Y sign -n testonly -f "{{ test_home }}/key.pub" "{{ test_home }}/msg"
       become_user: "{{ test_user }}"
       become: true
@@ -111,7 +107,7 @@
 
     - name: Sign message
       ansible.builtin.shell: |
-        export SSH_AUTH_SOCK="{{ _socket_listen.stdout.split()[0] }}"
+        export SSH_AUTH_SOCK="{{ test_socket }}"
         ssh-keygen -Y sign -n testonly -f "{{ test_home }}/key.pub" "{{ test_home }}/msg"
       become_user: "{{ test_user }}"
       become: true
