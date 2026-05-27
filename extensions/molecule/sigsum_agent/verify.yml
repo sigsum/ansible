@@ -4,22 +4,80 @@
   vars:
     test_user: alice
     test_home: "/home/{{ test_user }}"
-    test_grp: svc-sigsum-agent  # must match converge.yml
+    test_grp: sigsum-agent  # must match converge.yml
   tasks:
-    - name: "Add test user ({{ test_user }})"
-      ansible.builtin.user:
-        user: "{{ test_user }}"
-        home: "{{ test_home }}"
-        state: present
+    - name: Create systemd override directory for sigsum-agent
+      ansible.builtin.file:
+        path: /etc/systemd/system/sigsum-agent.service.d
+        state: directory
+        mode: '0755'
+
+    - name: Override sigsum-agent service for soft-key testing
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/sigsum-agent.service.d/soft-key.conf
+        mode: '0644'
+        content: |
+          [Unit]
+          BindsTo=
+
+          [Service]
+          ExecStart=
+          ExecStart=/usr/bin/sigsum-agent -k /etc/sigsum-agent/key --retry
 
     - name: Install ssh-keygen
       ansible.builtin.apt:
         name: openssh-client
         state: present
 
-    - name: Extract and save public key
+    - name: Generate soft key for testing
+      ansible.builtin.command:
+        cmd: ssh-keygen -q -t ed25519 -N "" -f /etc/sigsum-agent/key
+        creates: /etc/sigsum-agent/key
+
+    - name: Set ownership of test soft key
+      ansible.builtin.file:
+        path: /etc/sigsum-agent/key
+        owner: "{{ test_grp }}"
+        group: "{{ test_grp }}"
+        mode: '0600'
+
+    - name: Reload systemd and restart sigsum-agent with drop-in config
+      ansible.builtin.systemd:
+        name: sigsum-agent
+        state: restarted
+        daemon_reload: true
+
+    - name: "Add test user ({{ test_user }})"
+      ansible.builtin.user:
+        user: "{{ test_user }}"
+        home: "{{ test_home }}"
+        state: present
+
+    - name: Get socket path from systemd
+      ansible.builtin.command:
+        cmd: systemctl show sigsum-agent.socket --property=Listen --value
+      register: _socket_listen
+
+    - name: Set socket path fact
+      ansible.builtin.set_fact:
+        test_socket: "{{ _socket_listen.stdout.split() | select('match', '^/') | first }}"
+
+    - name: Extract public key
+      ansible.builtin.shell: "ssh-keygen -ef /etc/sigsum-agent/key | grep ^AAAA"
+      become_user: "{{ test_grp }}"
+      become: true
+      register: pubkey_b64
+
+    - name: Save public key
+      ansible.builtin.copy:
+        content: "ssh-ed25519 {{ pubkey_b64.stdout }}\n"
+        dest: "{{ test_home }}/key.pub"
+        owner: "{{ test_user }}"
+        mode: '0644'
+
+    - name: Is it even there?
       ansible.builtin.command: |
-        sh -c "echo ssh-ed25519 $(ssh-keygen -ef /var/lib/{{ test_grp }}/.config/sigsum-agent/key | grep ^AAAA) > {{ test_home }}/key.pub"
+        sh -c "stat {{ test_home }}/key.pub"
 
     - name: Create test message
       ansible.builtin.copy:
@@ -31,7 +89,7 @@
 
     - name: Sign message and fail because of group permissions
       ansible.builtin.shell: |
-        export SSH_AUTH_SOCK="/run/{{ test_grp }}/sigsum-agent.socket"
+        export SSH_AUTH_SOCK="{{ _socket_listen.stdout.split()[0] }}"
         ssh-keygen -Y sign -n testonly -f "{{ test_home }}/key.pub" "{{ test_home }}/msg"
       become_user: "{{ test_user }}"
       become: true
@@ -53,7 +111,7 @@
 
     - name: Sign message
       ansible.builtin.shell: |
-        export SSH_AUTH_SOCK="/run/{{ test_grp }}/sigsum-agent.socket"
+        export SSH_AUTH_SOCK="{{ _socket_listen.stdout.split()[0] }}"
         ssh-keygen -Y sign -n testonly -f "{{ test_home }}/key.pub" "{{ test_home }}/msg"
       become_user: "{{ test_user }}"
       become: true
@@ -65,7 +123,7 @@
       become: true
 
     - name: Try to read the private key and fail
-      ansible.builtin.shell: "cat /var/lib/{{ test_grp }}/.config/sigsum-agent/key"
+      ansible.builtin.shell: "cat /etc/sigsum-agent/key"
       become_user: "{{ test_user }}"
       become: true
       register: keyread
