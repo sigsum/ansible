@@ -4,17 +4,17 @@ dependency:
 driver:
   name: podman
 platforms:
-  - name: trixie
-    image: docker.io/library/debian:trixie
+  - name: bookworm
+    image: docker.io/library/debian:bookworm
     dockerfile: ../Dockerfile.debian.bookworm.j2
     privileged: true
     cgroupns_mode: private
     override_command: false
     volume_mounts:
        - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
-  - name: fedora43
-    image: registry.fedoraproject.org/fedora:43
-    dockerfile: ../Containerfile.fedora.43.j2
+  - name: trixie
+    image: docker.io/library/debian:trixie
+    dockerfile: ../Dockerfile.debian.bookworm.j2
     privileged: true
     cgroupns_mode: private
     override_command: false

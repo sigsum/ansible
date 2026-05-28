@@ -13,6 +13,13 @@
       - sqlite3  # litewitness
     state: present
 
+- name: Install bookworm-specific dependencies
+  when: ansible_distribution_release == "bookworm"
+  ansible.builtin.apt:
+    name:
+      - apt-utils
+    state: present
+
 - name: Install debug tooling
   ansible.builtin.apt:
     name:
@@ -24,6 +31,14 @@
       - iputils-ping
       - netcat-traditional
     state: present
+
+- name: Add package source for backports
+  when: ansible_distribution_release == "bookworm"
+  ansible.builtin.copy:
+    content: "deb https://deb.debian.org/debian bookworm-backports main"
+    dest: "/etc/apt/sources.list.d/{{ ansible_distribution_release }}-backports.list"
+    mode: '0644'
+  register: add_backports
 
 - name: Configure Glasklar package archive
   ansible.builtin.apt:
