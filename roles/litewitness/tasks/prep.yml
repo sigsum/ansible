@@ -12,7 +12,7 @@
 - name: Add user to shared sigsum-agent group
   ansible.builtin.user:
     name: "{{ litewitness_user }}"
-    groups: "{{ litewitness_sigsum_agent_user }}"
+    groups: "sigsum-agent"
     append: true
 
 - name: Create user directories
