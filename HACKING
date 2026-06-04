@@ -56,6 +56,14 @@ ignored.
 Apart from the exceptions above, the output from the molecule tests
 should include no other error or warning messages.
 
+---Dependencies
+
+The `community.mysql` ansible collection is a dependency specified
+under "dependencies" in the galaxy.yml file. When running molecule
+tests, two additional collections `containers.podman` and
+`ansible.posix` are also used. Those are dependencies of molecule
+itself, as can be seen from `molecule --version`.
+
 ---How to develop with molecule
 
 Think of "molecule converge" as running ansible on a host. Multiple
