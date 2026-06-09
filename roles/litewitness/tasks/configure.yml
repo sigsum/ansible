@@ -1,4 +1,9 @@
 ---
+- name: Install litewitness.conf
+  ansible.builtin.template:
+    src: etc/litewitness/litewitness.conf.j2
+    dest: /etc/litewitness/litewitness.conf
+
 # NOTE: We're missing some functionality from sigsum.ansible.litewitness-1.7.x, namely:
 # * no dynamic updating of log lists
 # * keys are not being removed, only added
