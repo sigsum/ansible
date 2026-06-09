@@ -1,8 +1,8 @@
-name: ansible
-namespace: sigsum-pkg
+name: tlog
+namespace: sigsum
 readme: README.md
 repository: https://git.glasklar.is/sigsum/admin/ansible 
-version: 1.7.0
+version: 2.0.0
 authors:
   - Foxboron
   - ln5
