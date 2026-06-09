@@ -4,8 +4,21 @@
     # FIXME: if item.origin is defined, use it instead of first part of vkey
     cmd: "witnessctl add-log -db {{ litewitness_database_file }} -origin {{ item.vkey | split('+') | first }}"
   loop: "{{ litewitness_logs|default([]) }}"
+  become: true
+  become_user: "{{ litewitness_user }}"
+  register: r
+  failed_when: >
+    (r.rc != 0) and
+    ("Error adding log: sqlite: step: constraint failed: UNIQUE constraint failed: log.origin" not in r.stderr)
 
 - name: Configure log keys
   ansible.builtin.command:
-    cmd: "witnessctl add-log -db {{ litewitness_database_file }} -key {{ item.vkey }}"
+    # FIXME: if item.origin is defined, use it instead of first part of vkey
+    cmd: "witnessctl add-key -db {{ litewitness_database_file }} -origin {{ item.vkey | split('+') | first }} -key {{ item.vkey }}"
   loop: "{{ litewitness_logs|default([]) }}"
+  become: true
+  become_user: "{{ litewitness_user }}"
+  register: r
+  failed_when: >
+    (r.rc != 0) and
+    ("Key .* already exists for log .*" not in r.stderr)
