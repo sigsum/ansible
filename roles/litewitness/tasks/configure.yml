@@ -1,4 +1,8 @@
 ---
+# NOTE: We're missing some functionality from sigsum.ansible.litewitness-1.7.x, namely:
+# * no dynamic updating of log lists
+# * keys are not being removed, only added
+
 - name: Configure non-sigsum logs
   ansible.builtin.command:
     # FIXME: if item.origin is defined, use it instead of first part of vkey
@@ -21,4 +25,4 @@
   register: r
   failed_when: >
     (r.rc != 0) and
-    ("Key .* already exists for log .*" not in r.stderr)
+    ("already exists for log" not in r.stderr)
