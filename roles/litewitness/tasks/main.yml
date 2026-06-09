@@ -4,12 +4,19 @@
 
 - ansible.builtin.include_tasks: "deps.{{ ansible_facts['distribution'] }}.yml"
 
-- name: Prepare litewitness user and directories
-  ansible.builtin.include_tasks: prep.yml
+- name: Ensure litewitness is installed (Debian)
+  when: ansible_facts['distribution'] == "Debian"
+  ansible.builtin.apt:
+    name:
+      - litewitness
+      - litewitness-selinux
 
-- name: Install torchwood Go binaries
-  ansible.builtin.include_tasks: go.yml
-  loop: "{{ litewitness_install_tools_from_torchwood }}"
+- name: Ensure litewitness is installed (Fedora)
+  when: ansible_facts['distribution'] == "Fedora"
+  ansible.builtin.dnf:
+    name:
+      - litewitness
+      - litewitness-selinux
 
 - name: Configure litewitness
   ansible.builtin.include_tasks: configure.yml

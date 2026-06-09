@@ -1,4 +1,4 @@
 ---
 litewitness_basedir: /var/lib
 litewitness_home: "{{ litewitness_basedir }}/{{ litewitness_user }}"
-litewitness_database_file: "{{ litewitness_home }}/.local/share/litewitness/database"
+litewitness_database_file: "{{ litewitness_home }}/litewitness.db"
