@@ -16,5 +16,12 @@
     name:
       - litewitness
 
+- name: Add user to sigsum-agent group
+  ansible.builtin.user:
+    name: "{{ litewitness_user }}"
+    groups: sigsum-agent
+    append: true
+
+
 - name: Configure litewitness
   ansible.builtin.include_tasks: configure.yml
