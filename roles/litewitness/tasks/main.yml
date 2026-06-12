@@ -9,14 +9,12 @@
   ansible.builtin.apt:
     name:
       - litewitness
-      - litewitness-selinux
 
 - name: Ensure litewitness is installed (Fedora)
   when: ansible_facts['distribution'] == "Fedora"
   ansible.builtin.dnf:
     name:
       - litewitness
-      - litewitness-selinux
 
 - name: Configure litewitness
   ansible.builtin.include_tasks: configure.yml
