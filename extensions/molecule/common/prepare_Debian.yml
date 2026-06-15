@@ -4,6 +4,16 @@
   args:
     executable: /bin/bash
 
+- name: Enable Debian testing repo
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list.d/testing.list
+    content: "deb http://deb.debian.org/debian testing main\n"
+
+- name: Pin required packages to testing
+  ansible.builtin.copy:
+    src: etc/apt/preferences.d/witness-pins
+    dest: /etc/apt/preferences.d/witness-pins
+
 - name: Install basic dependencies
   ansible.builtin.apt:
     name:
