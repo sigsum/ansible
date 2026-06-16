@@ -1,5 +1,11 @@
 # litebastion
 
+NOTE NOTE NOTE NOTE NOTE NOTE NOTE
+NOTE						  NOTE
+NOTE    Not tested in v2.x    NOTE
+NOTE						  NOTE
+NOTE NOTE NOTE NOTE NOTE NOTE NOTE
+
 An ansible role that installs, configures, and manages the [litebastion
 software][] as a systemd service.
 
@@ -14,9 +20,7 @@ Read [C2SP/https-bastion][] to learn more about what a bastion host is.
 
 ## Requirements
 
-The target system must have systemd installed and running.  The system's package
-manager must also install a recent enough golang compiler (or the playbook will
-fail).  On Debian stable, you may set `litebastion_debian_backports: true`.
+The target system must have systemd installed and running.
 
 ## Role variables
 
@@ -32,10 +36,7 @@ See [defaults/main.yml](./defaults/main.yml) for details.
 
 ## Dependencies
 
-* sigsum.ansible.golang
-
-You will need to enable backports on Debian bookworm systems, see
-[roles/golang](roles/golang).
+None.
 
 ## Example playbook
 

@@ -21,7 +21,6 @@ remove the venv directory.)
 ---How to run all molecule tests
 
     $ molecule test
-    $ molecule test -s golang
     $ molecule test -s sigsum_agent
     $ molecule test -s yubihsm_connector
     $ molecule test -s litewitness
@@ -35,7 +34,6 @@ all tests passed:
     #!/bin/bash
     set -e
     molecule test
-    molecule test -s golang
     molecule test -s sigsum_agent
     molecule test -s yubihsm_connector
     molecule test -s litewitness
@@ -46,12 +44,6 @@ all tests passed:
 
 The warning "WARNING  Driver podman does not provide a schema" is to be
 expected, that warning can be ignored.
-
-The "molecule test -s golang" test gives red-colored output indicating
-a failure for the "Require the minimum Go version" task, but that is
-an expected failure intentionally triggered by the test to verify that
-the version number check works, so that red output can be safely
-ignored.
 
 Apart from the exceptions above, the output from the molecule tests
 should include no other error or warning messages.
@@ -91,8 +83,8 @@ Interactive deploy, debug, deploy again, verify, and clean-up session:
     $ molecule verify
     $ molecule destroy
 
-To work with a different scenario like ./extensions/molecule/golang, use "-s
-golang".
+To work with a different scenario like ./extensions/molecule/sigsum_agent,
+use "-s sigsum_agent".
 
 Each test scenario can have its own configuration in a "scenario:"
 section in the corresponding molecule.yml file, as in for example the

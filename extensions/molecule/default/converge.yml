@@ -4,15 +4,14 @@
     - sigsum-primary
     - sigsum-secondary
   roles:
-    - sigsum.ansible.mariadb
-    - sigsum.ansible.sigsum
+    - sigsum.tlog.mariadb
+    - sigsum.tlog.sigsum
 
 - name: Setup a primary log with ssh-agent
   hosts: sigsum-primary-ssh-agent
   roles:
-    - role: sigsum.ansible.mariadb
-    - role: sigsum.ansible.golang  # Go is assumed for sigsum_agent
-    - role: sigsum.ansible.sigsum_agent
-    - role: sigsum.ansible.sigsum
+    - role: sigsum.tlog.mariadb
+    - role: sigsum.tlog.sigsum_agent
+    - role: sigsum.tlog.sigsum
       sigsum_ssh_auth_sock: /run/sigsum-agent/sigsum-agent.socket
       sigsum_ssh_auth_group: sigsum-agent

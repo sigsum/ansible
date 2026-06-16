@@ -1,7 +1,0 @@
----
-# Whether to enforce the Sigsum project's minimum Go version
-golang_ensure_min_version: false
-
-# Debian options
-golang_debian_deb_source: https://deb.debian.org/debian
-golang_debian_use_backports: false

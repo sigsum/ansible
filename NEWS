@@ -1,3 +1,12 @@
+NEWS for upcoming sigsum ansible v2.0.0
+
+	Changes between v1.7.0 and v2.0.0:
+
+	* Collection name has changed from 'ansible' to 'tlog'. Roles
+          are now referred to as 'sigsum.tlog.<role>'.
+
+	* Software is being installed using dist packages.
+
 NEWS for upcoming sigsum ansible v1.7.0
 
 	Changes between v1.6.0 and v1.7.0:

@@ -18,14 +18,12 @@ See [defaults/main.yml](./defaults/main.yml).  See also
 
 ## Dependencies
 
-* sigsum.ansible.golang
-* sigsum.ansible.sigsum_agent
+* sigsum.tlog.sigsum_agent
 
-You will need to enable backports on Debian bookworm systems, see
-[roles/golang](../roles/golang).  You will also need to configure sigsum agent
-(preferably with an HSM), see [roles/sigsum_agent](../roles/sigsum_agent).
+You will need to configure sigsum agent (preferably with an HSM), see
+[roles/sigsum_agent](../roles/sigsum_agent).
 
-For information on the Go-installed witness tools, see [torchwood][].
+For more information on the litewitness, see [torchwood][].
 
 [torchwood]: https://github.com/FiloSottile/torchwood
 

@@ -33,7 +33,7 @@ The variables that match the above provisioning would be:
     ---
     - hosts: example.org
       roles:
-        - role: sigsum.ansible.sigsum_agent
+        - role: sigsum.tlog.sigsum_agent
           sigsum_agent_yubihsm_passphrase: "password"
           sigsum_agent_yubihsm_auth_id: "1"
           sigsum_agent_yubihsm_key_id: "4711"

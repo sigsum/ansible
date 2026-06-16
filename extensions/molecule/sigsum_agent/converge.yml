@@ -3,6 +3,6 @@
   hosts: all
   become: true
   roles:
-    - sigsum.ansible.sigsum_agent
+    - sigsum.tlog.sigsum_agent
   vars:
     sigsum_agent_yubihsm_passphrase: "allan tar kakan i 1200 baud"

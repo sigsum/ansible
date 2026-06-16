@@ -18,10 +18,9 @@ See [defaults/main.yml](./defaults/main.yml).
 
 Dependencies
 ------------
-* sigsum.ansible.mariadb
-* sigsum.ansible.golang (imported by the sigsum role, no action needed)
-* sigsum.ansible.yubihsm_connector (optional)
-* sigsum.ansible.sigsum_agent (optional)
+* sigsum.tlog.mariadb
+* sigsum.tlog.yubihsm_connector (optional)
+* sigsum.tlog.sigsum_agent (optional)
 
 Example playbook
 ----------------
@@ -29,4 +28,4 @@ See the [molecule converge playbook](../../extensions/molecule/default/converge.
 examples that deploy a primary-secondary log setup for database replication, as
 well as a standalone primary where the key is accessed using the ssh-agent
 protocol.  If you want to use sigsum-agent with the YubiHSM backend, you might
-want to install the connector with `role: sigsum.ansible.yubihsm_connector`.
+want to install the connector with `role: sigsum.tlog.yubihsm_connector`.
