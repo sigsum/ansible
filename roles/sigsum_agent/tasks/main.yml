@@ -4,12 +4,18 @@
   ansible.builtin.apt:
     name:
       - sigsum-agent
+  notify:
+    - Enable sigsum-agent socket
+    - Enable sigsum-agent service
 
 - name: Ensure sigsum-agent is installed (Fedora)
   when: ansible_facts['distribution'] == "Fedora"
   ansible.builtin.dnf:
     name:
       - sigsum-agent
+  notify:
+    - Enable sigsum-agent socket
+    - Enable sigsum-agent service
 
 ###
 # Configure sigsum-agent
