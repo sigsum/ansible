@@ -1,5 +1,12 @@
 sigsum
 ======
+
+NOTE NOTE NOTE NOTE NOTE NOTE NOTE
+NOTE                          NOTE
+NOTE    Not tested in v2.x    NOTE
+NOTE                          NOTE
+NOTE NOTE NOTE NOTE NOTE NOTE NOTE
+
 An ansible role that deploys Sigsum transparency log servers.  Please
 note that only a single primary log or a single secondary log can be
 operated on the same target system.

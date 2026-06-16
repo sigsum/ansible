@@ -1,5 +1,12 @@
 # Sigsum ansible collection
 
+NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE
+NOTE                                              NOTE
+NOTE  This repo is in flux between v1.7 and v2.0. NOTE
+NOTE  Most things simply don't work yet.          NOTE
+NOTE                                              NOTE
+NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE
+
 This repository contains ansible roles for deploying sigsum
 transparency logs and witnesses on Debian-bookworm systems.  Each role
 has a slightly more detailed README.
