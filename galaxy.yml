@@ -2,7 +2,7 @@ name: tlog
 namespace: sigsum
 readme: README.md
 repository: https://git.glasklar.is/sigsum/admin/ansible 
-version: 2.0.0-alpha-5
+version: 2.0.0-alpha-6
 authors:
   - Foxboron
   - ln5
