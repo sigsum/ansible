@@ -10,7 +10,6 @@
   ansible.builtin.dnf:
     name:
       - sigsum-agent
-      - sigsum-agent-selinux
 
 ###
 # Configure sigsum-agent

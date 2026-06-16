@@ -1,5 +1,4 @@
-#FROM {{ item.image }}
-FROM registry.fedoraproject.org/fedora:43
+FROM {{ item.image }}
 
 ENV container podman
 STOPSIGNAL SIGRTMIN+3

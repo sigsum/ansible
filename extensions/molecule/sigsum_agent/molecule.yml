@@ -6,19 +6,19 @@ driver:
 platforms:
   - name: trixie
     image: docker.io/library/debian:trixie
-    dockerfile: ../Dockerfile.debian.bookworm.j2
+    dockerfile: ../Containerfile.Debian.j2
     privileged: true
     cgroupns_mode: private
     override_command: false
-    volumes:
+    volume_mounts:
        - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
   - name: fedora43
     image: registry.fedoraproject.org/fedora:43
-    dockerfile: ../Containerfile.fedora.43.j2
+    dockerfile: ../Containerfile.Fedora.j2
     privileged: true
     cgroupns_mode: private
     override_command: false
-    volumes:
+    volumes_mounts:
        - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
 
 provisioner:

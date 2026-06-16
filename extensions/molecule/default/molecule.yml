@@ -9,7 +9,7 @@ platforms:
   ###
   - name: sigsum-primary
     image: docker.io/library/debian:bookworm
-    dockerfile: ../Dockerfile.debian.bookworm.j2
+    dockerfile: ../Containerfile.Debian.j2
     privileged: true
     cgroupns_mode: private
     override_command: false
@@ -18,7 +18,7 @@ platforms:
     network: internal-testnet
   - name: sigsum-secondary
     image: docker.io/library/debian:bookworm
-    dockerfile: ../Dockerfile.debian.bookworm.j2
+    dockerfile: ../Containerfile.Debian.j2
     privileged: true
     cgroupns_mode: private
     override_command: false
@@ -30,7 +30,7 @@ platforms:
   ####
   - name: sigsum-primary-ssh-agent
     image: docker.io/library/debian:bookworm
-    dockerfile: ../Dockerfile.debian.bookworm.j2
+    dockerfile: ../Containerfile.Debian.j2
     privileged: true
     cgroupns_mode: private
     override_command: false

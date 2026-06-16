@@ -1,0 +1,7 @@
+---
+- name: Install litewitness and dependencies
+  ansible.builtin.dnf:
+    name:
+      - jq
+      - litewitness
+  notify: Enable and start litewitness

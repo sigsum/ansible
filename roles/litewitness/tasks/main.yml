@@ -1,20 +1,6 @@
 ---
-- name: Enforce constraints
-  ansible.builtin.include_tasks: constraints.yml
-
-- ansible.builtin.include_tasks: "deps.{{ ansible_facts['distribution'] }}.yml"
-
-- name: Ensure litewitness is installed (Debian)
-  when: ansible_facts['distribution'] == "Debian"
-  ansible.builtin.apt:
-    name:
-      - litewitness
-
-- name: Ensure litewitness is installed (Fedora)
-  when: ansible_facts['distribution'] == "Fedora"
-  ansible.builtin.dnf:
-    name:
-      - litewitness
+- ansible.builtin.include_tasks: constraints.yml
+- ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
 
 - name: Add user to sigsum-agent group
   ansible.builtin.user:
@@ -22,6 +8,4 @@
     groups: sigsum-agent
     append: true
 
-
-- name: Configure litewitness
-  ansible.builtin.include_tasks: configure.yml
+- ansible.builtin.include_tasks: configure.yml

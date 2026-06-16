@@ -1,0 +1,6 @@
+---
+- name: Install litewitness and dependencies
+  ansible.builtin.apt:
+    name:
+      - jq
+      - litewitness

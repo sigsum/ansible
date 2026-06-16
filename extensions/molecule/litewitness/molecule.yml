@@ -4,9 +4,17 @@ dependency:
 driver:
   name: podman
 platforms:
-  - name: bookworm
-    image: docker.io/library/debian:bookworm
-    dockerfile: ../Dockerfile.debian.bookworm.j2
+  - name: trixie
+    image: docker.io/library/debian:trixie
+    dockerfile: ../Containerfile.Debian.j2
+    privileged: true
+    cgroupns_mode: private
+    override_command: false
+    volume_mounts:
+       - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
+  - name: fedora43
+    image: registry.fedoraproject.org/fedora:43
+    dockerfile: ../Containerfile.Fedora.j2
     privileged: true
     cgroupns_mode: private
     override_command: false
@@ -16,4 +24,4 @@ platforms:
 provisioner:
   name: ansible
   playbooks:
-    prepare: ../common/prepare_debian.yml
+    prepare: ../common/prepare.yml
