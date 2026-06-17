@@ -5,4 +5,5 @@
   roles:
     - sigsum.tlog.sigsum_agent
   vars:
-    sigsum_agent_yubihsm_passphrase: "allan tar kakan i 1200 baud"
+    sigsum_yubihsm_credentials:
+      - { port: "12345", key_id: "500", passphrase: "allan tar kakan i 1200 baud" }
