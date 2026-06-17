@@ -76,6 +76,10 @@ litewitness_listen_endpoint: ""
 # Toggle / and /logz endpoints
 litewitness_debug_endpoints_enabled: false
 
+# Address to listen for metrics requests, instead of exposing them on the main
+# listener.
+litewitness_listen_metrics: ""
+
 # Go dependencies.  For each of the listed tools it is possible to override the
 # default version and Go repository by also specifying "version" and "source" as
 # additional dict members alongside "name".  Note that the listed tools are
