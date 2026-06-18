@@ -24,7 +24,7 @@ sigsum_agent_yubihsm_port: "1234"       # FIXME: restore back to 12345
 sigsum_agent_yubihsm_connector_retry: true
 # yubihsm credential items consist of three key/value pairs:
 #   - port: sigsum_agent_yubihsm_port
-#   - key_id: sigsum_agent_yubihsm_key_id
+#   - auth_id: sigsum_agent_yubihsm_auth_id
 #   - passphrase: sigsum_agent_yubihsm_passphrase
 sigsum_yubihsm_credentials: []
 
