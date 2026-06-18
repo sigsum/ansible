@@ -1,10 +1,10 @@
 # {{ ansible_managed }}
 
 {% set args = [
-  "-name " ~ litewitness_name,
+  "-name " ~ "\"" ~ litewitness_name ~ "\"",
   "-obscurity " ~ (litewitness_debug_endpoints_enabled | lower),
-  ("-listen-metrics " ~ litewitness_listen_metrics) if litewitness_listen_metrics else "",
-  "-key " ~ litewitness_keygrip,
+  ("-listen-metrics " ~ "\"" ~ litewitness_listen_metrics ~ "\"") if litewitness_listen_metrics else "",
+  "-key " ~ "\"" ~ litewitness_keygrip ~ "\"",
   "-ssh-agent /run/sigsum-agent/sigsum-agent.sock",
 ] %}
 
