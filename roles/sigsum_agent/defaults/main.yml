@@ -22,6 +22,12 @@ sigsum_agent_yubihsm_key_id: "500"  # default key id for logs in core/key-mgmt
 sigsum_agent_yubihsm_addr: "localhost"  # default yubihsm-connector value
 sigsum_agent_yubihsm_port: "1234"       # FIXME: restore back to 12345
 sigsum_agent_yubihsm_connector_retry: true
+# yubihsm credential items consist of three key/value pairs:
+#   - port: sigsum_agent_yubihsm_port
+#   - key_id: sigsum_agent_yubihsm_key_id
+#   - passphrase: sigsum_agent_yubihsm_passphrase
+sigsum_yubihsm_credentials: []
+
 
 # If defined, specifies the YubiHSM USB device to monitor for being
 # available. Syntax: serial number as per lsusb(1) output.
