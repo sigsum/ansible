@@ -23,7 +23,7 @@
 - name: Die unless soft key or yubihsm credentials are provided
   ansible.builtin.assert:
     that:
-      - (sigsum_agent_soft_key is defined) != (sigsum_yubihsm_credentials | length)
+      - (sigsum_agent_soft_key is defined) != (sigsum_yubihsm_credentials | length > 0)
     fail_msg: "Either a soft key or yubihsm credentials are required"
 
 - name: Add sigsum-agent soft key
