@@ -4,8 +4,8 @@
     name:
       - yubihsm-connector
 
-- name: Enable yubihsm_connector service
+- name: Disable yubihsm-connector service since we are using instantiated variant
   ansible.builtin.systemd_service:
     name: yubihsm-connector
-    enabled: true
-    state: started
+    enabled: false
+    state: stopped

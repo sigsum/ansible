@@ -1,0 +1,19 @@
+# This file is managed by ansible -- do not edit.
+
+[Unit]
+Description=YubiHSM connector instantiated service
+Documentation=https://developers.yubico.com/YubiHSM2/Component_Reference/yubihsm-connector/
+After=network-online.target
+Wants=network-online.target systemd-networkd-wait-online.service
+
+[Service]
+Restart=on-abnormal
+User=yubihsm-connector
+Group=yubihsm-connector
+ExecStart=/usr/bin/yubihsm-connector -c /etc/yubihsm-connector-%i.yaml
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=full
+
+[Install]
+WantedBy=multi-user.target

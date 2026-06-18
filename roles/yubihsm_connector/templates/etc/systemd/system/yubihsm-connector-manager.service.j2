@@ -1,0 +1,13 @@
+# This file is managed by ansible -- do not edit.
+
+[Unit]
+Description=YubiHSM connector manager service for starting instances of yubihsm-connector
+After=network-online.target
+Wants={% for i in yubishm_connector_instances|default([]) %}yubihsm-connector@{{ i.name }}.service {% endfor %}
+
+[Service]
+Type=oneshot
+ExecStart=/bin/echo "YubiHSM connector manager service for starting instances of yubihsm-connector"
+
+[Install]
+WantedBy=multi-user.target

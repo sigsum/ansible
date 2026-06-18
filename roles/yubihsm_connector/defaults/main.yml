@@ -2,8 +2,17 @@
 # Log level.
 yubihsm_connector_log_level: warn
 
-# Listen address and port.
-yubishm_connector_listen: 127.0.0.1:12345
+# For each yubishm-connector specify three things:
+# name (arbitrary), serial_number, and port.
+# Example:
+# yubishm_connector_instances:
+#   - name: 111
+#     serial_number: 11111111
+#     port: 12345
+#   - name: 222
+#     serial_number: 22222222
+#     port: 12346
+yubishm_connector_instances: []
 
 # Debian options.  Note that backports will be configured if the target system
 # runs Debian bookworm.  Earlier Debian distributions are not supported.
