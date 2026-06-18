@@ -2,7 +2,7 @@
 
 {% set args = [
   "-name " ~ "\"" ~ litewitness_name ~ "\"",
-  "-obscurity " ~ (litewitness_debug_endpoints_enabled | lower),
+  "" if litewitness_debug_endpoints_enabled else "-obscurity ",
   ("-listen-metrics " ~ "\"" ~ litewitness_listen_metrics ~ "\"") if litewitness_listen_metrics else "",
   "-key " ~ "\"" ~ litewitness_keygrip ~ "\"",
   "-ssh-agent /run/sigsum-agent/sigsum-agent.socket",
