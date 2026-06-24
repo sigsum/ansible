@@ -8,7 +8,9 @@
     dest: "/etc/yubihsm-connector-{{ item.name }}.yaml"
     mode: '0644'
   with_items: "{{ yubihsm_connector_instances }}"
-  notify: Restart yubihsm-connector instances
+  notify:
+    - Restart yubihsm-connector instances
+    - Enable yubihsm-connector instances
 
 - name: Create yubihsm-connector systemd instantiated service file
   ansible.builtin.copy:
@@ -17,11 +19,4 @@
   notify:
     - Reload systemd
     - Restart yubihsm-connector instances
-
-- name: Create yubihsm-connector-manager.service file
-  ansible.builtin.template:
-    dest: /etc/systemd/system/yubihsm-connector-manager.service
-    src: etc/systemd/system/yubihsm-connector-manager.service.j2
-  notify:
-    - Reload systemd
-    - Enable and restart yubihsm-connector-manager service
+    - Enable yubihsm-connector instances
