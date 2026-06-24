@@ -31,5 +31,3 @@ platforms:
 
 provisioner:
   name: ansible
-  playbooks:
-    prepare: ../common/prepare_debian.yml
