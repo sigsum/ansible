@@ -1,0 +1,5 @@
+# This file is managed by ansible -- do not edit
+
+log-level: "{{ yubihsm_connector_log_level }}"
+listen: "127.0.0.1:{{ item.port }}"
+serial: "{{ item.serial_number }}"

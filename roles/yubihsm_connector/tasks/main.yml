@@ -2,13 +2,9 @@
 - name: Install yubihsm-connector
   ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
 
-- name: Configure yubihsm-connector, one file for each yubihsm-connector instance
-  ansible.builtin.copy:
-    content: |
-      # This file is managed by ansible -- do not edit
-      listen: "127.0.0.1:{{ item.port }}"
-      serial: "{{ item.serial_number }}"
-      log-level: {{ yubihsm_connector_log_level }}
+- name: Configure yubihsm-connector instances
+  ansible.builtin.template:
+    src: etc/yubihsm-connector.yaml.j2
     dest: "/etc/yubihsm-connector-{{ item.name }}.yaml"
     mode: '0644'
   with_items: "{{ yubihsm_connector_instances }}"
