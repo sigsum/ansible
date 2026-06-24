@@ -2,11 +2,6 @@
 - name: Install yubihsm-connector
   ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
 
-- name: Configure yubihsm-connector
-  ansible.builtin.template:
-    dest: /etc/yubihsm-connector.yaml
-    src: etc/yubihsm-connector.yaml.j2
-
 - name: Configure yubihsm-connector, one file for each yubihsm-connector instance
   ansible.builtin.copy:
     content: |
