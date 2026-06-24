@@ -2,4 +2,8 @@
 - name: Converge
   hosts: all
   roles:
-  - sigsum.tlog.yubihsm_connector
+  - role: sigsum.tlog.yubihsm_connector
+    yubihsm_connector_instances:
+      - name: hsm1
+        serial_number: 11111111
+        port: 12345

@@ -6,8 +6,20 @@ driver:
 platforms:
   - name: bookworm
     image: docker.io/library/debian:bookworm
+    dockerfile: ../Containerfile.Debian.j2
+    privileged: true
+    cgroupns_mode: private
+    override_command: false
+    volume_mounts:
+       - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
   - name: trixie
     image: docker.io/library/debian:trixie
+    dockerfile: ../Containerfile.Debian.j2
+    privileged: true
+    cgroupns_mode: private
+    override_command: false
+    volume_mounts:
+       - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
 
 provisioner:
   name: ansible

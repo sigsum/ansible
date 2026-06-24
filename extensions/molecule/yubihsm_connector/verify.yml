@@ -1,7 +1,25 @@
 ---
 - name: Verify
   hosts: all
+  vars:
+    yubihsm_connector_instance: hsm1
   tasks:
     # Exits with non-zero status if the user does not exist
     - name: Check that the yubihsm-connector user was added
       ansible.builtin.command: "getent passwd yubihsm-connector"
+      changed_when: false
+
+    - name: Check that the package-provided service is disabled and stopped
+      ansible.builtin.systemd_service:
+        name: yubihsm-connector
+        enabled: false
+        state: stopped
+      register: default_service
+      failed_when: default_service.changed
+
+    - name: Check that the configured instance is running
+      ansible.builtin.systemd_service:
+        name: "yubihsm-connector@{{ yubihsm_connector_instance }}"
+        state: started
+      register: instance_service
+      failed_when: instance_service.changed

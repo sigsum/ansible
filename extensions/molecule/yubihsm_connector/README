@@ -1,2 +1,2 @@
-Just a trivial test that apt-install doesn't fail on bookworm and trixie, and
-that the yubihsm-connector has actually been added to the system.
+Test that apt-install succeeds on bookworm and trixie, and that the
+yubihsm_connector role configures an instantiated connector service.
