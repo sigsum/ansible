@@ -1,19 +1,27 @@
 ---
-# Log level.
+# Log level used by all YubiHSM connector instances.
+# Available: trace, debug, info, warn, error, fatal, panic.
 yubihsm_connector_log_level: warn
 
-# For each yubihsm-connector specify three things:
-# name (arbitrary), serial_number, and port.
+# Specify one or more YubiHSM connector instances.  Each instance results in
+#
+#   /etc/yubihsm-connector-<name>.yaml
+#
+# being created with a corresponding systemd service instance:
+#
+#   yubihsm-connector@<name>.service
+#
 # Example:
-# yubihsm_connector_instances:
-#   - name: 111
-#     serial_number: 11111111
-#     port: 12345
-#   - name: 222
-#     serial_number: 22222222
-#     port: 12346
+#
+#   yubihsm_connector_instances:
+#     - name: hsm1
+#       serial_number: 11111111
+#       port: 12345
+#
+# name is arbitrary.
+# serial_number must match the YubiHSM device.
+# port must be available for listening on 127.0.0.1.
 yubihsm_connector_instances: []
 
-# Debian options.  Note that backports will be configured if the target system
-# runs Debian bookworm.  Earlier Debian distributions are not supported.
+# Debian package source base URL.
 yubihsm_connector_debian_deb_source: https://deb.debian.org/debian
