@@ -16,7 +16,7 @@
       log-level: {{ yubihsm_connector_log_level }}
     dest: "/etc/yubihsm-connector-{{ item.name }}.yaml"
     mode: '0644'
-  with_items: "{{ yubishm_connector_instances }}"
+  with_items: "{{ yubihsm_connector_instances }}"
 
 - name: Create yubihsm-connector systemd instantiated service file
   ansible.builtin.copy:
