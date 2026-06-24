@@ -5,7 +5,6 @@
         selectattr('arch', 'equalto', ansible_facts['architecture']) |
         first |
         default({}) }}"
-  when: yubihsm_connector_pkg is defined
 
 - name: Install yubihsm_connector from repo
   when: local_yhsmcon_pkg | default({}) == {}
