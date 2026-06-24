@@ -1,2 +1,2 @@
-Test that apt-install succeeds on bookworm and trixie, and that the
-yubihsm_connector role configures an instantiated connector service.
+Test that package installation succeeds and that the yubihsm_connector role
+configures an instantiated connector service on bookworm/trixie.

@@ -23,3 +23,15 @@
         state: started
       register: instance_service
       failed_when: instance_service.changed
+
+    - name: Check that the package override installed the expected version
+      ansible.builtin.command:
+        cmd: dpkg-query --show --showformat='${Version}' yubihsm-connector
+      register: package_version
+      changed_when: false
+      when: inventory_hostname == "trixie-pkg"
+
+    - name: Assert that the package override installed the expected version
+      ansible.builtin.assert:
+        that: package_version.stdout == "3.0.7-1"
+      when: inventory_hostname == "trixie-pkg"

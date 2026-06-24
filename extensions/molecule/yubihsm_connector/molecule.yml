@@ -12,6 +12,14 @@ platforms:
     override_command: false
     volume_mounts:
        - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
+  - name: trixie-pkg
+    image: docker.io/library/debian:trixie
+    dockerfile: ../Containerfile.Debian.j2
+    privileged: true
+    cgroupns_mode: private
+    override_command: false
+    volume_mounts:
+       - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
   - name: trixie
     image: docker.io/library/debian:trixie
     dockerfile: ../Containerfile.Debian.j2
