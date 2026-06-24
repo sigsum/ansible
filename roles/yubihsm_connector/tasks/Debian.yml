@@ -7,7 +7,7 @@
         default({}) }}"
 
 - name: Install yubihsm_connector from repo
-  when: local_yhsmcon_pkg | default({}) == {}
+  when: local_yhsmcon_pkg == {}
   block:
     - name: Add package source for backports
       when: ansible_distribution_release == "bookworm"
@@ -31,7 +31,7 @@
         cache_valid_time: 10800
 
 - name: Install yubihsm_connector from packet
-  when: local_yhsmcon_pkg | default({}) != {}
+  when: local_yhsmcon_pkg != {}
   block:
     - name: Download yubihsm_connector package
       ansible.builtin.get_url:
