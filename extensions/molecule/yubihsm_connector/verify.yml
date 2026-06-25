@@ -2,7 +2,9 @@
 - name: Verify
   hosts: all
   vars:
-    yubihsm_connector_instance: hsm1
+    yubihsm_connector_instances:
+      - hsm1
+      - hsm2
   tasks:
     # Exits with non-zero status if the user does not exist
     - name: Check that the yubihsm-connector user was added
@@ -25,13 +27,14 @@
       register: target_service
       failed_when: target_service.changed
 
-    - name: Check that the configured instance is running
+    - name: Check that the configured instances are running
       ansible.builtin.systemd_service:
-        name: "yubihsm-connector@{{ yubihsm_connector_instance }}"
+        name: "yubihsm-connector@{{ item }}"
         enabled: true
         state: started
       register: instance_service
       failed_when: instance_service.changed
+      with_items: "{{ yubihsm_connector_instances }}"
 
     - name: Check that the package override installed the expected version
       ansible.builtin.command:
