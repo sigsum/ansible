@@ -1,0 +1,22 @@
+---
+- name: Reload systemd
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+
+- name: Restart yubihsm-connector instances
+  ansible.builtin.systemd_service:
+    name: "yubihsm-connector@{{ item.name }}"
+    state: restarted
+  with_items: "{{ yubihsm_connector_instances }}"
+
+- name: Enable yubihsm-connector instances
+  ansible.builtin.systemd_service:
+    name: "yubihsm-connector@{{ item.name }}"
+    enabled: true
+    state: started
+  with_items: "{{ yubihsm_connector_instances }}"
+
+- name: Enable yubihsm-connector target
+  ansible.builtin.systemd_service:
+    name: yubihsm-connector.target
+    enabled: true

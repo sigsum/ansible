@@ -1,7 +1,49 @@
 ---
 - name: Verify
   hosts: all
+  vars:
+    yubihsm_connector_instances:
+      - hsm1
+      - hsm2
   tasks:
     # Exits with non-zero status if the user does not exist
     - name: Check that the yubihsm-connector user was added
       ansible.builtin.command: "getent passwd yubihsm-connector"
+      changed_when: false
+
+    - name: Check that the package-provided service is disabled and stopped
+      ansible.builtin.systemd_service:
+        name: yubihsm-connector
+        enabled: false
+        state: stopped
+      register: default_service
+      failed_when: default_service.changed
+
+    - name: Check that the yubihsm-connector target started
+      ansible.builtin.systemd_service:
+        name: yubihsm-connector.target
+        enabled: true
+        state: started
+      register: target_service
+      failed_when: target_service.changed
+
+    - name: Check that the configured instances are running
+      ansible.builtin.systemd_service:
+        name: "yubihsm-connector@{{ item }}"
+        enabled: true
+        state: started
+      register: instance_service
+      failed_when: instance_service.changed
+      with_items: "{{ yubihsm_connector_instances }}"
+
+    - name: Check that the package override installed the expected version
+      ansible.builtin.command:
+        cmd: dpkg-query --show --showformat='${Version}' yubihsm-connector
+      register: package_version
+      changed_when: false
+      when: inventory_hostname == "trixie-pkg"
+
+    - name: Assert that the package override installed the expected version
+      ansible.builtin.assert:
+        that: package_version.stdout == "3.0.7-1"
+      when: inventory_hostname == "trixie-pkg"

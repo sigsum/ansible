@@ -1,20 +1,5 @@
-# {{ ansible_managed }}
+# This file is managed by ansible -- do not edit
 
-# Certificate (X.509)
-#cert: ""
-#
-# Certificate key
-#key: ""
-#
-# Listening address. Defaults to "127.0.0.1:12345".
-listen: "{{ yubishm_connector_listen }}"
-#
-# Device serial in case of multiple devices
-#serial: ""
-#
-# Log to syslog/eventlog. Defaults to "false".
-#syslog: "false"
-#
-# Log level. Defaults to "".
-#log-level: ""
-log-level: {{ yubihsm_connector_log_level }}
+log-level: "{{ yubihsm_connector_log_level }}"
+listen: "127.0.0.1:{{ item.port }}"
+serial: "{{ item.serial_number }}"

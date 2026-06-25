@@ -2,34 +2,31 @@
 - name: Install yubihsm-connector
   ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
 
-- name: Configure yubihsm-connector
+- name: Configure yubihsm-connector instances
   ansible.builtin.template:
-    dest: /etc/yubihsm-connector.yaml
     src: etc/yubihsm-connector.yaml.j2
-
-- name: Configure yubihsm-connector, one file for each yubihsm-connector instance
-  ansible.builtin.copy:
-    content: |
-      # This file is managed by ansible -- do not edit
-      listen: "127.0.0.1:{{ item.port }}"
-      serial: "{{ item.serial_number }}"
-      log-level: {{ yubihsm_connector_log_level }}
     dest: "/etc/yubihsm-connector-{{ item.name }}.yaml"
     mode: '0644'
-  with_items: "{{ yubishm_connector_instances }}"
+  with_items: "{{ yubihsm_connector_instances }}"
+  notify:
+    - Restart yubihsm-connector instances
+    - Enable yubihsm-connector instances
 
 - name: Create yubihsm-connector systemd instantiated service file
   ansible.builtin.copy:
     dest: /etc/systemd/system/yubihsm-connector@.service
     src: etc/systemd/system/yubihsm-connector@.service
+    mode: '0644'
+  notify:
+    - Reload systemd
+    - Restart yubihsm-connector instances
+    - Enable yubihsm-connector instances
 
-- name: Create yubihsm-connector-manager.service file
-  ansible.builtin.template:
-    dest: /etc/systemd/system/yubihsm-connector-manager.service
-    src: etc/systemd/system/yubihsm-connector-manager.service.j2
-
-- name: Enable yubihsm-connector-manager service
-  ansible.builtin.systemd_service:
-    name: yubihsm-connector-manager
-    enabled: true
-    state: started
+- name: Create yubihsm-connector systemd target file
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/yubihsm-connector.target
+    src: etc/systemd/system/yubihsm-connector.target
+    mode: '0644'
+  notify:
+    - Reload systemd
+    - Enable yubihsm-connector target

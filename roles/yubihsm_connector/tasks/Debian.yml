@@ -5,16 +5,15 @@
         selectattr('arch', 'equalto', ansible_facts['architecture']) |
         first |
         default({}) }}"
-  when: yubihsm_connector_pkg is defined
 
 - name: Install yubihsm_connector from repo
-  when: local_yhsmcon_pkg | default({}) == {}
+  when: local_yhsmcon_pkg == {}
   block:
     - name: Add package source for backports
-      when: ansible_distribution_release == "bookworm"
+      when: ansible_facts['distribution_release'] == "bookworm"
       ansible.builtin.copy:
-        content: "deb {{ yubihsm_connector_debian_deb_source }} {{ ansible_distribution_release }}-backports main"
-        dest: "/etc/apt/sources.list.d/{{ ansible_distribution_release }}-backports.list"
+        content: "deb {{ yubihsm_connector_debian_deb_source }} {{ ansible_facts['distribution_release'] }}-backports main"
+        dest: "/etc/apt/sources.list.d/{{ ansible_facts['distribution_release'] }}-backports.list"
         mode: '0644'
       register: add_backports
 
@@ -25,14 +24,14 @@
 
     - name: Install from repo
       ansible.builtin.apt:
-        default_release: "{{ (ansible_distribution_release == 'bookworm') | ternary(ansible_distribution_release + '-backports', omit) }}"
+        default_release: "{{ (ansible_facts['distribution_release'] == 'bookworm') | ternary(ansible_facts['distribution_release'] + '-backports', omit) }}"
         pkg: yubihsm-connector
         state: present
         update_cache: true
         cache_valid_time: 10800
 
 - name: Install yubihsm_connector from packet
-  when: local_yhsmcon_pkg | default({}) != {}
+  when: local_yhsmcon_pkg != {}
   block:
     - name: Download yubihsm_connector package
       ansible.builtin.get_url:
@@ -43,3 +42,9 @@
     - name: Install package
       ansible.builtin.apt:
         deb: "/usr/local/share/{{ local_yhsmcon_pkg.name }}"
+
+- name: Disable yubihsm-connector service since we are using instantiated variant
+  ansible.builtin.systemd_service:
+    name: yubihsm-connector
+    enabled: false
+    state: stopped
