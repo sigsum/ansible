@@ -15,3 +15,9 @@
     enabled: true
     state: started
   with_items: "{{ yubihsm_connector_instances }}"
+
+- name: Enable yubihsm-connector target
+  ansible.builtin.systemd_service:
+    name: yubihsm-connector.target
+    enabled: true
+    state: started

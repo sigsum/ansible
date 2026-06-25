@@ -16,7 +16,17 @@
   ansible.builtin.copy:
     dest: /etc/systemd/system/yubihsm-connector@.service
     src: etc/systemd/system/yubihsm-connector@.service
+    mode: '0644'
   notify:
     - Reload systemd
     - Restart yubihsm-connector instances
     - Enable yubihsm-connector instances
+
+- name: Create yubihsm-connector systemd target file
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/yubihsm-connector.target
+    src: etc/systemd/system/yubihsm-connector.target
+    mode: '0644'
+  notify:
+    - Reload systemd
+    - Enable yubihsm-connector target
