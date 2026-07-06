@@ -19,14 +19,6 @@
       register: default_service
       failed_when: default_service.changed
 
-    - name: Check that the yubihsm-connector target started
-      ansible.builtin.systemd_service:
-        name: yubihsm-connector.target
-        enabled: true
-        state: started
-      register: target_service
-      failed_when: target_service.changed
-
     - name: Check that the configured instances are running
       ansible.builtin.systemd_service:
         name: "yubihsm-connector@{{ item }}"

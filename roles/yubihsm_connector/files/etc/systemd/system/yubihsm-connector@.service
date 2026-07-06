@@ -16,4 +16,4 @@ ProtectHome=true
 ProtectSystem=full
 
 [Install]
-WantedBy=yubihsm-connector.target
+WantedBy=multi-user.target
