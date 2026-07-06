@@ -30,8 +30,8 @@
   ansible.builtin.copy:
     content: "{{ sigsum_agent_soft_key }}"
     dest: "/etc/sigsum-agent/key"
-    owner: "{{ sigsum_agent_user }}"
-    group: "{{ sigsum_agent_user }}"
+    owner: sigsum-agent
+    group: sigsum-agent
     mode: '0600'
   when: sigsum_agent_soft_key is defined
   notify: Restart sigsum-agent service
@@ -40,8 +40,8 @@
   ansible.builtin.template:
     src: "credentials.j2"
     dest: "/etc/sigsum-agent/credentials"
-    owner: "{{ sigsum_agent_user }}"
-    group: "{{ sigsum_agent_user }}"
+    owner: sigsum-agent
+    group: sigsum-agent
     mode: '0600'
   when: sigsum_yubihsm_credentials | length > 0
   notify: Restart sigsum-agent service

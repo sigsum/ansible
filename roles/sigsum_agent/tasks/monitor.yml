@@ -27,8 +27,8 @@
 
       [Service]
       Type=oneshot
-      User={{ sigsum_agent_user }}
-      Group={{ sigsum_agent_user }}
+      User=sigsum-agent
+      Group=sigsum-agent
       ExecStart=/usr/bin/yubihsm-present-p {{ sigsum_agent_yubihsm_monitor_device }} {{ sigsum_agent_yubihsm_monitor_email|default("") }}
 
       # Sandboxing
