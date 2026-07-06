@@ -6,46 +6,17 @@
     test_home: "/home/{{ test_user }}"
     test_grp: sigsum-agent  # must match converge.yml
   tasks:
-    - name: Create systemd override directory for sigsum-agent
-      ansible.builtin.file:
-        path: /etc/systemd/system/sigsum-agent.service.d
-        state: directory
-        mode: '0755'
-
-    - name: Override sigsum-agent service for soft-key testing
-      ansible.builtin.copy:
-        dest: /etc/systemd/system/sigsum-agent.service.d/soft-key.conf
-        mode: '0644'
-        content: |
-          [Unit]
-          BindsTo=
-
-          [Service]
-          ExecStart=
-          ExecStart=/usr/bin/sigsum-agent -k /etc/sigsum-agent/key --retry
-
-    - name: Install ssh-keygen
+    - name: Install ssh-keygen (Debian)
+      when: ansible_facts['distribution'] == "Debian"
       ansible.builtin.apt:
         name: openssh-client
         state: present
 
-    - name: Generate soft key for testing
-      ansible.builtin.command:
-        cmd: ssh-keygen -q -t ed25519 -N "" -f /etc/sigsum-agent/key
-        creates: /etc/sigsum-agent/key
-
-    - name: Set ownership of test soft key
-      ansible.builtin.file:
-        path: /etc/sigsum-agent/key
-        owner: "{{ test_grp }}"
-        group: "{{ test_grp }}"
-        mode: '0600'
-
-    - name: Reload systemd and restart sigsum-agent with drop-in config
-      ansible.builtin.systemd:
-        name: sigsum-agent
-        state: restarted
-        daemon_reload: true
+    - name: Install ssh-keygen (Fedora)
+      when: ansible_facts['distribution'] == "Fedora"
+      ansible.builtin.dnf:
+        name: openssh-clients
+        state: present
 
     - name: "Add test user ({{ test_user }})"
       ansible.builtin.user:

@@ -1,0 +1,14 @@
+---
+- import_playbook: ../common/prepare.yml
+
+- name: Prepare sigsum_agent
+  hosts: all
+  become: true
+  tasks:
+    # This ensures that we will not be installing non-working SELinux stuff
+    - name: Ensure sigsum-agent is installed without weak dependencies (Fedora)
+      when: ansible_facts['distribution'] == "Fedora"
+      ansible.builtin.dnf:
+        name: sigsum-agent
+        state: present
+        install_weak_deps: false
