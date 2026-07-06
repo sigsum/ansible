@@ -16,11 +16,7 @@
 # sigsum_agent_soft_key: ""
 
 # Configuration of a YubiHSM
-# sigsum_agent_yubihsm_passphrase: ""  # auth password for session establishment
-sigsum_agent_yubihsm_auth_id: "200"  # default auth id for logs in core/key-mgmt
 sigsum_agent_yubihsm_key_id: "500"  # default key id for logs in core/key-mgmt
-sigsum_agent_yubihsm_addr: "localhost"  # default yubihsm-connector value
-sigsum_agent_yubihsm_port: "1234"       # FIXME: restore back to 12345
 sigsum_agent_yubihsm_connector_retry: true
 # yubihsm credential items consist of four required key/value pairs:
 #   - port: sigsum_agent_yubihsm_port
