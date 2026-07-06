@@ -1,0 +1,24 @@
+# This file is managed by ansible -- do not edit.
+
+[Unit]
+Description=Ed25519 signing for various backends using the ssh-agent protocol
+PartOf=sigsum-agent.socket
+Requires=sigsum-agent.socket
+After=sigsum-agent.socket
+{% if sigsum_yubihsm_credentials | length > 0 %}
+After={% for hsm in sigsum_yubihsm_credentials %}yubihsm-connector@{{ hsm.connector }}.service{% if not loop.last %} {% endif %}{% endfor +%}
+BindsTo={% for hsm in sigsum_yubihsm_credentials %}yubihsm-connector@{{ hsm.connector }}.service{% if not loop.last %} {% endif %}{% endfor +%}
+{% endif %}
+
+[Service]
+Type=exec
+User=sigsum-agent
+StandardInput=socket
+StandardError=journal
+EnvironmentFile=/etc/sigsum-agent/sigsum-agent.conf
+{% if sigsum_agent_soft_key is defined %}
+ExecStart=/usr/bin/sigsum-agent --key-file "$KEY_FILE" "$RETRY"
+{% else %}
+ExecStart=/usr/bin/sigsum-agent --auth-file "$AUTH_FILE" --key-id "$KEY_ID" "$RETRY"
+{% endif %}
+KillSignal=SIGHUP

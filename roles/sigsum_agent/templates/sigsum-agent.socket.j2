@@ -1,0 +1,13 @@
+# This file is managed by ansible -- do not edit.
+
+[Unit]
+Description=sigsum-agent activation socket
+
+[Socket]
+RuntimeDirectory=sigsum-agent
+ListenStream=/run/sigsum-agent/sigsum-agent.socket
+SocketUser=sigsum-agent
+SocketMode=0660
+
+[Install]
+WantedBy=sockets.target

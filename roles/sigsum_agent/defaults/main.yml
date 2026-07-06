@@ -22,10 +22,11 @@ sigsum_agent_yubihsm_key_id: "500"  # default key id for logs in core/key-mgmt
 sigsum_agent_yubihsm_addr: "localhost"  # default yubihsm-connector value
 sigsum_agent_yubihsm_port: "1234"       # FIXME: restore back to 12345
 sigsum_agent_yubihsm_connector_retry: true
-# yubihsm credential items consist of three key/value pairs:
+# yubihsm credential items consist of four required key/value pairs:
 #   - port: sigsum_agent_yubihsm_port
 #   - auth_id: sigsum_agent_yubihsm_auth_id
 #   - passphrase: sigsum_agent_yubihsm_passphrase
+#   - connector: <name>  # for yubihsm-connector@<name>.service
 sigsum_yubihsm_credentials: []
 
 
