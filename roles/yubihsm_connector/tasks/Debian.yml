@@ -42,9 +42,3 @@
     - name: Install package
       ansible.builtin.apt:
         deb: "/usr/local/share/{{ local_yhsmcon_pkg.name }}"
-
-- name: Disable yubihsm-connector service since we are using instantiated variant
-  ansible.builtin.systemd_service:
-    name: yubihsm-connector
-    enabled: false
-    state: stopped

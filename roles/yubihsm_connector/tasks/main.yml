@@ -2,6 +2,12 @@
 - name: Install yubihsm-connector
   ansible.builtin.include_tasks: "{{ ansible_facts['distribution'] }}.yml"
 
+- name: Disable yubihsm-connector service since we are using instantiated variant
+  ansible.builtin.systemd_service:
+    name: yubihsm-connector
+    enabled: false
+    state: stopped
+
 - name: Configure yubihsm-connector instances
   ansible.builtin.template:
     src: etc/yubihsm-connector.yaml.j2

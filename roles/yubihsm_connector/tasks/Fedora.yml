@@ -3,9 +3,3 @@
   ansible.builtin.dnf:
     name:
       - yubihsm-connector
-
-- name: Disable yubihsm-connector service since we are using instantiated variant
-  ansible.builtin.systemd_service:
-    name: yubihsm-connector
-    enabled: false
-    state: stopped
