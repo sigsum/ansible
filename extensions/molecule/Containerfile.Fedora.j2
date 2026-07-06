@@ -5,7 +5,7 @@ STOPSIGNAL SIGRTMIN+3
 
 RUN dnf -y install systemd systemctl python3
 
-VOLUME [ "/tmp", "/run", "/run/lock" "/sys/fs/cgroup" ]
+VOLUME [ "/tmp", "/run", "/run/lock", "/sys/fs/cgroup" ]
 
 RUN rm -f /lib/systemd/system/multi-user.target.wants/* \
   /etc/systemd/system/*.wants/* \
