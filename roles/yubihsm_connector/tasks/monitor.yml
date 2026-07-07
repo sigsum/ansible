@@ -1,16 +1,16 @@
 ---
 
-- block:
-  when: yubihsm_connector_monitor_email is defined
-  - name: Install a mail program (Debian)
-    when: ansible_facts['distribution'] == "Debian"
-    ansible.builtin.apt:
-      name: mailutils
+- when: yubihsm_connector_monitor_email is defined
+  block:
+    - name: Install a mail program (Debian)
+      when: ansible_facts['distribution'] == "Debian"
+      ansible.builtin.apt:
+        name: mailutils
 
-  - name: Install a mail program (Fedora)
-    when: ansible_facts['distribution'] == "Fedora"
-    ansible.builtin.dnf:
-      name: s-nail
+    - name: Install a mail program (Fedora)
+      when: ansible_facts['distribution'] == "Fedora"
+      ansible.builtin.dnf:
+        name: s-nail
 
 - name: Install script verifying the presence of a YubiHSM device
   ansible.builtin.copy:
