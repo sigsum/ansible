@@ -1,7 +1,7 @@
 ---
 
 - block:
-  when: sigsum_agent_yubihsm_monitor_email is defined
+  when: yubihsm_connector_monitor_email is defined
   - name: Install a mail program (Debian)
     when: ansible_facts['distribution'] == "Debian"
     ansible.builtin.apt:
@@ -29,7 +29,7 @@
       Type=oneshot
       User=yubihsm-connector
       Group=yubihsm-connector
-      ExecStart=/usr/bin/yubihsm-present-p {{ sigsum_agent_yubihsm_monitor_device }} {{ sigsum_agent_yubihsm_monitor_email|default("") }}
+      ExecStart=/usr/bin/yubihsm-present-p {{ yubihsm_connector_monitor_device }} {{ yubihsm_connector_monitor_email|default("") }}
 
       # Sandboxing
       ProtectSystem=full

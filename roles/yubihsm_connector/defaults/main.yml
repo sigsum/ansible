@@ -40,7 +40,7 @@ yubihsm_connector_pkg: []
 
 # If defined, specifies the YubiHSM USB device to monitor for being
 # available. Syntax: serial number as per lsusb(1) output.
-# sigsum_agent_yubihsm_monitor_device: 0018952892
+# yubihsm_connector_monitor_device: 0018952892
 
 # If defined, email is being sent if USB device is not being present.
-# sigsum_agent_yubihsm_monitor_email: sysadmin@domain
+# yubihsm_connector_monitor_email: sysadmin@domain

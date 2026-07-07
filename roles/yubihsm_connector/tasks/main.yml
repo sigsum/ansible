@@ -32,4 +32,4 @@
 # Enable YubiHSM device monitoring
 ###
 - ansible.builtin.include_tasks: monitor.yml
-  when: sigsum_agent_yubihsm_monitor_device is defined
+  when: yubihsm_connector_monitor_device is defined
