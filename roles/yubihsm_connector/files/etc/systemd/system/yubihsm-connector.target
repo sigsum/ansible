@@ -1,7 +1,0 @@
-# This file is managed by ansible -- do not edit.
-
-[Unit]
-Description=Group for YubiHSM connector instances
-
-[Install]
-WantedBy=multi-user.target

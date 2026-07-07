@@ -5,5 +5,11 @@
   roles:
     - sigsum.tlog.sigsum_agent
   vars:
-    sigsum_yubihsm_credentials:
-      - { port: "12345", auth_id: "200", passphrase: "allan tar kakan i 1200 baud" }
+    sigsum_agent_soft_key: |
+      -----BEGIN OPENSSH PRIVATE KEY-----
+      b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+      QyNTUxOQAAACCnyWmob7t95/68BXnUwC7DiMO2roziqAMUBMyGo1yapAAAAJi/ow9qv6MP
+      agAAAAtzc2gtZWQyNTUxOQAAACCnyWmob7t95/68BXnUwC7DiMO2roziqAMUBMyGo1yapA
+      AAAEBOZ9Qjmlep4JjfSsmle7mgcPmzqOin/CUyblEgs1ofhqfJaahvu33n/rwFedTALsOI
+      w7aujOKoAxQEzIajXJqkAAAAEW1vbGVjdWxlOnRlc3Rvbmx5AQIDBA==
+      -----END OPENSSH PRIVATE KEY-----

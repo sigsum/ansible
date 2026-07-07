@@ -15,18 +15,14 @@
 # Configuration of a soft key (unencrypted OpenSSH private-key format)
 # sigsum_agent_soft_key: ""
 
-# Configuration of a YubiHSM
-# sigsum_agent_yubihsm_passphrase: ""  # auth password for session establishment
-sigsum_agent_yubihsm_auth_id: "200"  # default auth id for logs in core/key-mgmt
-sigsum_agent_yubihsm_key_id: "500"  # default key id for logs in core/key-mgmt
-sigsum_agent_yubihsm_addr: "localhost"  # default yubihsm-connector value
-sigsum_agent_yubihsm_port: "1234"       # FIXME: restore back to 12345
-sigsum_agent_yubihsm_connector_retry: true
-# yubihsm credential items consist of three key/value pairs:
-#   - port: sigsum_agent_yubihsm_port
-#   - auth_id: sigsum_agent_yubihsm_auth_id
-#   - passphrase: sigsum_agent_yubihsm_passphrase
+# Configuration of YubiHSM(s), each config consists of four key/value pairs:
+#   - port: 12345
+#   - auth_id: 200
+#   - passphrase: fixme
+#   - connector: <name>  # for yubihsm-connector@<name>.service
 sigsum_yubihsm_credentials: []
+sigsum_agent_yubihsm_key_id: "500"  # default key id for logs in core/key-mgmt
+sigsum_agent_yubihsm_connector_retry: true
 
 
 # If defined, specifies the YubiHSM USB device to monitor for being

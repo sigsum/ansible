@@ -1,0 +1,9 @@
+{% if sigsum_agent_soft_key is defined %}
+# Soft key configuration
+KEY_FILE=/etc/sigsum-agent/key
+{% else %}
+# YubiHSM configuration
+AUTH_FILE=/etc/sigsum-agent/credentials
+KEY_ID={{ sigsum_agent_yubihsm_key_id }}
+{% endif %}
+RETRY={% if sigsum_agent_yubihsm_connector_retry %}--retry{% endif %}

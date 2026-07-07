@@ -3,7 +3,7 @@ yubihsm-connector
 An ansible role that installs Yubico's [yubihsm-connector][].  The
 package-provided `yubihsm-connector.service` is disabled.  Instead, this role
 manages one or more YubiHSM connector instances through
-`yubihsm-connector@.service`, grouped by `yubihsm-connector.target`.
+`yubihsm-connector@.service`.
 
 [yubihsm-connector]: https://developers.yubico.com/yubihsm-connector/
 

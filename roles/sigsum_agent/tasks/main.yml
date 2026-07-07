@@ -26,12 +26,21 @@
       - (sigsum_agent_soft_key is defined) != (sigsum_yubihsm_credentials | length > 0)
     fail_msg: "Either a soft key or yubihsm credentials are required"
 
+- name: Configure sigsum-agent environment file
+  ansible.builtin.template:
+    src: sigsum-agent.conf.j2
+    dest: /etc/sigsum-agent/sigsum-agent.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart sigsum-agent service
+
 - name: Add sigsum-agent soft key
   ansible.builtin.copy:
     content: "{{ sigsum_agent_soft_key }}"
     dest: "/etc/sigsum-agent/key"
-    owner: "{{ sigsum_agent_user }}"
-    group: "{{ sigsum_agent_user }}"
+    owner: sigsum-agent
+    group: sigsum-agent
     mode: '0600'
   when: sigsum_agent_soft_key is defined
   notify: Restart sigsum-agent service
@@ -40,11 +49,34 @@
   ansible.builtin.template:
     src: "credentials.j2"
     dest: "/etc/sigsum-agent/credentials"
-    owner: "{{ sigsum_agent_user }}"
-    group: "{{ sigsum_agent_user }}"
+    owner: sigsum-agent
+    group: sigsum-agent
     mode: '0600'
   when: sigsum_yubihsm_credentials | length > 0
   notify: Restart sigsum-agent service
+
+###
+# Configure systemd
+###
+- name: Configure systemd sigsum-agent service
+  ansible.builtin.template:
+    src: sigsum-agent.service.j2
+    dest: /etc/systemd/system/sigsum-agent.service
+    mode: '0644'
+  notify:
+    - Reload systemd daemon
+    - Restart sigsum-agent service
+    - Enable sigsum-agent service
+
+- name: Configure systemd socket activation for sigsum-agent
+  ansible.builtin.template:
+    src: sigsum-agent.socket.j2
+    dest: /etc/systemd/system/sigsum-agent.socket
+    mode: '0644'
+  notify:
+    - Reload systemd daemon
+    - Restart sigsum-agent socket
+    - Enable sigsum-agent socket
 
 ###
 # Enable YubiHSM device monitoring
