@@ -19,27 +19,31 @@
       - netcat
     state: present
 
-- name: Install Glasklar package archive keys
-  ansible.builtin.copy:
-    dest: "/etc/pki/rpm-gpg/{{ item }}"
-    src: "etc/pki/rpm-gpg/{{ item }}"
-  loop:
-    - glasklar-mw.asc
+- name: Create dir for package trust root
+  ansible.builtin.file:
+    path: /etc/pki/glasklar
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
 
-- name: Configure Glasklar package archive
+- name: Install package trust root files
   ansible.builtin.copy:
-    dest: /etc/yum.repos.d/glasklar.repo
-    content: |
-      [glasklar]
-      name=Glasklar Teknik
-      baseurl=http://rpm.glasklarteknik.se/
-      metadata_expire=10m
-      priority=10
-      enabled=1
-      type=rpm
-      repo_gpgcheck=1
-      gpgcheck=1
-      gpgkey=file:///etc/pki/rpm-gpg/glasklar-mw.asc
+    src: "etc/pki/rpm-gpg/{{item}}"
+    dest: "/etc/pki/glasklar/{{ item }}"
+    mode: "0555"
+  loop: "{{ rpm_trustroot | default([]) }}"
+
+- name: Add Glasklar package repo
+  ansible.builtin.yum_repository:
+    baseurl: https://rpm.glasklarteknik.se/
+    description: Glasklar Teknik
+    gpgcheck: true
+    gpgkey: "{{ ['/etc/pki/glasklar/'] | product(rpm_trustroot) | map('join') }}"
+    metadata_expire: 5m
+    name: glasklar
+    repo_gpgcheck: false
+    sslverify: true
 
 - name: Update DNF metadata cache
   ansible.builtin.dnf:
