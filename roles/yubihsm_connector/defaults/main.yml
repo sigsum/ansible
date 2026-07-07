@@ -25,6 +25,9 @@ yubihsm_connector_log_level: warn
 # monitored enables periodic checks that the YubiHSM USB device is present.
 yubihsm_connector_instances: []
 
+# If defined, email is sent for each monitored USB device not present.
+# yubihsm_connector_monitor_email: sysadmin@domain
+
 # Debian package source base URL.
 yubihsm_connector_debian_deb_source: https://deb.debian.org/debian
 
@@ -39,6 +42,3 @@ yubihsm_connector_debian_deb_source: https://deb.debian.org/debian
 #       url: https://www.glasklarteknik.se/archive/pkg/yubihsm-connector_3.0.7-1_arm64.deb
 #       checksum: sha256:ade548f674e4b9b795ed43b02c037e9aa8dd863b79e25b70c18870e8c396eee6
 yubihsm_connector_pkg: []
-
-# If defined, email is being sent if USB device is not being present.
-# yubihsm_connector_monitor_email: sysadmin@domain
