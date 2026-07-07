@@ -27,3 +27,9 @@
     - Reload systemd
     - Restart yubihsm-connector instances
     - Enable yubihsm-connector instances
+#
+###
+# Enable YubiHSM device monitoring
+###
+- ansible.builtin.include_tasks: monitor.yml
+  when: sigsum_agent_yubihsm_monitor_device is defined
