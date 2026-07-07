@@ -1,0 +1,28 @@
+[Unit]
+Description=Check if a YubiHSM device is present
+
+[Service]
+Type=oneshot
+User=yubihsm-connector
+Group=yubihsm-connector
+ExecStart=/usr/bin/yubihsm-present-p {{ yubihsm_connector_monitor_device }} {{ yubihsm_connector_monitor_email|default("") }}
+
+# Sandboxing
+ProtectSystem=full
+ProtectHome=true
+PrivateTmp=true
+PrivateIPC=true
+ProtectControlGroups=true
+RemoveIPC=true
+# NOTE: Enabling any of the following makes /usr/bin/mail.mailutils fail with "postdrop: warning: mail_queue_enter: create file maildrop/X.Y: Permission denied":
+# PrivateDevices=true
+# ProtectHostname=true
+# ProtectClock=true
+# ProtectKernelTunables=true
+# ProtectKernelModules=true
+# ProtectKernelLogs=true
+# RestrictNamespaces=true
+# LockPersonality=true
+# NoNewPrivileges=true
+# RestrictRealtime=true
+# RestrictSUIDSGID=true
