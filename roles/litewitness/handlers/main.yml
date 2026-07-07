@@ -4,3 +4,8 @@
     name: litewitness
     enabled: true
     state: started
+
+- name: Restart litewitness service
+  ansible.builtin.systemd_service:
+    name: litewitness
+    state: restarted

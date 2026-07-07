@@ -3,6 +3,7 @@
   ansible.builtin.template:
     src: etc/litewitness/litewitness.conf.j2
     dest: /etc/litewitness/litewitness.conf
+  notify: Restart litewitness service
 
 # NOTE: We're missing some functionality from sigsum.ansible.litewitness-1.7.x, namely:
 # * no dynamic updating of log lists
