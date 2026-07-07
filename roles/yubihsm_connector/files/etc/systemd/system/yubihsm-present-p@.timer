@@ -1,5 +1,5 @@
 [Unit]
-Description=Check if a YubiHSM device is present
+Description=Check if YubiHSM device %i is present
 
 [Timer]
 OnCalendar=hourly

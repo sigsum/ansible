@@ -1,11 +1,12 @@
 [Unit]
-Description=Check if a YubiHSM device is present
+Description=Check if YubiHSM device %i is present
 
 [Service]
 Type=oneshot
 User=yubihsm-connector
 Group=yubihsm-connector
-ExecStart=/usr/bin/yubihsm-present-p {{ yubihsm_connector_monitor_device }} {{ yubihsm_connector_monitor_email|default("") }}
+EnvironmentFile=/etc/yubihsm-present-p/%i.conf
+ExecStart=/usr/bin/yubihsm-present-p $SERIAL $EMAIL
 
 # Sandboxing
 ProtectSystem=full

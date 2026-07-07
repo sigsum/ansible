@@ -17,10 +17,12 @@ yubihsm_connector_log_level: warn
 #     - name: hsm1
 #       serial_number: 11111111
 #       port: 12345
+#       monitored: true
 #
 # name is arbitrary.
 # serial_number must match the YubiHSM device.
 # port must be available for listening on 127.0.0.1.
+# monitored enables periodic checks that the YubiHSM USB device is present.
 yubihsm_connector_instances: []
 
 # Debian package source base URL.
@@ -37,10 +39,6 @@ yubihsm_connector_debian_deb_source: https://deb.debian.org/debian
 #       url: https://www.glasklarteknik.se/archive/pkg/yubihsm-connector_3.0.7-1_arm64.deb
 #       checksum: sha256:ade548f674e4b9b795ed43b02c037e9aa8dd863b79e25b70c18870e8c396eee6
 yubihsm_connector_pkg: []
-
-# If defined, specifies the YubiHSM USB device to monitor for being
-# available. Syntax: serial number as per lsusb(1) output.
-# yubihsm_connector_monitor_device: 0018952892
 
 # If defined, email is being sent if USB device is not being present.
 # yubihsm_connector_monitor_email: sysadmin@domain

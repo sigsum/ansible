@@ -31,5 +31,13 @@
 ###
 # Enable YubiHSM device monitoring
 ###
+- name: Select monitored YubiHSM connector instances
+  ansible.builtin.set_fact:
+    yubihsm_connector_monitored_instances: >-
+      {{ yubihsm_connector_instances |
+      selectattr('monitored', 'defined') |
+      selectattr('monitored') |
+      list }}
+
 - ansible.builtin.include_tasks: monitor.yml
-  when: yubihsm_connector_monitor_device is defined
+  when: yubihsm_connector_monitored_instances | length > 0

@@ -18,22 +18,30 @@
     src: usr/bin/yubihsm-present-p
     mode: '0755'
 
-- name: Create service verifying the presence of a YubiHSM device
+- name: Create directory for yubihsm-present-p environment files
+  ansible.builtin.file:
+    path: /etc/yubihsm-present-p
+    state: directory
+    mode: '0755'
+
+- name: Configure yubihsm-present-p environment files
   ansible.builtin.template:
-    dest: /etc/systemd/system/yubihsm-present-p.service
-    src: etc/systemd/system/yubihsm-present-p.service.j2
+    dest: "/etc/yubihsm-present-p/{{ item.name }}.conf"
+    src: etc/yubihsm-present-p.conf.j2
     mode: '0644'
-  notify: Reload systemd
+  loop: "{{ yubihsm_connector_monitored_instances }}"
+  notify: Enable yubihsm-present-p timers
 
-- name: Create timer for yubihsm-present-p
+- name: Create service verifying the presence of YubiHSM devices
   ansible.builtin.copy:
-    dest: /etc/systemd/system/yubihsm-present-p.timer
-    src: etc/systemd/system/yubihsm-present-p.timer
+    dest: /etc/systemd/system/yubihsm-present-p@.service
+    src: etc/systemd/system/yubihsm-present-p@.service
     mode: '0644'
   notify: Reload systemd
 
-- name: Enable timer for yubihsm-present-p
-  ansible.builtin.systemd_service:
-    name: yubihsm-present-p.timer
-    state: started
-    enabled: true
+- name: Create timer for yubihsm-present-p instances
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/yubihsm-present-p@.timer
+    src: etc/systemd/system/yubihsm-present-p@.timer
+    mode: '0644'
+  notify: Reload systemd
