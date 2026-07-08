@@ -1,0 +1,9 @@
+[Unit]
+Description=Check if YubiHSM device %i is present
+
+[Timer]
+OnCalendar=hourly
+Persistent=true
+
+[Install]
+WantedBy=multi-user.target
