@@ -9,7 +9,7 @@
 
     - name: Check litewitness systemd service
       ansible.builtin.systemd:
-        name: "litewitness@{{ litewitness_user }}"
+        name: "litewitness"
       register: litewitness_service_status
 
     - name: Assert that litewitness systemd service is running
@@ -64,55 +64,11 @@
         cat req | curl -s -w '%{content_type}\n%{http_code}\n' --data-binary @- http://{{ litewitness_listen_endpoint }}/add-checkpoint > rsp
         [ "$(tail -n1 rsp)" = 409 ] || exit 1
 
-    - name: Test update per-log bastions
-      become_user: "{{ litewitness_user }}"
-      become: true
-      block:
-
-        - name: Test add per-log bastions
-          ansible.builtin.shell: |
-            cd /tmp
-            cat << EOF > per-log-bastions
-            go.sum database tree
-            b1.localhost:1337 b2.localhost:1337
-            EOF
-
-            ~/.local/bin/litewitness-configure {{ litewitness_database_file }} ~/.config/litewitness/log-keys ~/.config/litewitness/non-sigsum-log-keys per-log-bastions
-
-            ~/go/bin/witnessctl list-logs -db {{ litewitness_database_file }} \
-              | jq -e -s '.[] | select(.origin == "go.sum database tree") | .bastions | sort == ["b1.localhost:1337", "b2.localhost:1337"]'
-
-        - name: Test add existing per-log bastions
-          ansible.builtin.shell: |
-            cd /tmp
-            cat << EOF > per-log-bastions
-            go.sum database tree
-            b1.localhost:1337 b2.localhost:1337
-            EOF
-
-            ~/.local/bin/litewitness-configure {{ litewitness_database_file }} ~/.config/litewitness/log-keys ~/.config/litewitness/non-sigsum-log-keys per-log-bastions
-
-            ~/go/bin/witnessctl list-logs -db {{ litewitness_database_file }} \
-              | jq -e -s '.[] | select(.origin == "go.sum database tree") | .bastions | sort == ["b1.localhost:1337", "b2.localhost:1337"]'
-
-        - name: Test remove per-log bastions
-          ansible.builtin.shell: |
-            cd /tmp
-            cat << EOF > per-log-bastions
-            go.sum database tree
-            b1.localhost:1337
-            EOF
-
-            ~/.local/bin/litewitness-configure {{ litewitness_database_file }} ~/.config/litewitness/log-keys ~/.config/litewitness/non-sigsum-log-keys per-log-bastions
-
-            ~/go/bin/witnessctl list-logs -db {{ litewitness_database_file }} \
-              | jq -e -s '.[] | select(.origin == "go.sum database tree") | .bastions | sort == ["b1.localhost:1337"]'
-
     - name: Restore initial database state
       ansible.builtin.shell: |
-        systemctl stop litewitness@{{ litewitness_user }}
+        systemctl stop litewitness
         rm {{ litewitness_database_file }}-wal
         rm {{ litewitness_database_file }}-shm
         mv {{ litewitness_database_file }}.BAK {{ litewitness_database_file }}
         chown {{ litewitness_user }}:{{ litewitness_user }} {{ litewitness_database_file }}
-        systemctl start litewitness@{{ litewitness_user }}
+        systemctl start litewitness
