@@ -12,4 +12,4 @@ authors:
 tags:
   - sigsum
 license_file: LICENSE
-description: Roles and modules for installing and setting up Sigsum transparency logs and witnesses
+description: Roles and modules for installing and setting up transparency log witnesses
