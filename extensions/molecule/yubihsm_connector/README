@@ -1,2 +1,2 @@
 Test that package installation succeeds and that the yubihsm_connector role
-configures an instantiated connector service on bookworm/trixie.
+configures an instantiated connector service on bookworm/trixie/fedora.

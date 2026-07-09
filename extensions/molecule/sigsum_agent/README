@@ -28,6 +28,8 @@ If the YubiHSM device has been provisioned, only the connector is required.
 
 ---Deploy the sigsum_agent role on host example.org
 
+FIXME: the below has not been updated since we refactored with packaging.
+
 The variables that match the above provisioning would be:
 
     ---
