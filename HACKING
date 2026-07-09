@@ -18,11 +18,9 @@ then just exit your shell and remove the venv directory.)
 
 ---How to run all molecule tests
 
-    $ molecule test
-    $ molecule test -s sigsum_agent
     $ molecule test -s yubihsm_connector
+    $ molecule test -s sigsum_agent
     $ molecule test -s litewitness
-    $ molecule test -s litebastion
 
 If a test fails, molecule gives a nonzero return code. This means that you can
 use a script like the following to run all mulecule tests, where the "All tests
@@ -30,12 +28,10 @@ passed successfully" echo line is reached only if all tests passed:
 
     #!/bin/bash
     set -e
-    molecule test
-    molecule test -s sigsum_agent
     molecule test -s yubihsm_connector
+    molecule test -s sigsum_agent
     molecule test -s litewitness
-    molecule test -s litebastion
-    echo All tests passed successfully
+    echo "All tests passed successfully"
 
 ---What to expect in the output from the molecule tests
 
@@ -69,19 +65,19 @@ container in case of failure (which permits "molecule login").
 
 Interactive deploy, debug, deploy again, verify, and clean-up session:
 
-    $ molecule converge
-    $ molecule login --host sigsum-primary
-    $ molecule login --host sigsum-primary-ssh-agent
-    $ molecule converge
-    $ molecule verify
-    $ molecule destroy
+    $ molecule converge -s sigsum_agent
+    $ molecule login -s sigsum_agent --host trixie
+    $ molecule login -s sigsum_agent --host trixie
+    $ molecule converge -s sigsum_agent
+    $ molecule verify -s sigsum_agent
+    $ molecule destroy -s sigsum_agent
 
-To work with a different scenario like ./extensions/molecule/sigsum_agent, use
-"-s sigsum_agent".
+To work with a different scenario like ./extensions/molecule/litewitness, use
+"-s litewitness".
 
 Each test scenario can have its own configuration in a "scenario:" section in
 the corresponding molecule.yml file, as in for example the
-molecule/litebastion/molecule.yml file. See
+molecule/litewitness/molecule.yml file. For further reading, see:
 https://ansible.readthedocs.io/projects/molecule/configuration/#scenario
 
 ---How to make a release
