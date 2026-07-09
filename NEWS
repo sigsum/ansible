@@ -1,11 +1,22 @@
-NEWS for upcoming sigsum ansible v2.0.0
+NEWS for upcoming sigsum ansible v2.0.0-WIP
 
-	Changes between v1.7.0 and v2.0.0:
+    Changes between v1.7.0 and v2.0.0-WIP:
 
-	* Collection name has changed from 'ansible' to 'tlog'. Roles
-          are now referred to as 'sigsum.tlog.<role>'.
+    * Collection name has changed from 'ansible' to 'tlog'. In other words,
+      roles are now referred to as 'sigsum.tlog.<role>'.
+    * Fedora 43 is supported in addition to Debian trixie.
+    * Software is installed using distribution packages.
+    * All roles install systemd files with system scope.
+    * Support for running litewitness with metrics.
+    * Support for running with multiple YubiHSM connectors.
 
-	* Software is being installed using dist packages.
+    Compatibility notice:
+
+    * Role configuration is not backwards compatible.  You will need
+      to read the documentation for the new roles in order to migrate.
+    * Some roles (like the sigsum log and litewitness roles) and role
+      functionality (like configuring per-log bastions) have been
+      removed.  We expect to add back some of this at a later time.
 
 NEWS for upcoming sigsum ansible v1.7.0
 
