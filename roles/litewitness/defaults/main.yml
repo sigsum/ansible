@@ -5,7 +5,6 @@
 #
 # ---Example
 # litewitness_name: example.org/witness
-#
 litewitness_name: ""
 
 # Keyhash of the public Ed25519 witness key (hint: sigsum-key to-hash -k
@@ -14,16 +13,15 @@ litewitness_name: ""
 #
 # ---Example
 # litewitness_keygrip: 70ef4421b0ff38436855c2650988da6b03309d2105d6280fbb30dd1e635954ae
-#
 litewitness_keygrip: ""
 
 # Address to listen for witness requests.
 # Note: you need to sort out HTTPS reverse proxying outside of this role.
-litewitness_listen_endpoint: ""
+litewitness_listen_endpoint: "127.0.0.1:6000"
 
 # Address to listen for metrics requests, instead of exposing them on the main
 # listener.
-litewitness_listen_metrics: ""
+litewitness_listen_metrics: "127.0.0.1:5999"
 
 # Toggle / and /logz endpoints
 litewitness_debug_endpoints_enabled: false
@@ -40,6 +38,7 @@ litewitness_debug_endpoints_enabled: false
 #       - "b1.example.org:443"
 #       - "b2.example.org:443"
 #
+# Warning: per-log bastions are currently ignored (TODO: fixme).
 litewitness_logs: []
 
 # Optionally discover logs to witness from a centrally managed list.  The
@@ -48,7 +47,6 @@ litewitness_logs: []
 # ---Example
 # litewitness_pull_logs:
 #   - https://testing.witness-network.org/log-list.1
-#
 litewitness_pull_logs: []
 
 # Schedule for the job that pulls logs from a centrally managed list, specified
@@ -58,6 +56,5 @@ litewitness_pull_logs: []
 # litewitness_pull_logs_schedule:
 #   minute: "0"
 #   hour: "*/2"
-#
 litewitness_pull_logs_schedule:
   minute: "*/15"
