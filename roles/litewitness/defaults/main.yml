@@ -48,13 +48,3 @@ litewitness_logs: []
 # litewitness_pull_logs:
 #   - https://testing.witness-network.org/log-list.1
 litewitness_pull_logs: []
-
-# Schedule for the job that pulls logs from a centrally managed list, specified
-# using the crontab(5) format.  By default, the job runs every 15 minutes.
-#
-# ---Example
-# litewitness_pull_logs_schedule:
-#   minute: "0"
-#   hour: "*/2"
-litewitness_pull_logs_schedule:
-  minute: "*/15"

@@ -6,7 +6,6 @@
   notify: Restart litewitness service
 
 # NOTE: We're missing some functionality from sigsum.ansible.litewitness-1.7.x, namely:
-# * no dynamic updating of log lists
 # * keys are not being removed, only added
 
 - name: Configure log origins
@@ -32,3 +31,33 @@
     (r.rc != 0) and
     ("already exists for log" not in r.stderr)
   changed_when: false
+
+- name: Install log-lists configuration
+  ansible.builtin.template:
+    src: etc/litewitness/log-lists.j2
+    dest: /etc/litewitness/log-lists
+  notify: Pull log lists
+
+- name: Install litewitness-pull-logs script
+  ansible.builtin.copy:
+    src: usr/bin/litewitness-pull-logs
+    dest: /usr/bin/litewitness-pull-logs
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Install litewitness-pull-logs systemd service
+  ansible.builtin.template:
+    src: etc/systemd/system/litewitness-pull-logs.service.j2
+    dest: /etc/systemd/system/litewitness-pull-logs.service
+    mode: "0644"
+  notify: Reload systemd
+
+- name: Install litewitness-pull-logs systemd timer
+  ansible.builtin.template:
+    src: etc/systemd/system/litewitness-pull-logs.timer.j2
+    dest: /etc/systemd/system/litewitness-pull-logs.timer
+    mode: "0644"
+  notify:
+    - Reload systemd
+    - Enable and start litewitness-pull-logs timer

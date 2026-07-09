@@ -1,0 +1,12 @@
+# This file is managed by ansible -- do not edit.
+
+[Unit]
+Description=Pull log lists for litewitness to witness periodically
+
+[Timer]
+OnCalendar=*:0/15
+Persistent=true
+Unit=litewitness-pull-logs.service
+
+[Install]
+WantedBy=timers.target

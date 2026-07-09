@@ -5,12 +5,10 @@ set -eu
 db_file="$1"; shift
 log_lists_file="$1"; shift
 
-witnessctl="$HOME/go/bin/witnessctl"
-
 while IFS= read -r line; do
 	if [[ -z "$line" ]] || [[ "$line" =~ ^# ]]; then
 		continue # Skip empty lines and comments
 	fi
 
-	"$witnessctl" pull-logs -db "$db_file" -source "$line" -verbose
+	witnessctl pull-logs -db "$db_file" -source "$line" -verbose
 done < "$log_lists_file"
