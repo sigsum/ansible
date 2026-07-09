@@ -3,9 +3,8 @@
   ansible.builtin.dnf:
     name:
       - sudo
-      - util-linux-core # kill command, needed for service reload (litebastion)
       - systemd
-      - sqlite3  # litewitness
+      - sqlite3  # litewitness test (verify.yml)
     state: present
 
 - name: Install debug tooling
