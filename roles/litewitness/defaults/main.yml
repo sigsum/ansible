@@ -46,7 +46,8 @@ litewitness_debug_endpoints_enabled: false
 litewitness_logs: []
 
 # Optionally discover logs to witness from a centrally managed list.  The
-# expected list format is defined by <https://witness-network.org/>.
+# expected list format is defined by <https://witness-network.org/>.  A
+# systemd timer pulls these lists every 15 minutes (no-op when empty).
 #
 # ---Example
 # litewitness_pull_logs:

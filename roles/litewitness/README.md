@@ -9,31 +9,24 @@ Ed25519 backends.  All witness state is kept in a `sqlite3` database.
 
 ## Requirements
 
-Only Debian 12 and later is supported right now.
+Debian trixie / Fedora 43.  This role likely runs on later Debian and Fedora
+distributions as well, but it is not part of our testing and so is unsupported.
+
+It is assumed that the target system has `systemd` available, and that
+`litewitness` can be installed using the distribution's package manager.  You
+will need to configure [Glasklar's package repository][] (or your own) for this.
 
 ## Role variables
 
-See [defaults/main.yml](./defaults/main.yml).  See also
+See [defaults/main.yml](./defaults/main.yml).  Note that you need to set
+`litewitness_name` and `litewitness_keygrip` for a working setup. See also
 [vars/main.yml](./vars/main.yml) for the `sqlite3` database location.
 
 ## Dependencies
 
 * sigsum.tlog.sigsum_agent
 
-You will need to configure sigsum agent (preferably with an HSM), see
-[roles/sigsum_agent](../roles/sigsum_agent).
-
-For more information on the litewitness, see [torchwood][].
-
-[torchwood]: https://github.com/FiloSottile/torchwood
-
 ## Example playbook
 
-See the litewitness [molecule-test](../../extensions/molecule/litewitness) for an example
-that deploys this service with a soft key and a localhost listening-address.
-
-## Using several instances of the litewitness role
-
-See [comment in the molecule-test converge.yml
-file](../../molecule/litewitness/converge.yml) for an example of how
-to use two instances of the litewitness role.
+See the litewitness [molecule test](../../extensions/molecule/litewitness) for
+an example that deploys this role, including sigsum-agent configuration.
