@@ -5,32 +5,11 @@
     dest: /etc/litewitness/litewitness.conf
   notify: Restart litewitness service
 
-# NOTE: We're missing some functionality from sigsum.ansible.litewitness-1.7.x, namely:
-# * keys are not being removed, only added
-
-- name: Configure log origins
-  ansible.builtin.command:
-    cmd: witnessctl add-log -db "{{ litewitness_database_file }}" -origin "{{ item.origin | default(item.vkey | split('+') | first) }}"
-  loop: "{{ litewitness_logs|default([]) }}"
-  become: true
-  become_user: "{{ litewitness_user }}"
-  register: r
-  failed_when: >
-    (r.rc != 0) and
-    ("Error adding log: sqlite: step: constraint failed: UNIQUE constraint failed: log.origin" not in r.stderr)
-  changed_when: false
-
-- name: Configure log keys
-  ansible.builtin.command:
-    cmd: witnessctl add-key -db "{{ litewitness_database_file }}" -origin "{{ item.origin | default(item.vkey | split('+') | first) }}" -key "{{ item.vkey }}"
-  loop: "{{ litewitness_logs|default([]) }}"
-  become: true
-  become_user: "{{ litewitness_user }}"
-  register: r
-  failed_when: >
-    (r.rc != 0) and
-    ("already exists for log" not in r.stderr)
-  changed_when: false
+- name: Install log-list configuration
+  ansible.builtin.template:
+    src: etc/litewitness/log-list.j2
+    dest: /etc/litewitness/log-list
+  notify: Pull local log list
 
 - name: Install log-lists configuration
   ansible.builtin.template:

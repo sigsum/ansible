@@ -26,19 +26,23 @@ litewitness_listen_metrics: "127.0.0.1:5999"
 # Toggle / and /logz endpoints
 litewitness_debug_endpoints_enabled: false
 
-# Define which logs to be witnessed and whether they have their own bastion
-# host(s).  It is required to supply `vkey`.  It is optional to supply `origin`
-# and `bastions`.  The default value for `origin` is the `vkey` key name.
+
+# Define which logs to be witnessed.  It is required to supply `vkey`, `qpd`,
+# and `contact` per the log-list format.  It is optional to supply `origin`.
+# The default value for `origin` is the `vkey` key name (strongly recommended).
+#
+# Read more:
+# https://witness-network.org/log-list-format/
 #
 # ---Example
 # litewitness_logs:
 #   - vkey: "sum.golang.org+033de0ae+Ac4zctda0e5eza+HJyk9SxEdh+s3Ux18htTTAD8OuAn8"
 #     origin: "go.sum database tree"
-#     bastions:
-#       - "b1.example.org:443"
-#       - "b2.example.org:443"
+#     qpd: 86400
+#     contact: sysadmin@example.org
 #
-# Warning: per-log bastions are currently ignored (TODO: fixme).
+# Warning: removing/updating a log here *does not* result in an updated
+# configuration.  For updates and removal you need to tinker manually.
 litewitness_logs: []
 
 # Optionally discover logs to witness from a centrally managed list.  The

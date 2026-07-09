@@ -40,5 +40,9 @@ litewitness_keygrip: 74f4c44e9025398a061683189a3eb86559a3bd2f231393c5212dd8d6c52
 
 litewitness_logs:
   - vkey: sigsum.org/v1/tree/4804b3df59edc03c0eee2a2aa5d85e2ea2636bb1709b1efd0a0fafdaeb6336f4+31ca8824+AWq9jEBRcg/4MIs8jAR8tpuLXNncA0c/QDo9r9lirdiF
+    qpd: 8640
+    contact: sysadmin@example.org
   - vkey: "sum.golang.org+033de0ae+Ac4zctda0e5eza+HJyk9SxEdh+s3Ux18htTTAD8OuAn8"
     origin: "go.sum database tree"
+    qpd: 86400
+    contact: sysadmin@example.org
