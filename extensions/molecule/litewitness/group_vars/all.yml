@@ -37,7 +37,6 @@ sigsum_agent_soft_key: |
 #
 litewitness_name: test.example.org/testwitness
 litewitness_keygrip: 74f4c44e9025398a061683189a3eb86559a3bd2f231393c5212dd8d6c524ad02
-litewitness_listen_endpoint: "127.0.0.1:2009"
 
 litewitness_logs:
   - vkey: sigsum.org/v1/tree/4804b3df59edc03c0eee2a2aa5d85e2ea2636bb1709b1efd0a0fafdaeb6336f4+31ca8824+AWq9jEBRcg/4MIs8jAR8tpuLXNncA0c/QDo9r9lirdiF
