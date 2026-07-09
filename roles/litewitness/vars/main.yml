@@ -1,4 +1,14 @@
 ---
-litewitness_basedir: /var/lib
-litewitness_home: "{{ litewitness_basedir }}/{{ litewitness_user }}"
+#
+# Constants that need to match upstream deb/rpm packaging, see:
+#
+#   * https://git.glasklar.is/glasklar/infra/packages/torchwood-deb
+#   * https://git.glasklar.is/glasklar/infra/packages/litewitness-rpm
+#
+litewitness_user: litewitness
+litewitness_home: /var/lib/litewitness
+
+#
+# Other constants
+#
 litewitness_database_file: "{{ litewitness_home }}/litewitness.db"
