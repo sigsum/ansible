@@ -28,6 +28,14 @@ platforms:
     override_command: false
     volume_mounts:
        - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
+  - name: fedora43
+    image: registry.fedoraproject.org/fedora:43
+    dockerfile: ../Containerfile.Fedora.j2
+    privileged: true
+    cgroupns_mode: private
+    override_command: false
+    volumes:
+       - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
 
 provisioner:
   name: ansible
