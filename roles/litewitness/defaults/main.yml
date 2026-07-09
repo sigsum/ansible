@@ -1,9 +1,4 @@
 ---
-# UNIX user on the system.  The litewitness systemd service (system scope) will
-# be named litewitness@USER.  The sigsum-agent service will be configured for a
-# separate UNIX user named sigsum-agent-USER such that USER can make use of it.
-litewitness_user: litewitness
-
 # The name of the witness.  Use a schema-less URL for a domain name that you
 # control.  This helps avoid accidental naming collisions for witnesses.  The
 # URL does not need to be network reachable.
@@ -56,21 +51,8 @@ litewitness_pull_logs: []
 litewitness_pull_logs_schedule:
   minute: "*/15"
 
-# Optionally populate one of:
-#
-#   * litewitness_bastion_endpoint (use to specify a bastion host for all logs)
-#   * litewitness_listen_endpoint (use to run without bastion hosts)
-#
-# If neither option is populated, the witness will only be accessible via
-# per-log bastions. If you decide to run without bastion hosts
-# (https://c2sp.org/https-bastion), then you need to sort out your own HTTPS
-# reverse proxy for the witness.
-#
-# ---Example
-# litewitness_bastion_endpoint: "bastion.example.org:443"
-# litewitness_listen_endpoint: "127.0.0.1:2009"
-#
-litewitness_bastion_endpoint: ""
+# Address to listen for witness requests.
+# Note: you need to sort out HTTPS reverse proxying outside of this role.
 litewitness_listen_endpoint: ""
 
 # Toggle / and /logz endpoints
@@ -79,30 +61,3 @@ litewitness_debug_endpoints_enabled: false
 # Address to listen for metrics requests, instead of exposing them on the main
 # listener.
 litewitness_listen_metrics: ""
-
-# Go dependencies.  For each of the listed tools it is possible to override the
-# default version and Go repository by also specifying "version" and "source" as
-# additional dict members alongside "name".  Note that the listed tools are
-# essential, so ensure to keep them if you're overriding and/or extending here.
-#
-# For example,
-#
-#  - {name: "litewitness", version: "v0.3.0", source: "example.org/torchwood"}
-#
-# would result in "go install example.org/torchwood/cmd/litewitness@v0.3.0".
-#
-litewitness_torchwood_version: "v0.9.0"
-litewitness_torchwood_source: "filippo.io/torchwood"
-litewitness_install_tools_from_torchwood:
-  - {
-     name: "litewitness",
-     'source': "{{ litewitness_torchwood_source }}",
-     'version': "{{ litewitness_torchwood_version }}",
-     'handlers': ['Restart litewitness'],
-    }
-  - {
-     name: "witnessctl",
-     'source': "{{ litewitness_torchwood_source }}",
-     'version': "{{ litewitness_torchwood_version }}",
-     'handlers': ['Restart litewitness'],
-    }
