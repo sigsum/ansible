@@ -17,6 +17,17 @@ litewitness_name: ""
 #
 litewitness_keygrip: ""
 
+# Address to listen for witness requests.
+# Note: you need to sort out HTTPS reverse proxying outside of this role.
+litewitness_listen_endpoint: ""
+
+# Address to listen for metrics requests, instead of exposing them on the main
+# listener.
+litewitness_listen_metrics: ""
+
+# Toggle / and /logz endpoints
+litewitness_debug_endpoints_enabled: false
+
 # Define which logs to be witnessed and whether they have their own bastion
 # host(s).  It is required to supply `vkey`.  It is optional to supply `origin`
 # and `bastions`.  The default value for `origin` is the `vkey` key name.
@@ -50,14 +61,3 @@ litewitness_pull_logs: []
 #
 litewitness_pull_logs_schedule:
   minute: "*/15"
-
-# Address to listen for witness requests.
-# Note: you need to sort out HTTPS reverse proxying outside of this role.
-litewitness_listen_endpoint: ""
-
-# Toggle / and /logz endpoints
-litewitness_debug_endpoints_enabled: false
-
-# Address to listen for metrics requests, instead of exposing them on the main
-# listener.
-litewitness_listen_metrics: ""
