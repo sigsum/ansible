@@ -3,3 +3,4 @@
   ansible.builtin.apt:
     name:
       - torchwood
+  notify: Enable and start litewitness
