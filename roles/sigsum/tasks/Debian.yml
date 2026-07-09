@@ -1,5 +1,0 @@
----
-- name: Install dependencies from package manager
-  ansible.builtin.apt:
-    name: cron
-    state: present
