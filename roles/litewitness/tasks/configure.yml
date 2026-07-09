@@ -9,10 +9,9 @@
 # * no dynamic updating of log lists
 # * keys are not being removed, only added
 
-- name: Configure non-sigsum logs
+- name: Configure log origins
   ansible.builtin.command:
-    # FIXME: if item.origin is defined, use it instead of first part of vkey
-    cmd: "witnessctl add-log -db {{ litewitness_database_file }} -origin {{ item.vkey | split('+') | first }}"
+    cmd: witnessctl add-log -db "{{ litewitness_database_file }}" -origin "{{ item.origin | default(item.vkey | split('+') | first) }}"
   loop: "{{ litewitness_logs|default([]) }}"
   become: true
   become_user: "{{ litewitness_user }}"
@@ -20,11 +19,11 @@
   failed_when: >
     (r.rc != 0) and
     ("Error adding log: sqlite: step: constraint failed: UNIQUE constraint failed: log.origin" not in r.stderr)
+  changed_when: false
 
 - name: Configure log keys
   ansible.builtin.command:
-    # FIXME: if item.origin is defined, use it instead of first part of vkey
-    cmd: "witnessctl add-key -db {{ litewitness_database_file }} -origin {{ item.vkey | split('+') | first }} -key {{ item.vkey }}"
+    cmd: witnessctl add-key -db "{{ litewitness_database_file }}" -origin "{{ item.origin | default(item.vkey | split('+') | first) }}" -key "{{ item.vkey }}"
   loop: "{{ litewitness_logs|default([]) }}"
   become: true
   become_user: "{{ litewitness_user }}"
@@ -32,3 +31,4 @@
   failed_when: >
     (r.rc != 0) and
     ("already exists for log" not in r.stderr)
+  changed_when: false
