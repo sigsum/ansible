@@ -4,19 +4,17 @@ First ensure you have podman and python3-venv installed:
 
     $ apt install podman python3-venv
 
-Then install molecule using pip in a Python virtual environment
-(venv):
+Then install molecule using pip in a Python virtual environment (venv):
 
     $ python3 -m venv venv
     $ source venv/bin/activate
     $ pip install molecule molecule-plugins
 
-Using a Python virtual environment in this way means that venv/bin is
-added to your PATH environment variable (the "activate" script does
-that for you), and all packages installed by pip are also installed in
-the venv directory. You can then run tests using molecule as described
-below. (If you then want to cleanup then just exit your shell and
-remove the venv directory.)
+Using a Python virtual environment in this way means that venv/bin is added to
+your PATH environment variable (the "activate" script does that for you), and
+all packages installed by pip are also installed in the venv directory. You can
+then run tests using molecule as described below. (If you then want to cleanup
+then just exit your shell and remove the venv directory.)
 
 ---How to run all molecule tests
 
@@ -26,10 +24,9 @@ remove the venv directory.)
     $ molecule test -s litewitness
     $ molecule test -s litebastion
 
-If a test fails, molecule gives a nonzero return code. This means that
-you can use a script like the following to run all mulecule tests,
-where the "All tests passed successfully" echo line is reached only if
-all tests passed:
+If a test fails, molecule gives a nonzero return code. This means that you can
+use a script like the following to run all mulecule tests, where the "All tests
+passed successfully" echo line is reached only if all tests passed:
 
     #!/bin/bash
     set -e
@@ -45,34 +42,30 @@ all tests passed:
 The warning "WARNING  Driver podman does not provide a schema" is to be
 expected, that warning can be ignored.
 
-Apart from the exceptions above, the output from the molecule tests
-should include no other error or warning messages.
+Apart from the exceptions above, the output from the molecule tests should
+include no other error or warning messages.
 
 ---Dependencies
 
-The `community.mysql` ansible collection is a dependency specified
-under "dependencies" in the galaxy.yml file. When running molecule
-tests, two additional collections `containers.podman` and
-`ansible.posix` are also used. Those are dependencies of molecule
-itself, as can be seen from `molecule --version`.
+The `community.mysql` ansible collection is a dependency specified under
+"dependencies" in the galaxy.yml file. When running molecule tests, two
+additional collections `containers.podman` and `ansible.posix` are also used.
+Those are dependencies of molecule itself, as can be seen from `molecule
+--version`.
 
 ---How to develop with molecule
 
-Think of "molecule converge" as running ansible on a host. Multiple
-invocations of converge results in multiple runs of ansible on the
-host.
+Think of "molecule converge" as running ansible on a host. Multiple invocations
+of converge results in multiple runs of ansible on the host.
 
-Use "molecule login" to get a shell on the host.  This is, e.g.,
-helpful for debugging and interactive testing (editing a file,
-converge again, etc).
+Use "molecule login" to get a shell on the host.  This is, e.g., helpful for
+debugging and interactive testing (editing a file, converge again, etc).
 
-Use "molecule destroy" to clean up the host.  If any container is
-lingering (podman container ls --all), use "molecule destroy --all"
-instead.
+Use "molecule destroy" to clean up the host.  If any container is lingering
+(podman container ls --all), use "molecule destroy --all" instead.
 
-Use "molecule test" to run an automated test.  Add "--destroy never"
-to keep the container in case of failure (which permits "molecule
-login").
+Use "molecule test" to run an automated test.  Add "--destroy never" to keep the
+container in case of failure (which permits "molecule login").
 
 Interactive deploy, debug, deploy again, verify, and clean-up session:
 
@@ -83,11 +76,11 @@ Interactive deploy, debug, deploy again, verify, and clean-up session:
     $ molecule verify
     $ molecule destroy
 
-To work with a different scenario like ./extensions/molecule/sigsum_agent,
-use "-s sigsum_agent".
+To work with a different scenario like ./extensions/molecule/sigsum_agent, use
+"-s sigsum_agent".
 
-Each test scenario can have its own configuration in a "scenario:"
-section in the corresponding molecule.yml file, as in for example the
+Each test scenario can have its own configuration in a "scenario:" section in
+the corresponding molecule.yml file, as in for example the
 molecule/litebastion/molecule.yml file. See
 https://ansible.readthedocs.io/projects/molecule/configuration/#scenario
 
@@ -95,12 +88,12 @@ https://ansible.readthedocs.io/projects/molecule/configuration/#scenario
 
 Ensure that all molecule tests pass.
 
-Update NEWS file. Check wording of NEWS file entry, it should say
-"NEWS for sigsum ansible v${VERSION}:" and otherwise follow the format
-of previous entries.
+Update NEWS file. Check wording of NEWS file entry, it should say "NEWS for
+sigsum ansible v${VERSION}:" and otherwise follow the format of previous
+entries.
 
-Pay extra attention to any breaking changes and ensure they are
-clearly described in the NEWS file.
+Pay extra attention to any breaking changes and ensure they are clearly
+described in the NEWS file.
 
 Update galaxy.yml 'version'.
 
@@ -109,10 +102,10 @@ Create a signed tag:
     $ git tag --sign v${VERSION} -m "Release ${VERSION}"
     $ git push --tags
 
-Send email to sigsum-announce mailing list with email subject line
-"ANNOUNCE: sigsum ansible v${VERSION}" and email body based on the
-template in the email-templates/release-email-template.txt file.
+Send email to sigsum-announce mailing list with email subject line "ANNOUNCE:
+sigsum ansible v${VERSION}" and email body based on the template in the
+email-templates/release-email-template.txt file.
 
-Post a note about it in the sigsum matrix room, something like this:
-"Sent out announcement for the v${VERSION} release of the sigsum
-ansible collection: <LINK TO ANNOUNCEMENT EMAIL AT lists.sigsum.org>"
+Post a note about it in the sigsum matrix room, something like this: "Sent out
+announcement for the v${VERSION} release of the sigsum ansible collection: <LINK
+TO ANNOUNCEMENT EMAIL AT lists.sigsum.org>"
