@@ -10,7 +10,7 @@ platforms:
     privileged: true
     cgroupns_mode: private
     override_command: false
-    volume_mounts:
+    volumes:
        - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
   - name: trixie-pkg
     image: docker.io/library/debian:trixie
@@ -18,7 +18,7 @@ platforms:
     privileged: true
     cgroupns_mode: private
     override_command: false
-    volume_mounts:
+    volumes:
        - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
   - name: trixie
     image: docker.io/library/debian:trixie
@@ -26,7 +26,7 @@ platforms:
     privileged: true
     cgroupns_mode: private
     override_command: false
-    volume_mounts:
+    volumes:
        - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
   - name: fedora43
     image: registry.fedoraproject.org/fedora:43
