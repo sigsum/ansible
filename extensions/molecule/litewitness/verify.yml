@@ -4,7 +4,6 @@
   vars_files:
     - ../../../roles/litewitness/defaults/main.yml  # role defaults
     - ../../../roles/litewitness/vars/main.yml  # role defaults
-    - vars/vars_for_verify.yml
   tasks:
 
     - name: Check litewitness systemd service
