@@ -4,6 +4,7 @@
   gather_facts: true
   vars:
     rpm_trustroot:
+      - glasklar-elias.asc
       - glasklar-mw.asc
   pre_tasks:
     - ansible.builtin.include_tasks: "prepare_{{ ansible_facts['distribution'] }}.yml"

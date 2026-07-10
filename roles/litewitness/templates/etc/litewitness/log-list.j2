@@ -1,0 +1,14 @@
+#
+# Managed by ansible -- do not edit.
+# Log-list format: https://witness-network.org/log-list-format/
+#
+logs/v0
+{% for log in litewitness_logs | default([]) %}
+
+vkey {{ log.vkey }}
+{% if log.origin is defined %}
+origin {{ log.origin }}
+{% endif %}
+qpd {{ log.qpd }}
+contact {{ log.contact }}
+{% endfor %}

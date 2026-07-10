@@ -8,18 +8,28 @@
 # Uncomment and fill out the details for the backend of your choise.
 #
 # WARNING: it is a bad idea to put soft credentials like private keys and
-# passphrases in this configuration file in plaintext.  Use ansible vault.  For
-# a hint of how to do get started with this, see roles/sigsum's sigsum_db_pw.
+# passphrases in this configuration file in plaintext.  Use ansible vault.
 #
 
+#---
 # Configuration of a soft key (unencrypted OpenSSH private-key format)
+#---
 # sigsum_agent_soft_key: ""
 
-# Configuration of YubiHSM(s), each config consists of four key/value pairs:
+#---
+# Configuration of YubiHSM(s)
+#---
+# Each config item consists of four key/value pairs:
 #   - port: 12345
 #   - auth_id: 200
 #   - passphrase: fixme
 #   - connector: <name>  # for yubihsm-connector@<name>.service
 sigsum_yubihsm_credentials: []
-sigsum_agent_yubihsm_key_id: "500"  # default key id for logs in core/key-mgmt
+
+# YubiHSM key ID.  Note that "500" is a default from:
+# https://git.glasklar.is/sigsum/core/key-mgmt/-/blob/main/scripts/config
+sigsum_agent_yubihsm_key_id: "500"
+
+# Whether sigsum-agent should retry connecting to its YubiHSM connector(s) on
+# failure during startup.
 sigsum_agent_yubihsm_connector_retry: true

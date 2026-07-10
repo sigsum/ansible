@@ -9,3 +9,25 @@
   ansible.builtin.systemd_service:
     name: litewitness
     state: restarted
+
+- name: Pull local log list
+  ansible.builtin.command:
+    cmd: witnessctl pull-logs -db {{ litewitness_database_file }} -source /etc/litewitness/log-list
+  become: true
+  become_user: "{{ litewitness_user }}"
+
+- name: Pull log lists
+  ansible.builtin.command:
+    cmd: /usr/bin/litewitness-pull-logs {{ litewitness_database_file }} /etc/litewitness/log-lists
+  become: true
+  become_user: "{{ litewitness_user }}"
+
+- name: Reload systemd
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Enable and start litewitness-pull-logs timer
+  ansible.builtin.systemd:
+    name: litewitness-pull-logs.timer
+    enabled: true
+    state: started

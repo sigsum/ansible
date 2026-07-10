@@ -9,7 +9,11 @@
     that: litewitness_keygrip != ""
     fail_msg: "litewitness_keygrip must not be empty"
 
-- name: Enforce valid endpoint configuration
+- name: Assert that litewitness_logs entries have required fields
   ansible.builtin.assert:
-    that: not (litewitness_listen_endpoint != "" and litewitness_bastion_endpoint != "")
-    fail_msg: "litewitness_bastion_endpoint and litewitness_listen_endpoint are mutually exclusive"
+    that:
+      - item.vkey | default('') != ""
+      - item.qpd | default('') != ""
+      - item.contact | default('') != ""
+    fail_msg: "vkey, qpd, and contact are required for each entry in litewitness_logs"
+  loop: "{{ litewitness_logs | default([]) }}"

@@ -2,5 +2,5 @@
 - name: Install litewitness and dependencies
   ansible.builtin.apt:
     name:
-      - jq
       - torchwood
+  notify: Enable and start litewitness

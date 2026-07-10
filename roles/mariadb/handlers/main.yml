@@ -1,3 +1,0 @@
----
-- name: Flush Priviliges
-  command: mysql -u root -p{{ mysql_root_password }} -e "FLUSH PRIVILEGES"

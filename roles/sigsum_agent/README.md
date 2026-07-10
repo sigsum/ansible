@@ -1,53 +1,42 @@
 sigsum-agent
 ============
-Ansible role that installs the [sigsum-agent software][].  For overview, sigsum-agent
-is a tiny ssh-agent signing oracle that only works for a few Ed25519 backends:
+An ansible role that installs [sigsum-agent][], a tiny ssh-agent signing
+oracle for Ed25519 keys.  The currently supported backends are:
 
-* Soft key
+* Unencrypted file on disk (soft key)
 * [YubiHSM2][]
 
 The main feature of this role is *process separation*: the user that needs to
 sign a message can do so without access to the private key or any other soft
 credentials to unlock a hardware module.  In other words, only the sigsum-agent
 service needs access to soft key-files or passphrases on disk.  This is achieved
-using systemd socket-based activation, see `daemon(7)` and ` systemd.socket(5)`.
+using systemd socket-based activation, see `daemon(7)` and `systemd.socket(5)`.
 I.e., the sigsum-agent service is started by systemd when an allowed signer
 connects to a well-known UNIX socket using the ssh-agent protocol.  For such a
 connection to succeed, the signer must be a member of the sigsum-agent's group.
 
-This role also optionally sets up monitoring of a specific YubiHSM USB
-device being present.
-
-[sigsum-agent software]: https://git.glasklar.is/sigsum/core/key-mgmt/
+[sigsum-agent]: https://git.glasklar.is/sigsum/core/key-mgmt/
 [YubiHSM2]: https://developers.yubico.com/YubiHSM2/
 
 Requirements
 ------------
-It is assumed that there are packages available for both litewitness
-and sigsum-agent and that the system already contains:
+Debian trixie / Fedora 43.  This role likely runs on later Debian and Fedora
+distributions as well, but it is not part of our testing and so is unsupported.
 
-* systemd
-* yubihsm-connector (only required if [YubiHSM2][] is used as backend -- you may
-  want to use [roles/yubihsm_connector](../yubihsm_connector) for this)
+It is assumed that the target system has `systemd` available, and that
+`sigsum-agent` can be installed using the distribution's package manager.  You
+will need to configure [Glasklar's package repository][] (or your own) for this.
 
-Provided that the above requirements are satisfied, the role should work on most
-Linux system.  Please note that we only test on Debian and Fedora though, see
-[molecule/sigsum_agent](../../extensions/molecule/sigsum_agent/molecule.yml).
+When using a [YubiHSM2][] backend, yubihsm-connector instances must already be
+configured, for example with [roles/yubihsm_connector](../yubihsm_connector).
 
-It is also assumed that a backend key has already been generated before using
-this role.  In other words, this role does not help with any key generation.
-
-While the role is user-scoped (e.g., only writing configuration in the specified
-sigsum-agent's home directory and using `systemd --user` for services), it is
-not supported to configure more than one sigsum-agent per play yet.
+[Glasklar's package repository]: https://git.glasklar.is/glasklar/infra/packages/
 
 Role variables
 --------------
-See [defaults/main.yml](./defaults/main.yml).  You will at minimum need to
-configure access to the private key by defining *one* of these backends:
 
-* Soft key: `sigsum_agent_soft_key`
-* YubiHSM: `sigsum_agent_yubihsm_passphrase`
+See [defaults/main.yml](./defaults/main.yml).  Note that exactly one backend
+must be configured: `sigsum_agent_soft_key` or `sigsum_yubihsm_credentials`.
 
 Dependencies
 ------------
@@ -55,4 +44,5 @@ None.
 
 Example playbook
 ----------------
-See the [molecule converge playbook](../../extensions/molecule/sigsum_agent/converge.yml).
+See the sigsum-agent [molecule test](../../extensions/molecule/sigsum_agent) for
+an example that deploys this role.

@@ -1,0 +1,9 @@
+# This file is managed by ansible -- do not edit.
+
+[Unit]
+Description=Pull log lists for litewitness to witness
+
+[Service]
+Type=oneshot
+User={{ litewitness_user }}
+ExecStart=/usr/bin/litewitness-pull-logs {{ litewitness_database_file }} /etc/litewitness/log-lists
