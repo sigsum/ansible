@@ -63,6 +63,11 @@
         cat req | curl -s -w '%{content_type}\n%{http_code}\n' --data-binary @- http://{{ litewitness_listen_endpoint }}/add-checkpoint > rsp
         [ "$(tail -n1 rsp)" = 409 ] || exit 1
 
+    - name: Test that prometheus metrics are available
+      ansible.builtin.shell: |
+        curl -sf "http://{{ litewitness_listen_metrics }}/metrics" > /tmp/metrics
+        grep '^litewitness_witness_known_logs 2$' /tmp/metrics
+
     - name: Restore initial database state
       ansible.builtin.shell: |
         systemctl stop litewitness
