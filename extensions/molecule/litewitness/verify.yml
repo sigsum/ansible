@@ -65,8 +65,10 @@
 
     - name: Test that prometheus metrics are available
       ansible.builtin.shell: |
-        curl -sf "http://{{ litewitness_listen_metrics }}/metrics" > /tmp/metrics
-        grep '^litewitness_witness_known_logs 2$' /tmp/metrics
+        set -o pipefail
+        curl -sf "http://{{ litewitness_listen_metrics }}" | grep -q '^litewitness_witness_known_logs 2$'
+      args:
+        executable: /bin/bash
 
     - name: Restore initial database state
       ansible.builtin.shell: |
