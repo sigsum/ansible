@@ -29,6 +29,7 @@
         state: present
         update_cache: true
         cache_valid_time: 10800
+  notify: "yubihsm-connector udev refresh"
 
 - name: Install yubihsm_connector from packet
   when: local_yhsmcon_pkg != {}
@@ -42,3 +43,4 @@
     - name: Install package
       ansible.builtin.apt:
         deb: "/usr/local/share/{{ local_yhsmcon_pkg.name }}"
+  notify: "yubihsm-connector udev refresh"

@@ -3,3 +3,4 @@
   ansible.builtin.dnf:
     name:
       - yubihsm-connector
+  notify: "yubihsm-connector udev refresh"

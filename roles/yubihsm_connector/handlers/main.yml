@@ -22,3 +22,14 @@
     enabled: true
     state: started
   with_items: "{{ yubihsm_connector_instances }}"
+
+- name: reload udev rules
+  listen: "yubihsm-connector udev refresh"
+  ansible.builtin.command: udevadm control --reload-rules
+  when: yubihsm_connector_manage_udev | default(true)
+
+- name: retrigger udev for yubihsm hardware
+  listen: "yubihsm-connector udev refresh"
+  ansible.builtin.command: >
+    udevadm trigger --subsystem-match=usb --attr-match=idVendor=1050
+  when: yubihsm_connector_manage_udev | default(true)
