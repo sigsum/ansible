@@ -39,3 +39,8 @@
       ansible.builtin.assert:
         that: package_version.stdout == "3.0.7-1"
       when: inventory_hostname == "trixie-pkg"
+
+    - name: Rule file is deployed with expected match criteria
+      ansible.builtin.shell: >
+        grep -q 'idVendor}=="1050"' /usr/lib/udev/rules.d/*-yubihsm-connector.rules
+      changed_when: false

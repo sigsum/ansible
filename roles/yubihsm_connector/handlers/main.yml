@@ -22,3 +22,18 @@
     enabled: true
     state: started
   with_items: "{{ yubihsm_connector_instances }}"
+
+- name: Reload udev rules
+  listen: "yubihsm-connector udev refresh"
+  ansible.builtin.command: udevadm control --reload-rules
+  # This is here to disable this handler in molecule where udevadm is
+  # not available.
+  when: yubihsm_connector_manage_udev | default(true)
+
+- name: Retrigger udev for yubihsm hardware
+  listen: "yubihsm-connector udev refresh"
+  ansible.builtin.command: >
+    udevadm trigger --subsystem-match=usb --attr-match=idVendor=1050
+  # This is here to disable this handler in molecule where udevadm is
+  # not available.
+  when: yubihsm_connector_manage_udev | default(true)
