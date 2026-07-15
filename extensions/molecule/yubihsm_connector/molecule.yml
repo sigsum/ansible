@@ -42,4 +42,6 @@ provisioner:
   inventory:
     group_vars:
       all:
+        # Setting this to false means that the udev handlers in
+        # roles/yubihsm_connector/handlers/main.yml will not execute
         yubihsm_connector_manage_udev: false
