@@ -6,6 +6,7 @@
   ("-listen " ~ "\"" ~ litewitness_listen_endpoint ~ "\"") if litewitness_listen_endpoint else "",
   ("-listen-metrics " ~ "\"" ~ litewitness_listen_metrics ~ "\"") if litewitness_listen_metrics else "",
   "-key " ~ "\"" ~ litewitness_keygrip ~ "\"",
+  ("-bastion-key " ~ "\"" ~ litewitness_keygrip ~ "\"") if litewitness_with_bastion_key_flag else "",
   "-ssh-agent /run/sigsum-agent/sigsum-agent.socket",
 ] %}
 

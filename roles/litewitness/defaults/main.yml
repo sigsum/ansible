@@ -53,3 +53,10 @@ litewitness_logs: []
 # litewitness_pull_logs:
 #   - https://testing.witness-network.org/log-list.1
 litewitness_pull_logs: []
+
+# Flag indicating that the litewitness version supports the
+# `-bastion-key` flag.
+#
+# If true, the `litewitness_keygrip` will be passed as value to this
+# flag, which is the same behavior as in the previous versions.
+litewitness_with_bastion_key_flag: false
