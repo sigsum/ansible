@@ -19,6 +19,6 @@ EnvironmentFile=/etc/sigsum-agent/sigsum-agent.conf
 {% if sigsum_agent_soft_key is defined %}
 ExecStart=/usr/bin/sigsum-agent --key-file "$KEY_FILE" "$RETRY"
 {% else %}
-ExecStart=/usr/bin/sigsum-agent --auth-file "$AUTH_FILE" --key-id "$KEY_ID" "$RETRY"
+ExecStart=/usr/bin/sigsum-agent -a "$AUTH_FILE" --key-id "$KEY_ID" "$RETRY"
 {% endif %}
 KillSignal=SIGHUP
