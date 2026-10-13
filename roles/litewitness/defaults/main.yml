@@ -60,3 +60,12 @@ litewitness_pull_logs: []
 # If true, the `litewitness_keygrip` will be passed as value to this
 # flag, which is the same behavior as in the previous versions.
 litewitness_with_bastion_key_flag: false
+
+# List of keys passed to litewitness (using the `-key` flag repeatedly) when
+# starting it.
+#
+# If this list isn't declared `litewitness_keygrip` will be the only `-key`
+# value passed to litewitness.
+# If this list is declared, its contents are the only keys passed using
+# the `-key` flag, so typically `litewitness_keygrip` should be part of it.
+# litewitness_keys: []
