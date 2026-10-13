@@ -17,6 +17,11 @@
 # sigsum_agent_soft_key: ""
 
 #---
+# Configuration of a soft key (ML-DSA private-key format)
+#---
+# sigsum_agent_soft_key_mldsa: ""
+
+#---
 # Configuration of YubiHSM(s)
 #---
 # Each config item consists of four key/value pairs:
