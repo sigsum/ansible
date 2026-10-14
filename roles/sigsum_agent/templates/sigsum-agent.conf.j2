@@ -5,7 +5,7 @@ KEY_FILE=/etc/sigsum-agent/key
 # YubiHSM configuration
 AUTH_FILE=/etc/sigsum-agent/credentials
 KEY_ID={{ sigsum_agent_yubihsm_key_id }}
-{% if sigsum_agent_mldsa_softkey is defined %}
+{% if sigsum_agent_soft_key_mldsa is defined %}
 KEY_FILE_MLDSA={{ sigsum_agent_soft_key_mldsa }}
 {% endif %}
 {% endif %}

@@ -5,11 +5,8 @@
   "" if litewitness_debug_endpoints_enabled else "-obscurity ",
   ("-listen " ~ "\"" ~ litewitness_listen_endpoint ~ "\"") if litewitness_listen_endpoint else "",
   ("-listen-metrics " ~ "\"" ~ litewitness_listen_metrics ~ "\"") if litewitness_listen_metrics else "",
-  {% for k in litewitness_keys|default([litewitness_keygrip]) %}
-    "-key " ~ "\"" ~ k ~ "\"",
-  {% endfor %}
   ("-bastion-key " ~ "\"" ~ litewitness_keygrip ~ "\"") if litewitness_with_bastion_key_flag else "",
   "-ssh-agent /run/sigsum-agent/sigsum-agent.socket",
 ] %}
 
-ARGS={{ args | select | join(" ") }}
+ARGS={{ args | select | join(" ") }} {%- for k in litewitness_keys|default([litewitness_keygrip]) %} -key "{{ k }}"{% endfor %}
