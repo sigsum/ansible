@@ -217,6 +217,12 @@
   when: sigsum_policy_file is defined and sigsum_witness_config != "" and sigsum_role == "primary"
   notify: restart sigsum primary node
 
+- name: Configure mTLS client authentication
+  ansible.builtin.import_tasks: mtls.yml
+  when:
+    - sigsum_role == "primary"
+    - sigsum_mtls_cert != "" or sigsum_mtls_key != ""
+
 - name: Install primary configuration file
   template:
     src: "config.toml.j2"

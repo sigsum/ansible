@@ -22,6 +22,8 @@
 {% if sigsum_secondary_pubkey_file  -%}  secondary-pubkey-file = "{{ sigsum_secondary_pubkey_file }}"  {{- '\n' }}{% endif %}
 {% if True                          -%}  sth-file = "{{ sigsum_sth_file }}"                            {{- '\n' }}{% endif %}
 {% if sigsum_max_range              -%}  max-range = {{ sigsum_max_range }}                            {{- '\n' }}{% endif %}
+{% if sigsum_mtls_cert              -%}  mtls-cert = "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/mtls-cert.pem" {{- '\n' }}{% endif %}
+{% if sigsum_mtls_key               -%}  mtls-key = "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/mtls-key.pem" {{- '\n' }}{% endif %}
 {% endif %}
 {% if secondary is defined %}
 [secondary]
