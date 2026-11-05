@@ -108,7 +108,7 @@ sigsum_install_tools_from_sigsum_go:
      'handlers': [],
     }
 
-sigsum_log_version: "v0.14.1"  # default version for tools from log-go
+sigsum_log_version: "v0.17.0-dev.0"  # default version for tools from log-go
 sigsum_log_source: "sigsum.org/log-go"
 sigsum_install_tools_from_log_go:
   - {
@@ -197,6 +197,12 @@ sigsum_allow_test_domain: false # Allow submit tokens from test.sigsum.org
 sigsum_secondary_url: ""  # where the secondary log's internal endpoint is served
 sigsum_secondary_pubkey_file: ""
 sigsum_max_range: 4096
+
+# Optional mTLS client configuration in PEM format.  Used by the log when
+# requesting cosignatures from witnesses that request mTLS in the TLS handshake.
+# If certificate is a chain, put the leaf first in the PEM file.
+sigsum_mtls_cert: ""
+sigsum_mtls_key: ""
 
 # Ignored unless sigsum_role == "secondary"
 sigsum_primary_url: ""  # where the primary log's internal endpoint is served

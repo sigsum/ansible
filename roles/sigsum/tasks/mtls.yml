@@ -1,0 +1,28 @@
+---
+- name: Require both mTLS certificate and key
+  ansible.builtin.assert:
+    that:
+      - sigsum_mtls_cert != ""
+      - sigsum_mtls_key != ""
+    quiet: true
+    fail_msg: "sigsum_mtls_cert and sigsum_mtls_key must both be set"
+
+- name: Install mTLS client certificate chain
+  ansible.builtin.copy:
+    content: "{{ sigsum_mtls_cert }}"
+    dest: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/mtls-cert.pem"
+    owner: "{{ sigsum_user }}"
+    group: "{{ sigsum_user }}"
+    mode: '0644'
+  notify: restart sigsum primary node
+
+- name: Install mTLS client private key
+  ansible.builtin.copy:
+    content: "{{ sigsum_mtls_key }}"
+    dest: "{{ sigsum_home }}/{{ sigsum_configdir_base }}/{{ sigsum_logname }}/mtls-key.pem"
+    owner: "{{ sigsum_user }}"
+    group: "{{ sigsum_user }}"
+    mode: '0600'
+  no_log: true
+  diff: false
+  notify: restart sigsum primary node
