@@ -8,9 +8,7 @@
 {% set _ = args.append('-name=' ~ litewitness_name) %}
 {% set _ = args.append('-key=' ~ litewitness_keygrip) %}
 {% set _ = args.append('-ssh-agent=' ~ litewitness_sigsum_agent_socket) %}
-{% if litewitness_bastion_endpoint != "" %}
-{% set _ = args.append('-bastion=' ~ litewitness_bastion_endpoint) %}
-{% elif litewitness_listen_endpoint != "" %}
+{% if litewitness_listen_endpoint != "" %}
 {% set _ = args.append('-listen=' ~ litewitness_listen_endpoint) %}
 {% else %}
 {% set _ = args.append('-no-listen') %}

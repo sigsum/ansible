@@ -4,6 +4,7 @@ set -eu
 
 db_file="$1"; shift
 log_lists_file="$1"; shift
+bastion_endpoint=$1; shift
 
 witnessctl="$HOME/go/bin/witnessctl"
 
@@ -14,3 +15,20 @@ while IFS= read -r line; do
 
 	"$witnessctl" pull-logs -db "$db_file" -source "$line" -verbose
 done < "$log_lists_file"
+
+# Add global bastion for logs that have no per-log bastion
+changed=false
+if [[ "$bastion_endpoint" != "" ]]; then
+	output=$("$witnessctl" set-bastions -db "$db_file" -bastion "$bastion_endpoint" 2>&1)
+	if grep -q "Added bastion" <<< "$output"; then
+		changed=true
+	fi
+fi
+
+if [[ $changed == true ]]; then
+	# systemctl reload requires root; send SIGHUP directly.
+	pid=$(/usr/bin/systemctl show --property MainPID --value "litewitness@$(id -un).service")
+	if [[ "$pid" -gt 0 ]]; then
+		/bin/kill -SIGHUP "$pid"
+	fi
+fi

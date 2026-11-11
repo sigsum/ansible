@@ -9,6 +9,7 @@
     "{{ litewitness_home }}/.local/bin/litewitness-pull-logs"
     "{{ litewitness_database_file }}"
     "{{ litewitness_home }}/.config/litewitness/log-lists"
+    "{{ litewitness_bastion_endpoint }}"
   become_user: "{{ litewitness_user }}"
   become: true
   listen: litewitness pull log lists

@@ -23,6 +23,7 @@ db_file=$1; shift
 config_file=$1; shift
 config_file_non_sigsum_logs=$1; shift
 config_file_per_log_bastions=$1; shift
+bastion_endpoint=$1; shift
 
 witnessctl=~/go/bin/witnessctl
 log_file=$(dirname "$db_file")/.litewitness-configure.tmp
@@ -109,6 +110,14 @@ while true; do
 		fi
 	done
 done < "$config_file_per_log_bastions"
+
+# Add global bastion for logs that have no per-log bastion
+if [[ "$bastion_endpoint" != "" ]]; then
+	output=$("$witnessctl" set-bastions -db "$db_file" -bastion "$bastion_endpoint" 2>&1)
+	if grep -q "Added bastion" <<< "$output"; then
+		changed=true
+	fi
+fi
 
 if [[ $changed == true ]]; then
 	# systemctl reload requires root; send SIGHUP directly.

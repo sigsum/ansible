@@ -11,6 +11,13 @@ NEWS for upcoming sigsum ansible v1.7.0
 
 	* Bumped community.mysql version from 4.0.1 to 4.2.0
 
+    * Bumped default version of torchwood for litewitness from v0.9.0
+      to v0.10.0.  Because of this, the litewitness_bastion_endpoint is
+      no longer a global config option, and instead something that is
+      *only* added for logs that does not have its own bastion host.
+      Warning: removing or updating litewitness_bastion_endpoint does
+      not result in deconfiguration by ansible (assumed to be manual).
+
 NEWS for sigsum ansible v1.6.0
 
 	With this release, all users should upgrade to torchwood

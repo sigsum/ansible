@@ -77,7 +77,7 @@
             b1.localhost:1337 b2.localhost:1337
             EOF
 
-            ~/.local/bin/litewitness-configure {{ litewitness_database_file }} ~/.config/litewitness/log-keys ~/.config/litewitness/non-sigsum-log-keys per-log-bastions
+            ~/.local/bin/litewitness-configure {{ litewitness_database_file }} ~/.config/litewitness/log-keys ~/.config/litewitness/non-sigsum-log-keys per-log-bastions ""
 
             ~/go/bin/witnessctl list-logs -db {{ litewitness_database_file }} \
               | jq -e -s '.[] | select(.origin == "go.sum database tree") | .bastions | sort == ["b1.localhost:1337", "b2.localhost:1337"]'
@@ -90,7 +90,7 @@
             b1.localhost:1337 b2.localhost:1337
             EOF
 
-            ~/.local/bin/litewitness-configure {{ litewitness_database_file }} ~/.config/litewitness/log-keys ~/.config/litewitness/non-sigsum-log-keys per-log-bastions
+            ~/.local/bin/litewitness-configure {{ litewitness_database_file }} ~/.config/litewitness/log-keys ~/.config/litewitness/non-sigsum-log-keys per-log-bastions ""
 
             ~/go/bin/witnessctl list-logs -db {{ litewitness_database_file }} \
               | jq -e -s '.[] | select(.origin == "go.sum database tree") | .bastions | sort == ["b1.localhost:1337", "b2.localhost:1337"]'
@@ -103,10 +103,52 @@
             b1.localhost:1337
             EOF
 
-            ~/.local/bin/litewitness-configure {{ litewitness_database_file }} ~/.config/litewitness/log-keys ~/.config/litewitness/non-sigsum-log-keys per-log-bastions
+            ~/.local/bin/litewitness-configure {{ litewitness_database_file }} ~/.config/litewitness/log-keys ~/.config/litewitness/non-sigsum-log-keys per-log-bastions ""
 
             ~/go/bin/witnessctl list-logs -db {{ litewitness_database_file }} \
               | jq -e -s '.[] | select(.origin == "go.sum database tree") | .bastions | sort == ["b1.localhost:1337"]'
+
+    - name: Test add global bastion
+      become_user: "{{ litewitness_user }}"
+      become: true
+      block:
+
+        - name: Test add global bastion for logs without per-log bastions
+          ansible.builtin.shell: |
+            cd /tmp
+            cat << EOF > per-log-bastions
+            go.sum database tree
+            b1.localhost:1337
+            EOF
+
+            ~/.local/bin/litewitness-configure {{ litewitness_database_file }} ~/.config/litewitness/log-keys ~/.config/litewitness/non-sigsum-log-keys per-log-bastions gb.localhost:1337
+
+            # Log with per-log bastion(s) should not get the global bastion
+            ~/go/bin/witnessctl list-logs -db {{ litewitness_database_file }} \
+              | jq -e -s '.[] | select(.origin == "go.sum database tree") | .bastions | sort == ["b1.localhost:1337"]'
+
+            # Log without per-log bastion(s) should get the global bastion
+            ~/go/bin/witnessctl list-logs -db {{ litewitness_database_file }} \
+              | jq -e -s '.[] | select(.origin == "sigsum.org/v1/tree/4804b3df59edc03c0eee2a2aa5d85e2ea2636bb1709b1efd0a0fafdaeb6336f4") | .bastions == ["gb.localhost:1337"]'
+
+        - name: Test add global bastion for logs pulled from a log list
+          ansible.builtin.shell: |
+            cd /tmp
+            cat << EOF > log-list
+            logs/v0
+
+            vkey example.org/test+6742d4a0+ARiV7RuunuWQ1kNnxPN430CGFnIxKR9ybuxQj+RDkHYU
+            qpd 100
+            contact sysadmin@example.org
+            EOF
+            cat << EOF > log-lists
+            /tmp/log-list
+            EOF
+
+            ~/.local/bin/litewitness-pull-logs {{ litewitness_database_file }} log-lists "gb.localhost:1337"
+
+            ~/go/bin/witnessctl list-logs -db {{ litewitness_database_file }} \
+              | jq -e -s '.[] | select(.origin == "example.org/test") | .bastions == ["gb.localhost:1337"]'
 
     - name: Restore initial database state
       ansible.builtin.shell: |

@@ -28,6 +28,7 @@
       {{ litewitness_home }}/.local/bin/litewitness-pull-logs
       {{ litewitness_database_file }}
       {{ litewitness_home }}/.config/litewitness/log-lists
+      "{{ litewitness_bastion_endpoint }}"
     disabled: "{{ litewitness_pull_logs | length == 0 }}"
     state: present
   notify: litewitness pull log lists
@@ -80,6 +81,7 @@
     {{ litewitness_home }}/.config/litewitness/log-keys
     {{ litewitness_home }}/.config/litewitness/non-sigsum-log-keys
     {{ litewitness_home }}/.config/litewitness/per-log-bastions
+    "{{ litewitness_bastion_endpoint }}"
   changed_when: false  # silence ansible-lint
   become_user: "{{ litewitness_user }}"
   become: true
