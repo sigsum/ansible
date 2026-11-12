@@ -26,6 +26,12 @@
       - (sigsum_agent_soft_key is defined) != (sigsum_yubihsm_credentials | length > 0)
     fail_msg: "Either a soft key or yubihsm credentials are required"
 
+- name: Die unless sigsum_agent_soft_key_mldsa configuration is consistent
+  ansible.builtin.assert:
+    that:
+      - (sigsum_agent_soft_key_mldsa is defined) == (sigsum_agent_soft_key_keypassfile is defined)
+    fail_msg: "Error: sigsum_agent_soft_key_mldsa and sigsum_agent_soft_key_keypassfile must be both undefined or both set"
+
 - name: Configure sigsum-agent environment file
   ansible.builtin.template:
     src: sigsum-agent.conf.j2
@@ -54,6 +60,22 @@
     mode: '0600'
   when: sigsum_yubihsm_credentials | length > 0
   notify: Restart sigsum-agent service
+
+- name: Ensure correct file ownership and permissions for sigsum_agent_soft_key_mldsa file
+  ansible.builtin.file:
+    path: "{{ sigsum_agent_soft_key_mldsa }}"
+    owner: sigsum-agent
+    group: sigsum-agent
+    mode: '0600'
+  when: sigsum_agent_soft_key_mldsa is defined
+
+- name: Ensure correct file ownership and permissions for sigsum_agent_soft_key_keypassfile file
+  ansible.builtin.file:
+    path: "{{ sigsum_agent_soft_key_keypassfile }}"
+    owner: sigsum-agent
+    group: sigsum-agent
+    mode: '0600'
+  when: sigsum_agent_soft_key_keypassfile is defined
 
 ###
 # Configure systemd

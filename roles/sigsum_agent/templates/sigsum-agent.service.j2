@@ -19,7 +19,7 @@ EnvironmentFile=/etc/sigsum-agent/sigsum-agent.conf
 {% if sigsum_agent_soft_key is defined %}
 ExecStart=/usr/bin/sigsum-agent --key-file "$KEY_FILE" "$RETRY"
 {% elif sigsum_agent_soft_key_mldsa is defined %}
-ExecStart=/usr/bin/sigsum-agent -a "$AUTH_FILE" --key-id "$KEY_ID" -k "$KEY_FILE_MLDSA" "$RETRY"
+ExecStart=/usr/bin/sigsum-agent -a "$AUTH_FILE" --key-id "$KEY_ID" -k "$KEY_FILE_MLDSA" -p $KEYPASSFILE "$RETRY"
 {% else %}
 ExecStart=/usr/bin/sigsum-agent -a "$AUTH_FILE" --key-id "$KEY_ID" "$RETRY"
 {% endif %}

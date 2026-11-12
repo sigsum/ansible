@@ -7,6 +7,7 @@ AUTH_FILE=/etc/sigsum-agent/credentials
 KEY_ID={{ sigsum_agent_yubihsm_key_id }}
 {% if sigsum_agent_soft_key_mldsa is defined %}
 KEY_FILE_MLDSA={{ sigsum_agent_soft_key_mldsa }}
+KEYPASSFILE={{ sigsum_agent_soft_key_keypassfile }}
 {% endif %}
 {% endif %}
 RETRY={% if sigsum_agent_yubihsm_connector_retry %}--retry{% endif %}

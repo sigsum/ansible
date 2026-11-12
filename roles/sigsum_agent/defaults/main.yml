@@ -20,6 +20,7 @@
 # Configuration of a soft key (ML-DSA private-key format)
 #---
 # sigsum_agent_soft_key_mldsa: ""
+# sigsum_agent_soft_key_keypassfile: ""
 
 #---
 # Configuration of YubiHSM(s)
